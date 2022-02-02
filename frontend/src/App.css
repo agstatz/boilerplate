@@ -1,10 +1,7 @@
-.App {
-  text-align: center;
-}
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.primary-logo {
+  height: 7vmin;
+  padding: 0.4vmin;
 }
 
 @media (prefers-reduced-motion: no-preference) {
