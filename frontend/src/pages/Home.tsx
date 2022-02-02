@@ -8,7 +8,7 @@ import { Stack } from "react-bootstrap";
 
 function Home() {
   return (
-    <div className="p-3 my-4 bg-light border rounded">
+    <div className="p-3 my-4 mx-4 bg-light border rounded">
         <Stack gap={2}>
             <h1>Home Page</h1>
             <div>Welcome to the home page.</div>
