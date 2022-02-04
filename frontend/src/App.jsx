@@ -13,7 +13,7 @@ import logo_light from './assets/boilerplate_logo_light_gray_1.png';
 
 // Component imports
 import { useState } from 'react';
-import { Container, Navbar, Nav, Form } from 'react-bootstrap';
+import { Container, Navbar, Nav } from 'react-bootstrap';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Home, PageNotFound } from './pages';
 import { Footer } from './components';
@@ -22,7 +22,7 @@ import { ThemeContext, themes } from './styles/ThemeContext';
 function App() {
 
     const [darkMode, setDarkMode] = useState(true);
-    
+
     return (
         <>
         <Navbar className="px-0 bg-light border" variant="light">
@@ -31,7 +31,7 @@ function App() {
                                         className="primary-logo px-4" 
                                         alt="Boilerplate"></img></Navbar.Brand>
             <Nav className="ml-auto">
-                <Nav.Link href="/home">Home</Nav.Link>
+                <Nav.Link href="/">Home</Nav.Link>
                 <Nav.Link href="/dining">Dining Info</Nav.Link>
                 <Nav.Link href="/settings">Settings</Nav.Link>
             </Nav>
