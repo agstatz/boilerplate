@@ -1,13 +1,30 @@
+/**
+ * index.tsx
+ * 
+ * Index file (primary js/ts file)
+ * everything flows through here
+ * 
+ * @author Ashton Statz
+ */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+
+// CSS imports
+import './styles/App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+// Component imports
 import App from './App';
+import ThemeContextWrapper from './styles/ThemeContextWrapper';
+
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    <ThemeContextWrapper>
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>{' '}
+    </ThemeContextWrapper>,
   document.getElementById('root')
 );
 

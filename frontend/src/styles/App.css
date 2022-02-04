@@ -1,0 +1,34 @@
+/**
+ * App.css
+ * 
+ * the primary style sheet for the application.
+ * see also app-theme.scss
+ */
+
+ /* 
+    theme colors
+    ------------------------
+    theme-white:    #FFFFFF,
+    light-gray:     #D1D5DE,
+    alt-light-gray: #f8f9fa,
+    alt-lav-gray:   #dee2E6,
+    lavendar-gray:  #B7B6C2,
+    dark-gray:      #444054,
+    darker-gray:    #3e3a4d,
+    darkest-gray:   #312e3d,
+    theme-black:    #221D23,
+    theme-yellow:   #F4D35E,
+*/
+
+
+/* size specifier class for the logo
+   appearing at the top on the navbar */
+.primary-logo {
+  height: 2.25em;
+  padding: 0.1vmin;
+}
+
+.white-content {
+    background: #292e33;
+    color: white;
+}
