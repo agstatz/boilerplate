@@ -2,7 +2,7 @@
  * index.js
  * entry point of the API Server
  * 
- * @author Ashton Statz, Dawson Smith
+ * @author Ashton Statz, Dawson Smith, Arjan Mobin
  */
 
  const express = require('express');
