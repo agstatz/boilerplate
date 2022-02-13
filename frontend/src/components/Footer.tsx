@@ -7,7 +7,6 @@
 
  import { Container, Stack, Button, Col, Row, Form} from "react-bootstrap";
 
-
  function Footer(props: any) {
 
    return (
@@ -31,7 +30,7 @@
                     <Col className="p-2" xs={6} md={3} > 
                         <Stack>
                             <h4 className="fw-bold mx-auto">Get Started</h4>
-                            <Button className="mx-auto btn btn-primary btn-sm">Register/Sign in</Button>
+                            <Button className="mx-auto btn btn-primary btn-sm" href="/Login">Register/Sign in</Button>
                             <br />
                             <Form.Check
                                 className="mx-auto"

@@ -18,6 +18,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Home, PageNotFound } from './pages';
 import { Footer } from './components';
 import { ThemeContext, themes } from './styles/ThemeContext';
+import RegisterForm from "./pages/RegisterForm"
+import LoginForm from "./pages/LoginForm"
 
 function App() {
 
@@ -41,6 +43,8 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Home />} />
+                    <Route path="/Login" element={<LoginForm />} />
+                    <Route path="/Register" element={<RegisterForm />} />
                     <Route path="*" element={<PageNotFound />} />
                 </Routes>
             </BrowserRouter>
