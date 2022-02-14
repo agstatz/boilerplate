@@ -36,6 +36,7 @@
                                 className="mx-auto"
                                 type="switch"
                                 label="Dark Mode"
+                                checked={props.theme}
                                 onClick={props.toggleDark}
                             >
                             </Form.Check>

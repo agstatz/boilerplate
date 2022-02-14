@@ -27,7 +27,6 @@ function App() {
     const toggleDarkMode = () => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
         setTheme(newTheme);
-        alert("new theme: " + newTheme);
         localStorage.setItem("DARK_MODE", newTheme);
         changeDisplayMode(newTheme);
     }
@@ -76,7 +75,6 @@ function App() {
                   
                   // change all borders to dark borders
                   if (all[i].classList.contains("border")) {
-                      //all[i].classList.remove("border");
                       all[i].classList.add("border-dark");
                   }
       
@@ -101,7 +99,6 @@ function App() {
                   
                   // change all dark borders to light borders
                   if (all[i].classList.contains("border-dark")) {
-                      //all[i].classList.add("border");
                       all[i].classList.remove("border-dark");
                   }
       
@@ -140,9 +137,7 @@ function App() {
                 </Routes>
             </BrowserRouter>
         </Container>
-            <Footer toggleDark={() => toggleDarkMode() /*setDarkMode(!darkMode);
-                                    changeTheme(darkMode === true ? themes.light : themes.dark);
-            storeDarkMode(darkMode);}*/}/>
+            <Footer toggleDark={() => toggleDarkMode()} theme={theme === 'dark' ? true : false}/>
         </div>
     );
 }
