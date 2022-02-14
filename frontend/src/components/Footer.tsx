@@ -46,7 +46,7 @@
                         <Stack>
                             <h4 className="fw-bold mx-auto">More Info</h4>
                             <div className="mx-auto"><i className="bi bi-info-circle-fill"></i> About</div>
-                            <div className="mx-auto"><i className="bi bi-github"></i> Github</div>
+                            <div className="mx-auto"><a href="https://github.com/agstatz/boilerplate"><i className="bi bi-github"></i> Github</a></div>
                             <div className="mx-auto"><i className="bi bi-search"></i> Purdue Dining</div>
                         </Stack>
                     </Col>

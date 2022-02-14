@@ -1,5 +1,5 @@
 import React from "react";
-import { Stack, Button } from "react-bootstrap";
+import { Stack, Button, Container, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { Grid } from '@mui/material';
 
@@ -36,9 +36,30 @@ export default class RegisterForm extends React.Component {
 
     render() {
         return (
-        <div className="p-3 my-4 mx-3 bg-light border rounded">
-            <form className="registerFormFields" onSubmit={this.handleSubmit} align="center">
-                <Grid container spacing={1} columns={1} justifyContent="center" alignItems="center">
+        <Container className="d-flex justify-content-center" style={{ paddingBottom: '15vh', paddingTop: '15vh'}}>
+        <div className="p-5 my-4 mx-3 bg-light border rounded">
+            <Form className="registerFormFields" onSubmit={this.handleSubmit} align="center">
+                <Form.Group className="mb-3 " style={{width: '15em'}} controlId='formUsername'>
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control type="email" placeholder="Enter your username" />
+                </Form.Group>
+                <Form.Group className="mb-3 " style={{width: '15em'}} controlId='formEmail'>
+                    <Form.Label>Email Address</Form.Label>
+                    <Form.Control type="email" placeholder="Enter your email" />
+                </Form.Group>
+                <Form.Group className="mb-3 " style={{width: '15em'}} controlId='formFirstName'>
+                    <Form.Label>First Name</Form.Label>
+                    <Form.Control type="firstName" placeholder="Enter your first name" />
+                </Form.Group>
+                <Form.Group className="mb-3 " style={{width: '15em'}} controlId='formLastName'>
+                    <Form.Label>Last Name</Form.Label>
+                    <Form.Control type="lirstName" placeholder="Enter your last name" />
+                </Form.Group>
+                <Form.Group className="mb-3" style={{width: '15em'}} controlId="formPassword" >
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type="password" placeholder="Password" />
+                </Form.Group>
+                {/*<Grid container spacing={1} columns={1} justifyContent="center" alignItems="center">
                     <Grid item xs={1}>
                         <label className="usernameLabel">
                             Username:
@@ -120,13 +141,14 @@ export default class RegisterForm extends React.Component {
                     />
                     </Grid>
                 </Grid>
-                <br/>
+                <br/>*/}
                 <Stack spacing={4}>
-                    <Button className="mx-auto btn btn-primary btn-sm" onClick={this.handleSubmit}>Register</Button>
+                    <Button className="mb-2 mx-auto btn btn-primary btn-sm" onClick={this.handleSubmit} type="submit">Register</Button>
                     <a href="/Login" align="center">Already have an account? Login here!</a>
                 </Stack>
-            </form>
+            </Form>
         </div>
+        </ Container>
         );
     }
 }
