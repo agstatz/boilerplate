@@ -21,33 +21,46 @@ import { Footer } from './components';
 function App() {
 
     const defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-    /*var storedDarkMode = localStorage.getItem("DARK_MODE");*/
     const [theme, setTheme] = useState(defaultDark ? 'dark' : 'light');
 
+    // handles toggling the values that keep track of the current theme
     const toggleDarkMode = () => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
         setTheme(newTheme);
         alert("new theme: " + newTheme);
+        localStorage.setItem("DARK_MODE", newTheme);
         changeDisplayMode(newTheme);
     }
 
-    /*useEffect(() => {
-        storedDarkMode = localStorage.getItem("DARK_MODE");
+    // On page load, we make sure the theme is correct (dark or light)
+    useEffect(() => {
+        const savedDarkMode = localStorage.getItem("DARK_MODE");
 
-        if (darkMode != storedDarkMode) {
-            //toggleDarkMode();
-            return;
+        if (defaultDark && savedDarkMode === 'light') {
+            setTheme('light');
+        } else {
+            if (theme === 'dark') {
+                localStorage.setItem("DARK_MODE", theme);
+                changeDisplayMode(theme);
+            }
+    
+            if (savedDarkMode !== 'light') {
+                if (theme === 'dark') {
+                    changeDisplayMode(theme);
+                }
+            }
         }
+    }, [])
 
-        if (darkMode) {
-            //alert("trying to change display mode now");
-            changeDisplayMode("dark");
-        }
-    }, [darkMode])*/
-
+    /**
+     * changeDisplayMode
+     * 
+     * Changes the bootstrap theme from light to dark or
+     * from dark to light.
+     * 
+     * @param {'light' or 'dark'} theme 
+     */
     const changeDisplayMode = (theme) => {
-
         switch (theme) {
             case "dark":
               document.body.classList.add('white-content');
