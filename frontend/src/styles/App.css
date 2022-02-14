@@ -20,6 +20,12 @@
     theme-yellow:   #F4D35E,
 */
 
+body {
+    --body-bg: #444444;
+    --body-color: #000;
+}
+
+
 
 /* size specifier class for the logo
    appearing at the top on the navbar */

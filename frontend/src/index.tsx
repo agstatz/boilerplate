@@ -9,22 +9,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+
 // CSS imports
 import './styles/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Component imports
 import App from './App';
-import ThemeContextWrapper from './styles/ThemeContextWrapper';
 
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
-    <ThemeContextWrapper>
-        <React.StrictMode>
-            <App />
-        </React.StrictMode>{' '}
-    </ThemeContextWrapper>,
+            <React.StrictMode>
+                <App />
+            </React.StrictMode>,
   document.getElementById('root')
 );
 

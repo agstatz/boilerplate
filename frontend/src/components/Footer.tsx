@@ -10,7 +10,7 @@
  function Footer(props: any) {
 
    return (
-       <Container fluid className="p-5 position-sticky bg-light border justify-content-center">
+       <Container fluid className="p-5 position-absolute bg-light border justify-content-center">
             <Stack>
                 <Row>
                     <Col className="p-2" xs={6} md={3}>
@@ -30,12 +30,12 @@
                     <Col className="p-2" xs={6} md={3} > 
                         <Stack>
                             <h4 className="fw-bold mx-auto">Get Started</h4>
-                            <Button className="mx-auto btn btn-primary btn-sm" href="/Login">Register/Sign in</Button>
+                            <Button className="mx-auto btn btn-primary btn-sm" href="/login">Register/Sign in</Button>
                             <br />
                             <Form.Check
                                 className="mx-auto"
                                 type="switch"
-                                label="Light/Dark Mode"
+                                label="Dark Mode"
                                 onClick={props.toggleDark}
                             >
                             </Form.Check>

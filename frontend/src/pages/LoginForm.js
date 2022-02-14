@@ -72,7 +72,7 @@ export default class LoginForm extends React.Component {
                 <br/>
                 <Stack spacing={4}>
                     <Button className="mx-auto btn btn-primary btn-sm" onClick={this.handleSubmit}>Log In</Button>
-                    <a href="/Register" align="center">Need an account? Register here!</a>
+                    <a href="/register" align="center">Need an account? Register here!</a>
                 </Stack>
             </form>
         </div>
