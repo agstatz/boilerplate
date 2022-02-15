@@ -12,7 +12,7 @@
  
        <Container>
          <div className="p-3 my-4 mx-4 bg-light border rounded">
-             <Stack gap={4}>
+             <Stack gap={2}>
                  <div>
                     <h1>About</h1>
                     <h4>General Overview</h4>
@@ -23,6 +23,7 @@
                         meal plan.
                     </p>
                  </div>
+                 <hr></hr>
                  <div>
                     <h3>API</h3>
                     <p>The boilerplate API makes it easy to get Purdue Dining information from an official
@@ -31,6 +32,7 @@
                         focus on the task at hand.
                     </p>
                  </div>
+                 <hr></hr>
                  <div>
                      <h3>Meet the Team</h3>
                      <div>

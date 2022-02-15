@@ -19,7 +19,7 @@ export default class LoginForm extends React.Component {
     handleChange = (event) => {
         let target = event.target;
         let value = target.type === "checkbox" ? target.checked : target.value;
-        let name = target.name;
+        let name = target.id;
 
         this.setState({
             [name]: value
@@ -33,20 +33,20 @@ export default class LoginForm extends React.Component {
 
     render() {
         return (
-        <Container className="d-flex justify-content-center" style={{ paddingBottom: '30vh', paddingTop: '15vh'}}>
+        <Container className="d-flex justify-content-center" style={{ paddingBottom: '15vh', paddingTop: '5vh'}}>
             <div className="p-5 my-4 mx-5 d-flex justify-content-center bg-light border rounded">
                 <Stack>
                     <Container className="d-flex justify-content-center">
                         <h1><i className="bi bi-person-circle" style={{ fontSize: '80px'}}></i></h1>
                     </Container>
                     <Form className="registerFormFields" onSubmit={this.handleSubmit}>
-                    <Form.Group className="mb-3 " style={{width: '15em'}} controlId='formUsername'>
+                    <Form.Group className="mb-3 " style={{width: '15em'}} controlId='username'>
                         <Form.Label>Username</Form.Label>
-                        <Form.Control type="email" placeholder="Enter your username" />
+                        <Form.Control type="email" placeholder="Enter your username" onChange={this.handleChange}/>
                     </Form.Group>
-                    <Form.Group className="mb-3" style={{width: '15em'}} controlId="formPassword" >
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Password" />
+                    <Form.Group className="mb-3" style={{width: '15em'}} controlId="password" >
+                        <Form.Label>Enter your password</Form.Label>
+                        <Form.Control type="password" placeholder="Password" onChange={this.handleChange}/>
                     </Form.Group>
                     {/*<Grid container spacing={1} columns={1} justifyContent="center" alignItems="center">
                         <Grid item xs={1}>
@@ -83,7 +83,7 @@ export default class LoginForm extends React.Component {
                         </Grid>
                     </Grid>*/ }
                     <Stack spacing={4}>
-                        <Button className="mb-2 mx-auto btn btn-primary btn-sm" onClick={this.handleSubmit} type="submit">Sign In</Button>
+                        <Button className="mb-2 mt-3 btn btn-primary btn-sm" onClick={this.handleSubmit} type="submit">Sign In</Button>
                         <a href="/register" align="center">Need an account? Register here!</a>
                     </Stack>
                 </Form>

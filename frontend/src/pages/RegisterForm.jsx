@@ -22,7 +22,7 @@ export default class RegisterForm extends React.Component {
     handleChange = (event) => {
         let target = event.target;
         let value = target.type === "checkbox" ? target.checked : target.value;
-        let name = target.name;
+        let name = target.id;
 
         this.setState({
             [name]: value
@@ -30,38 +30,39 @@ export default class RegisterForm extends React.Component {
     }
 
     handleSubmit = (event) => {
+        alert("submitting");
         event.preventDefault();
         console.log(this.state);
     }
 
     render() {
         return (
-        <Container className="d-flex justify-content-center" style={{ paddingBottom: '15vh', paddingTop: '15vh'}}>
+        <Container className="d-flex justify-content-center" >
         <div className="p-5 my-4 mx-3  d-flex justify-content-center bg-light border rounded">
             <Stack>
                 <Container className="d-flex justify-content-center">
                     <h1><i className="bi bi-person-circle" style={{ fontSize: '80px'}}></i></h1>
                 </Container>
                 <Form className="registerFormFields" onSubmit={this.handleSubmit} align="center">
-                    <Form.Group className="mb-3 " style={{width: '15em'}} controlId='formUsername'>
+                    <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='username'>
                         <Form.Label>Username</Form.Label>
-                        <Form.Control type="email" placeholder="Enter your username" />
+                        <Form.Control type="username" placeholder="Enter your username" onChange={this.handleChange} />
                     </Form.Group>
-                    <Form.Group className="mb-3 " style={{width: '15em'}} controlId='formEmail'>
+                    <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='email'>
                         <Form.Label>Email Address</Form.Label>
-                        <Form.Control type="email" placeholder="Enter your email" />
+                        <Form.Control type="email" placeholder="Enter your email" onChange={this.handleChange}/>
                     </Form.Group>
-                    <Form.Group className="mb-3 " style={{width: '15em'}} controlId='formFirstName'>
+                    <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='firstName'>
                         <Form.Label>First Name</Form.Label>
-                        <Form.Control type="firstName" placeholder="Enter your first name" />
+                        <Form.Control type="firstName" placeholder="Enter your first name" onChange={this.handleChange}/>
                     </Form.Group>
-                    <Form.Group className="mb-3 " style={{width: '15em'}} controlId='formLastName'>
+                    <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='lastName'>
                         <Form.Label>Last Name</Form.Label>
-                        <Form.Control type="lirstName" placeholder="Enter your last name" />
+                        <Form.Control type="lirstName" placeholder="Enter your last name" onChange={this.handleChange}/>
                     </Form.Group>
-                    <Form.Group className="mb-3" style={{width: '15em'}} controlId="formPassword" >
+                    <Form.Group className="mb-3" style={{width: '16.5em'}} controlId="password" >
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Password" />
+                        <Form.Control type="password" placeholder="Enter your password" onChange={this.handleChange} />
                     </Form.Group>
                     {/*<Grid container spacing={1} columns={1} justifyContent="center" alignItems="center">
                         <Grid item xs={1}>
@@ -147,7 +148,7 @@ export default class RegisterForm extends React.Component {
                     </Grid>
                     <br/>*/}
                     <Stack spacing={4}>
-                        <Button className="mb-2 mx-auto btn btn-primary btn-sm" onClick={this.handleSubmit} type="submit">Register</Button>
+                        <Button className="mb-2 mt-3 btn btn-primary btn-sm" onClick={this.handleSubmit} type="submit">Register</Button>
                         <a href="/Login" align="center">Already have an account? Login here!</a>
                     </Stack>
                 </Form>
