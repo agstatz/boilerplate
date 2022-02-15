@@ -45,9 +45,9 @@
                     <Col className="p-2" xs={6} md={3}>
                         <Stack>
                             <h4 className="fw-bold mx-auto">More Info</h4>
-                            <div className="mx-auto"><i className="bi bi-info-circle-fill"></i> About</div>
-                            <div className="mx-auto"><a href="https://github.com/agstatz/boilerplate"><i className="bi bi-github"></i> Github</a></div>
-                            <div className="mx-auto"><i className="bi bi-search"></i> Purdue Dining</div>
+                            <div className="mx-auto"><a href="/about"><i className="bi bi-info-circle-fill"></i> About</a></div>
+                            <div className="mx-auto"><a href="https://github.com/agstatz/boilerplate/"><i className="bi bi-github"></i> Github</a></div>
+                            <div className="mx-auto"><a href="https://dining.purdue.edu/"><i className="bi bi-search"></i> Purdue Dining</a></div>
                         </Stack>
                     </Col>
                 </Row>

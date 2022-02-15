@@ -2,6 +2,8 @@
  *  Home.tsx
  *  The home page for the application. Primary landing
  *  page.
+ * 
+ * @author Ashton Statz
  */
 
 import { Stack, Container } from "react-bootstrap";

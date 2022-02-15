@@ -35,7 +35,11 @@ export default class LoginForm extends React.Component {
         return (
         <Container className="d-flex justify-content-center" style={{ paddingBottom: '30vh', paddingTop: '15vh'}}>
             <div className="p-5 my-4 mx-5 d-flex justify-content-center bg-light border rounded">
-                <Form className="registerFormFields" onSubmit={this.handleSubmit}>
+                <Stack>
+                    <Container className="d-flex justify-content-center">
+                        <h1><i className="bi bi-person-circle" style={{ fontSize: '80px'}}></i></h1>
+                    </Container>
+                    <Form className="registerFormFields" onSubmit={this.handleSubmit}>
                     <Form.Group className="mb-3 " style={{width: '15em'}} controlId='formUsername'>
                         <Form.Label>Username</Form.Label>
                         <Form.Control type="email" placeholder="Enter your username" />
@@ -83,6 +87,9 @@ export default class LoginForm extends React.Component {
                         <a href="/register" align="center">Need an account? Register here!</a>
                     </Stack>
                 </Form>
+                </Stack>
+                
+                
             </div>
         </Container>
         );
