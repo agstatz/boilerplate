@@ -1,7 +1,22 @@
+/**
+ * LoginForm.jsx
+ * 
+ * This form component handles the signing in
+ * of a user. Utilizes redux to store the information
+ * TODO: add corresponding database calls
+ * 
+ * @author Dawson Smith, Ashton Statz
+ */
+
 import React from "react";
 import { Stack, Button, Form, Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { Grid } from '@mui/material';
+
+// redux imports
+import { login } from "../features/userSlice.js";
+import store from "../store/store.js";
+
+//import { Link } from "react-router-dom";
+//import { Grid } from '@mui/material';
 
 export default class LoginForm extends React.Component {
     constructor() {
@@ -28,7 +43,12 @@ export default class LoginForm extends React.Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        console.log(this.state);
+
+        store.dispatch(login({
+            password: this.state.password,
+            username: this.state.username
+        }));
+        //console.log(this.state);
     }
 
     render() {

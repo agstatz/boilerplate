@@ -1,7 +1,23 @@
+/**
+ * RegisterForm.jsx
+ * 
+ * This form component handles the registration
+ * of a user. Utilizes redux to store the information
+ * TODO: add corresponding database calls
+ * 
+ * @author Dawson Smith, Ashton Statz
+ */
+
 import React from "react";
 import { Stack, Button, Container, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { Grid } from '@mui/material';
+
+// redux imports
+import { login } from "../features/userSlice.js";
+import store from "../store/store.js";
+
+//import { Link } from "react-router-dom";
+//import { Grid } from '@mui/material';
+
 
 export default class RegisterForm extends React.Component {
     constructor() {
@@ -29,9 +45,26 @@ export default class RegisterForm extends React.Component {
         });
     }
 
+    // handles submitting the form
     handleSubmit = (event) => {
-        alert("submitting");
-        event.preventDefault();
+        // prevent page from reloading
+        event.preventDefault();  
+
+        // TODO: validate input on the frontend,
+        // check the input on the backend, in that 
+        // someone should not be able to make an account
+        // that doesn't meet requirements
+        // e.g. min password length, min characters in a
+        // username, unique usernames
+        
+        // update state in redux with new information
+        store.dispatch(login({
+            email: this.state.email,
+            password: this.state.password,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            username: this.state.username
+        }));
         console.log(this.state);
     }
 
