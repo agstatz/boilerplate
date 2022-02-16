@@ -10,6 +10,7 @@
 
 import React from "react";
 import { Stack, Button, Container, Form } from "react-bootstrap";
+import { withRouter } from "react-router-dom";
 
 // redux imports
 import { login } from "../features/userSlice.js";
@@ -19,7 +20,7 @@ import store from "../store/store.js";
 //import { Grid } from '@mui/material';
 
 
-export default class RegisterForm extends React.Component {
+class RegisterForm extends React.Component {
     constructor() {
         super();
 
@@ -65,7 +66,15 @@ export default class RegisterForm extends React.Component {
             lastName: this.state.lastName,
             username: this.state.username
         }));
+
+        // TODO: REMOVE - this is for testing purposes only
         console.log(this.state);
+        
+        // Redirect the user to initial quiz
+        const { history } = this.props;
+        if (history) {
+            history.push("/preference-quiz");
+        }
     }
 
     render() {
@@ -191,3 +200,5 @@ export default class RegisterForm extends React.Component {
         );
     }
 }
+
+export default withRouter(RegisterForm);

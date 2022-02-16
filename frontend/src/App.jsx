@@ -14,8 +14,8 @@ import logo_light from './assets/boilerplate_logo_light_gray_1.png';
 // Component imports
 import { useState, useEffect } from 'react';
 import { Container, Navbar, Nav } from 'react-bootstrap';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Home, PageNotFound, RegisterForm, LoginForm, About } from './pages';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { Home, PageNotFound, RegisterForm, LoginForm, PreferenceQuiz, About } from './pages';
 import { Footer } from './components';
 
 function App() {
@@ -129,13 +129,14 @@ function App() {
         </Navbar>
         <Container>
             <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<LoginForm />} />
-                    <Route path="/register" element={<RegisterForm />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="*" element={<PageNotFound />} />
-                </Routes>
+                <Switch>
+                    <Route exact path="/" component={Home} />
+                    <Route path="/login" component={LoginForm} />
+                    <Route path="/register" component={RegisterForm} />
+                    <Route path="/about" component={About} />
+                    <Route path="/preference-quiz" component={PreferenceQuiz} />
+                    <Route path="*" component={PageNotFound} />
+                </Switch>
             </BrowserRouter>
         </Container>
             <Footer toggleDark={() => toggleDarkMode()} theme={theme === 'dark' ? true : false}/>
