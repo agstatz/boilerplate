@@ -2,10 +2,10 @@ const selectors = {
     // Selectors for the scraper
     'dining_court_links': {
         'earhart_link': '#app > div > div > div.MuiGrid-root.menus__home-content--container.MuiGrid-container > div > div > div:nth-child(1) > div > ul > a:nth-child(1)',
-        'ford_link': '#app > div > div > div.MuiGrid-root.menus__home-content--container.MuiGrid-container > div > div > div:nth-child(1) > div > ul > a:nth-child(2)',
-        'wiley_link': '#app > div > div > div.MuiGrid-root.menus__home-content--container.MuiGrid-container > div > div > div:nth-child(1) > div > ul > a:nth-child(4)',
-        'windsor_link': '#app > div > div > div.MuiGrid-root.menus__home-content--container.MuiGrid-container > div > div > div:nth-child(1) > div > ul > a:nth-child(5)',
-        'hillenbrand_link': '#app > div > div > div.MuiGrid-root.menus__home-content--container.MuiGrid-container > div > div > div:nth-child(1) > div > ul > a:nth-child(3)',
+        // 'ford_link': '#app > div > div > div.MuiGrid-root.menus__home-content--container.MuiGrid-container > div > div > div:nth-child(1) > div > ul > a:nth-child(2)',
+        // 'wiley_link': '#app > div > div > div.MuiGrid-root.menus__home-content--container.MuiGrid-container > div > div > div:nth-child(1) > div > ul > a:nth-child(4)',
+        // 'windsor_link': '#app > div > div > div.MuiGrid-root.menus__home-content--container.MuiGrid-container > div > div > div:nth-child(1) > div > ul > a:nth-child(5)',
+        // 'hillenbrand_link': '#app > div > div > div.MuiGrid-root.menus__home-content--container.MuiGrid-container > div > div > div:nth-child(1) > div > ul > a:nth-child(3)',
     },
 
     'earhart': '#app > div > div > div.MuiGrid-root.menus__home-content--container.MuiGrid-container > div > div > div:nth-child(1) > div > ul > a:nth-child(1)',

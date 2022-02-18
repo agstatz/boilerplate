@@ -25,9 +25,6 @@ MongoClient.connect(url, async (err, dbt) => {
         console.log(menu_link)
 
         await get_stations(browser, menu_link)
-
-        // let stations = $('#main > div.meal')
-        // console.log(stations)
     }
 
 
@@ -42,23 +39,40 @@ async function get_stations(browser, menu_link) {
     const $ = cheerio.load(await page.content());
     let stations_html = $('.station-container')
 
-    let stations = {}
+    const page_details = await page.evaluate(() => {return document});
     
     for (const station of stations_html) {
         let station_name = $(station).find('.station-name').text()
         console.log('STATION: ', station_name)
 
         for (const item of $(station).find('.station-item')) {
-            let item_link  = $(item).attr('href')
+            let item_link  = page_details.location.origin + $(item).attr('href')
             let item_name = $(item).find('.station-item-text').text()
-            console.log(item_name, item_link)
+            console.log(item_link)
+            await get_nutrition_facts(browser, item_link)
         }
         console.log('\n')
 
         // console.log(station.children[0].children[0].data)
     }
 
-    
+}
 
+async function get_nutrition_facts(browser, item_link) {
+    console.log('getting facts!')
+    const page = await browser.newPage();
+    await page.goto(item_link);
+    const $ = cheerio.load(await page.content());
 
+    const nutrition = $('.nutrition')
+
+    const serving_size = $(nutrition).find('.nutrition-feature-servingSize-quantity').text() + ' ' + $(nutrition).find('.nutrition-feature-servingSize-unit').text()
+    const calories = nutrition.find('.nutrition-feature-calories-quantity').text()
+    console.log(serving_size, calories)
+    for (const row of nutrition.find('.nutrition-table-row')) {
+        const label = $(row).find('.table-row-label').text()
+        const value = $(row).find('.table-row-labelValue').text()
+        const daily_value = $(row).find('.table-row-dailyValue').text()
+        console.log(label, value, daily_value)
+    }
 }
