@@ -15,7 +15,7 @@ import logo_light from './assets/boilerplate_logo_light_gray_1.png';
 import { useState, useEffect } from 'react';
 import { Container, Navbar, Nav } from 'react-bootstrap';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { Home, PageNotFound, RegisterForm, LoginForm, PreferenceQuiz, About } from './pages';
+import { Home, PageNotFound, RegisterForm, LoginForm, PreferenceQuiz, About, Profile } from './pages';
 import { Footer } from './components';
 
 function App() {
@@ -64,7 +64,6 @@ function App() {
             case "dark":
               document.body.classList.add('white-content');
               var all = document.getElementsByTagName("*");
-      
               
               for (var i=0, max=all.length; i < max; i++) {
                   // change all references to bg-light to bg-dark
@@ -107,7 +106,6 @@ function App() {
                       all[i].classList.remove("navbar-dark");
                       all[i].classList.add("navbar-light");
                   }
-      
               }
               break;
           }
@@ -135,6 +133,7 @@ function App() {
                     <Route path="/register" component={RegisterForm} />
                     <Route path="/about" component={About} />
                     <Route path="/preference-quiz" component={PreferenceQuiz} />
+                    <Route path="/profile/:id" component={Profile} />
                     <Route path="*" component={PageNotFound} />
                 </Switch>
             </BrowserRouter>
