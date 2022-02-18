@@ -8,7 +8,7 @@
  const express = require('express');
  const fs = require('fs');
  const MongoClient = require('mongodb').MongoClient;
- const url = "mongodb://localhost:27017/"; // Change url as needed, this is default if hosting locally
+ const url = "mongodb+srv://admin:1234@cluster0.ggera.mongodb.net/boilerplate?retryWrites=true&w=majority"; // Change url as needed, this is default if hosting locally
  const requireDatabase = true; // If false, disables startup of database
  const importJSONs = false; // If false, will restrict the importing of JSON files into the database
  const exportJSONs = false; // If false, will restrict the exporting of the database collections as a JSON
@@ -16,10 +16,13 @@
 // Create an Express application
 const app = express();
 
+
+
 // Ensure database exists
 try {
   if (requireDatabase) {
     MongoClient.connect(url, function(err, dbt) {
+      console.log('conected')
       if (err) throw err;
       var db = dbt.db("boilerplate");
       db.createCollection("users", function(err, res) {});
@@ -39,7 +42,7 @@ try {
   }
 }
 catch (error) {
- // ignore
+ console.log(error);
 }
 
 // This function will export all tables into the respective files in ../data
