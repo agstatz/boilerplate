@@ -45,11 +45,7 @@ export default class LoginForm extends React.Component {
             password: this.state.password,
             username: this.state.username
         }));
-
-        const { history } = this.props;
-        if (history) {
-            history.push("/preference-quiz");
-        }
+        
     }
 
     render() {
