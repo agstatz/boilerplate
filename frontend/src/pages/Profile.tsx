@@ -5,18 +5,19 @@
  * @author Ashton Statz
  */
 
- import { ButtonGroup, Row, Card, Col, Button} from "react-bootstrap";
+ import { Row, Card, Col, Button} from "react-bootstrap";
+ import { RecommendedFood } from "../components";
 
  function Profile(props : any) {
    return (
             <Row>
-                <Col sm={4}>
+                <Col xs={6} sm={5} md={4} lg={3} xl={2}>
                     <Card className="my-3" bg="light">
                         <img height="200px" src="https://www.personality-insights.com/wp-content/uploads/2017/12/default-profile-pic-e1513291410505.jpg"></img>
                         <Card.Body>
                         <div>
                             <h3><strong>
-                                {props.username ? props.username : "username"}
+                                {props.match.params.id ? props.match.params.id : "username"}
                             </strong></h3>
                             <Button href={"/edit/" + (props.username ? props.username : "a")} className="btn-sm" variant="outline-primary">Edit Account</Button>
                             <Row className="mt-3">
@@ -29,7 +30,6 @@
                                     <p>Favorites</p>
                                 </Col>
                             </Row>
-                            
                             <Card.Text>
                                 {props.bio ? props.bio : "user bio"}
                             </Card.Text>
@@ -40,7 +40,7 @@
                         </Card.Footer>
                     </Card>
                 </Col>
-                <Col sm={8}>
+                <Col xs={6} sm={7} md={8} lg={9} xl={10}>
                     <Card className="my-3" bg="light" >
                         <Card.Body>
                             <Card.Text>
@@ -72,8 +72,11 @@
                         </Card.Header>
                         <Card.Body>
                             <Card.Text>
-                                Here are some recommendations based on your feedback:
+                                Here are some recommendations based on your history and feedback:
                             </Card.Text>
+                            <RecommendedFood title={"Chicken Stir Fry"} nutrition={"200g Protein"}/>
+                            <RecommendedFood title={"Cheeseburger"} nutrition={"150g Protein"}/>
+                            <RecommendedFood title={"Chicken Stir Fry"} nutrition={"200g Protein"}/>
                         </Card.Body>
                     </Card>
                 </Col>
