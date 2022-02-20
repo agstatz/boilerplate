@@ -16,9 +16,6 @@ import { withRouter } from "react-router-dom";
 import { login } from "../features/userSlice.js";
 import store from "../store/store.js";
 
-//import { Link } from "react-router-dom";
-//import { Grid } from '@mui/material';
-
 
 class RegisterForm extends React.Component {
     constructor() {
@@ -66,15 +63,14 @@ class RegisterForm extends React.Component {
             lastName: this.state.lastName,
             username: this.state.username
         }));
-
-        // TODO: REMOVE - this is for testing purposes only
-        console.log(this.state);
         
         // Redirect the user to initial quiz
         const { history } = this.props;
         if (history) {
             history.push("/preference-quiz");
         }
+
+        //TODO: refresh page and persist state
     }
 
     render() {
@@ -82,6 +78,9 @@ class RegisterForm extends React.Component {
         <Container className="d-flex justify-content-center" >
         <div className="p-5 my-4 mx-3  d-flex justify-content-center bg-light border rounded">
             <Stack>
+                <Container className="d-flex justify-content-center">
+                        <h3>Sign Up</h3>
+                </Container>
                 <Container className="d-flex justify-content-center">
                     <h1><i className="bi bi-person-circle" style={{ fontSize: '80px'}}></i></h1>
                 </Container>
@@ -106,89 +105,6 @@ class RegisterForm extends React.Component {
                         <Form.Label>Password</Form.Label>
                         <Form.Control type="password" placeholder="Enter your password" onChange={this.handleChange} />
                     </Form.Group>
-                    {/*<Grid container spacing={1} columns={1} justifyContent="center" alignItems="center">
-                        <Grid item xs={1}>
-                            <label className="usernameLabel">
-                                Username:
-                            </label>
-                            </Grid>
-                            <Grid item xs={1}>
-                            <input
-                                type="username"
-                                id="username"
-                                className="usernameInput"
-                                placeholder="Enter your username"
-                                name="username"
-                                value={this.state.username}
-                                onChange={this.handleChange}
-                                />
-                        </Grid>
-                        <Grid item xs={1}>
-                        <label className="emailLabel" htmlFor="email">
-                            E-Mail Address:
-                        </label>
-                        </Grid>
-                        <Grid item xs={1}>
-                        <input
-                            type="email"
-                            id="email"
-                            className="emailInput"
-                            placeholder="Enter your email"
-                            name="email"
-                            value={this.state.email}
-                            onChange={this.handleChange}
-                        />
-                        </Grid>
-                        <Grid item xs={1}>
-                            <label className="firstNameLabel">
-                                First Name:
-                            </label>
-                            </Grid>
-                            <Grid item xs={1}>
-                            <input
-                                type="firstName"
-                                id="firstName"
-                                className="firstNameInput"
-                                placeholder="Enter your first name"
-                                name="firstName"
-                                value={this.state.firstName}
-                                onChange={this.handleChange}
-                                />
-                        </Grid>
-                        <Grid item xs={1}>
-                            <label className="lastNameLabel">
-                                Last Name:
-                            </label>
-                            </Grid>
-                            <Grid item xs={1}>
-                            <input
-                                type="lastName"
-                                id="lastName"
-                                className="lastNameInput"
-                                placeholder="Enter your last name"
-                                name="lastName"
-                                value={this.state.lastName}
-                                onChange={this.handleChange}
-                                />
-                        </Grid>
-                        <Grid item xs={1}>
-                        <label className="passwordLabel">
-                        Password:
-                        </label>
-                        </Grid>
-                        <Grid item xs={1}>
-                        <input
-                            type="password"
-                            id="password"
-                            className="passwordInput"
-                            placeholder="Enter your password"
-                            name="password"
-                            value={this.state.password}
-                            onChange={this.handleChange}
-                        />
-                        </Grid>
-                    </Grid>
-                    <br/>*/}
                     <Stack spacing={4}>
                         <Button className="mb-2 mt-3 btn btn-primary btn-sm" onClick={this.handleSubmit} type="submit">Register</Button>
                         <a href="/Login" align="center">Already have an account? Login here!</a>

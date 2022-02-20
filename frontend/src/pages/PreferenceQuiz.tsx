@@ -6,7 +6,7 @@
  * @author Ashton Statz
  */
 
- import { Stack, Container } from "react-bootstrap";
+ import { Stack, Container, Button} from "react-bootstrap";
 
  function PreferenceQuiz() {
    return (
@@ -17,6 +17,7 @@
                     <p>The following quiz will ask you questions about your food preferences and restrictions.
                         It is solely used to provide better recommendations for you.
                     </p>
+                    <Button>Let's start <i className="bi bi-chevron-right"></i></Button>
                 </Stack>
             </div>
         </Container>

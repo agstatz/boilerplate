@@ -120,6 +120,8 @@ function App() {
                                         alt="Boilerplate"></img></Navbar.Brand>
             <Nav className="ml-auto">
                 <Nav.Link href="/" >Home</Nav.Link>
+                <Nav.Link href="/profile/a" >Profile</Nav.Link>
+                <Nav.Link href="/profile/a" >Maps</Nav.Link>
                 <Nav.Link href="/dining">Dining Info</Nav.Link>
                 <Nav.Link href="/settings">Settings</Nav.Link>
             </Nav>
@@ -130,7 +132,7 @@ function App() {
                 <Switch>
                     <Route exact path="/" component={Home} />
                     <Route path="/login" component={LoginForm} />
-                    <Route path="/register" component={RegisterForm} />
+                    <Route path="/register" component={RegisterForm} changeDisplayMode={changeDisplayMode}/>
                     <Route path="/about" component={About} />
                     <Route path="/preference-quiz" component={PreferenceQuiz} />
                     <Route path="/profile/:id" component={Profile} />
