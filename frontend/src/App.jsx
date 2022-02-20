@@ -15,7 +15,7 @@ import logo_light from './assets/boilerplate_logo_light_gray_1.png';
 import { useState, useEffect } from 'react';
 import { Container, Navbar, Nav } from 'react-bootstrap';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { Home, PageNotFound, RegisterForm, LoginForm, PreferenceQuiz, About, Profile } from './pages';
+import { Home, PageNotFound, RegisterForm, LoginForm, PreferenceQuiz, About, Profile, EditAccountForm } from './pages';
 import { Footer } from './components';
 
 function App() {
@@ -133,6 +133,7 @@ function App() {
                     <Route exact path="/" component={Home} />
                     <Route path="/login" component={LoginForm} />
                     <Route path="/register" component={RegisterForm} changeDisplayMode={changeDisplayMode}/>
+                    <Route path="/edit/:id" component={EditAccountForm} changeDisplayMode={changeDisplayMode}/>
                     <Route path="/about" component={About} />
                     <Route path="/preference-quiz" component={PreferenceQuiz} />
                     <Route path="/profile/:id" component={Profile} />
