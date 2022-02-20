@@ -8,9 +8,13 @@
  * @author Gaurav Manglani
  */
 
+// React imports
 import React from "react";
 import { Stack, Button, Container, Form } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
+
+// File imports
+import { FormErrors } from "../components/FormErrors.js";
 
 // redux imports
 import { login } from "../features/userSlice.js";
@@ -26,7 +30,11 @@ class EditAccountForm extends React.Component {
             password: "",
             firstName: "",
             lastName: "",
-            username: ""
+            username: "",
+            formErrors: {email: '', password: ''},
+            emailValid: false,
+            passwordValid: false,
+            formValid: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -40,13 +48,14 @@ class EditAccountForm extends React.Component {
 
         this.setState({
             [name]: value
-        });
+        },
+        () => { this.validateField(name, value) });
     }
 
     // handles submitting the form
     handleSubmit = (event) => {
         // prevent page from reloading
-        event.preventDefault();  
+        event.preventDefault();
 
         // TODO: validate input on the frontend,
         // check the input on the backend, in that 
@@ -73,6 +82,39 @@ class EditAccountForm extends React.Component {
         //TODO: refresh page and persist state
     }
 
+    validateField(fieldName, value) {
+        let fieldValidationErrors = this.state.formErrors;
+        let emailValid = this.state.emailValid;
+        let passwordValid = this.state.passwordValid;
+      
+        switch(fieldName) {
+          case 'email':
+            // email needs to be a valid email (matches the below regex)
+            emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+            fieldValidationErrors.email = emailValid ? '' : ' is invalid';
+            break;
+          case 'password':
+            // password needs to have 6 or more characters
+            passwordValid = value.length >= 6;
+            fieldValidationErrors.password = passwordValid ? '': ' is too short';
+            break;
+          default:
+            break;
+        }
+        this.setState({formErrors: fieldValidationErrors,
+                        emailValid: emailValid,
+                        passwordValid: passwordValid
+                      }, this.validateForm);
+    }
+      
+    validateForm() {
+        this.setState({formValid: this.state.emailValid && this.state.passwordValid});
+    }
+
+    errorClass(error) {
+        return(error.length === 0 ? '' : 'has-error');
+    }
+
     render() {
         const id = this.props.match.params.id;
 
@@ -80,6 +122,8 @@ class EditAccountForm extends React.Component {
         <Container className="d-flex justify-content-center" >
         <div className="p-5 my-4 mx-3  d-flex justify-content-center bg-light border rounded">
             <Stack>
+                <div className="panel panel-default">
+                <FormErrors formErrors={this.state.formErrors} /></div>
                 <Container className="d-flex justify-content-center">
                         <h3>Edit Account</h3>
                 </Container>
@@ -111,7 +155,7 @@ class EditAccountForm extends React.Component {
                         <Form.Control type="password" placeholder="Enter your password" onChange={this.handleChange} />
                     </Form.Group>
                     <Stack spacing={4}>
-                        <Button className="mb-2 mt-3 btn btn-primary btn-sm" onClick={this.handleSubmit} type="submit">Submit</Button>
+                        <Button className="mb-2 mt-3 btn btn-primary btn-sm" onClick={this.handleSubmit} type="submit" disabled={!this.state.formValid}>Submit</Button>
                         <a href={"/profile/" + id} align="center">Cancel</a>
                     </Stack>
                 </Form>
