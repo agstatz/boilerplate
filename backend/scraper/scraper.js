@@ -4,10 +4,9 @@ const MongoClient = require('mongodb').MongoClient;
 const puppeteer = require('puppeteer');
 const selectors = require('./selectors');
 
-
-
 const url = "mongodb+srv://admin:1234@cluster0.ggera.mongodb.net/boilerplate?retryWrites=true&w=majority"; 
 const DINING_PAGE_URL = 'https://dining.purdue.edu/menus/'
+
 MongoClient.connect(url, async (err, dbt) => {
     if (err) throw err;
     console.log('connected to database');
@@ -63,16 +62,26 @@ async function get_nutrition_facts(browser, item_link) {
     const page = await browser.newPage();
     await page.goto(item_link);
     const $ = cheerio.load(await page.content());
+    let nutrition_facts = {}
 
     const nutrition = $('.nutrition')
 
     const serving_size = $(nutrition).find('.nutrition-feature-servingSize-quantity').text() + ' ' + $(nutrition).find('.nutrition-feature-servingSize-unit').text()
     const calories = nutrition.find('.nutrition-feature-calories-quantity').text()
     console.log(serving_size, calories)
-    for (const row of nutrition.find('.nutrition-table-row')) {
-        const label = $(row).find('.table-row-label').text()
-        const value = $(row).find('.table-row-labelValue').text()
-        const daily_value = $(row).find('.table-row-dailyValue').text()
-        console.log(label, value, daily_value)
-    }
+
+    // for (const row of nutrition.find('.nutrition-table-row')) {
+    //     const label = $(row).find('.table-row-label').text()
+    //     const value = $(row).find('.table-row-labelValue').text()
+    //     const daily_value = $(row).find('.table-row-dailyValue').text()
+
+    //     nutrition_facts[label] = {
+    //         value: value,
+    //         daily_value: daily_value
+    //     }
+    // }
+
+    const ingredients = $('.nutrition-ingredient-list').children('div').text()
+    let ingredients_list = ingredients.split('),')
+    console.log(ingredients)
 }
