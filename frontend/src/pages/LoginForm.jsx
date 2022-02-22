@@ -12,8 +12,7 @@ import React from "react";
 import { Stack, Button, Form, Container } from "react-bootstrap";
 
 // redux imports
-import { login } from "../features/userSlice.js";
-import store from "../store/store.js";
+import { store, UpdateForm} from "../store/store.js";
 
 export default class LoginForm extends React.Component {
     constructor() {
@@ -36,16 +35,15 @@ export default class LoginForm extends React.Component {
         this.setState({
             [name]: value
         });
+
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
 
-        store.dispatch(login({
-            password: this.state.password,
-            username: this.state.username
-        }));
-        
+        store.dispatch(UpdateForm(("password"), this.state.password));
+        store.dispatch(UpdateForm(("username"), this.state.username));
+
     }
 
     render() {

@@ -17,14 +17,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // Component imports
 import App from './App';
 import { Provider } from 'react-redux';
-import store from './store/store.js';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor} from './store/store.js';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
         <Provider store={store}>
-            <React.StrictMode>
-                <App />
-            </React.StrictMode>
+            <PersistGate loading={null} persistor={persistor}>
+                <React.StrictMode>
+                    <App />
+                </React.StrictMode>
+            </PersistGate>
         </Provider>,
   document.getElementById('root')
 );

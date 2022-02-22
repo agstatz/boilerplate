@@ -1,5 +1,5 @@
 /**
- *  Profile.tsx
+ *  Profile.jsx
  *  The profile page of a given user
  * 
  * @author Ashton Statz
@@ -8,8 +8,29 @@
  import { Row, Card, Col, Button} from "react-bootstrap";
  import { RecommendedFood } from "../components";
 
- function Profile(props : any) {
-   return (
+ import { PageNotFound } from "./";
+
+ import { useParams } from 'react-router-dom';
+ import { useEffect } from 'react';
+
+ function Profile(props) {
+    const { id } = useParams();
+
+    // load the profile based on the id
+    useEffect(() => {
+        getProfile(id);
+    }, []);
+
+    const getProfile = async(username) => {
+        try {
+            // check if the user actually exists in the backend
+        } catch (err) {
+            return <PageNotFound />
+        }
+    }
+    
+
+    return (
             <Row>
                 <Col xs={6} sm={5} md={4} lg={3} xl={2}>
                     <Card className="my-3" bg="light">
@@ -17,7 +38,7 @@
                         <Card.Body>
                         <div>
                             <h3><strong>
-                                {props.match.params.id ? props.match.params.id : "username"}
+                                {id ? id : "username"}
                             </strong></h3>
                             <Button href={"/edit/" + (props.username ? props.username : "a")} className="btn-sm" variant="outline-primary">Edit Account</Button>
                             <Row className="mt-3">
@@ -45,7 +66,7 @@
                         <Card.Body>
                             <Card.Text>
                                 ADD THE FOLLOWING TABS TO THIS PAGE:<br />
-                                Recommended, Meal History, Meal Plans/Schedule, Dietary Info
+                                Meal History, Meal Plans/Schedule, Dietary Info
                             </Card.Text>
 
                         </Card.Body>
@@ -83,7 +104,7 @@
                 
             </Row>
 
-   );
+    );
  }
  
  export default Profile;

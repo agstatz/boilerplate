@@ -13,8 +13,8 @@ import { Stack, Button, Container, Form } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 
 // redux imports
-import { login } from "../features/userSlice.js";
-import store from "../store/store.js";
+// import { login } from "../features/userSlice.js";
+import { store } from "../store/store.js";
 
 
 class RegisterForm extends React.Component {
@@ -56,13 +56,13 @@ class RegisterForm extends React.Component {
         // username, unique usernames
         
         // update state in redux with new information
-        store.dispatch(login({
+        /*store.dispatch(login({
             email: this.state.email,
             password: this.state.password,
             firstName: this.state.firstName,
             lastName: this.state.lastName,
             username: this.state.username
-        }));
+        }));*/
         
         // Redirect the user to initial quiz
         const { history } = this.props;
