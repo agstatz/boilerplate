@@ -63,7 +63,9 @@ export default class LoginForm extends React.Component {
             })
             .catch(err => {
                 this.setState({ message: "err" })
-            })
+            });
+
+            
         const { history } = this.props;
         if (history) {
             history.push(`/profile/${this.state.username}`);
