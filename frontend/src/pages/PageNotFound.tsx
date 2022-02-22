@@ -6,7 +6,7 @@
  * @author Ashton Statz
  */
 
-import { Container } from 'react-bootstrap';
+import { Container, Button } from 'react-bootstrap';
 
  function PageNotFound() {
    return (
@@ -21,6 +21,7 @@ import { Container } from 'react-bootstrap';
                 <br />
             </h1>
         </div>
+        <Button className="mx-auto btn btn-primary btn-sm" href="/">Home</Button>
         </Container>
    );
  }
