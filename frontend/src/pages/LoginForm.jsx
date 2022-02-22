@@ -9,6 +9,7 @@
  */
 
 import React from "react";
+import axios from 'axios';
 import { Stack, Button, Form, Container } from "react-bootstrap";
 
 // redux imports
@@ -20,7 +21,8 @@ export default class LoginForm extends React.Component {
 
         this.state = {
             password: "",
-            username: ""
+            username: "",
+            message: ""
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -47,12 +49,26 @@ export default class LoginForm extends React.Component {
         // TODO: check if valid
         
         // Redirect the user to initial quiz
+        
+
+        const userInfo = {
+            username: this.state.username,
+            password: this.state.password
+        }
+
+        axios
+            .post('http://localhost:3001/api/signinuser', { data: userInfo })
+            .then((res) => {
+                return res.redirect('/');
+            })
+            .catch(err => {
+                this.setState({ message: "err" })
+            })
         const { history } = this.props;
         if (history) {
             history.push(`/profile/${this.state.username}`);
             window.location.reload();
         }
-
 
     }
 
@@ -78,6 +94,7 @@ export default class LoginForm extends React.Component {
                         <Form.Control type="password" placeholder="Password" onChange={this.handleChange}/>
                     </Form.Group>
                     <Stack spacing={4}>
+                        <p align="center">{this.state.message}</p>
                         <Button className="mb-2 mt-3 btn btn-primary btn-sm" onClick={this.handleSubmit} type="submit">Sign In</Button>
                         <a href="/register" align="center">Need an account? Register here!</a>
                     </Stack>

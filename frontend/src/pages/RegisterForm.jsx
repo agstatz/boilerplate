@@ -9,6 +9,7 @@
  */
 
 import React from "react";
+import axios from 'axios';
 import { Stack, Button, Container, Form } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 
@@ -54,6 +55,30 @@ class RegisterForm extends React.Component {
         // that doesn't meet requirements
         // e.g. min password length, min characters in a
         // username, unique usernames
+
+        const userInfo = {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            username: this.state.username,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            password: this.state.password,
+            email: this.state.email
+        }
+
+        axios
+            .post('http://localhost:3001/api/registeruser', { data: userInfo })
+            .then((res) => {
+                // Redirect the user to initial quiz
+                const { history } = this.props;
+                if (history) {
+                    history.push("/preference-quiz");
+                }
+            })
+            .catch(err => {
+                this.setState({ message: "err" })
+            })
         
         // update state in redux with new information
         store.dispatch(UpdateForm(("password"), this.state.password));
@@ -69,7 +94,13 @@ class RegisterForm extends React.Component {
             window.location.reload();
         }
 
-        //TODO: refresh page and persist state
+        /*store.dispatch(login({
+            email: this.state.email,
+            password: this.state.password,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            username: this.state.username
+        }));*/
     }
 
     render() {
