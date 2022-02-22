@@ -11,13 +11,12 @@
 import logo_dark from './assets/boilerplate_logo_black_1.png';
 import logo_light from './assets/boilerplate_logo_light_gray_1.png';
 
-import { store } from './store/store.js';
-
 // Component imports
 import { useState, useEffect } from 'react';
 import { Container, Navbar, Nav, Form } from 'react-bootstrap';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { Home, PageNotFound, RegisterForm, LoginForm, PreferenceQuiz, About, Profile, EditAccountForm } from './pages';
+import { Home, PageNotFound, RegisterForm, LoginForm, PreferenceQuiz, 
+         About, Profile, EditAccountForm, Popular, Map } from './pages';
 import { Footer } from './components';
 
 function App() {
@@ -132,13 +131,15 @@ function App() {
             <BrowserRouter>
                 <Switch>
                     <Route exact path="/" component={Home} />
-                    <Route path="/login" component={LoginForm} />
-                    <Route path="/register" component={RegisterForm} changeDisplayMode={changeDisplayMode}/>
-                    <Route path="/edit/:id" component={EditAccountForm} changeDisplayMode={changeDisplayMode}/>
                     <Route path="/about" component={About} />
+                    <Route path="/edit/:id" component={EditAccountForm} />
+                    <Route path="/login" component={LoginForm} />
+                    <Route path="/map" component={Map} />
+                    <Route path="/popular" component={Popular} />
                     <Route path="/preference-quiz" component={PreferenceQuiz} />
                     <Route path="/profile/:id" component={Profile} />
                     <Route path="/profile/" exact component={PageNotFound} />
+                    <Route path="/register" component={RegisterForm}/>
                     <Route path="*" component={PageNotFound} />
                 </Switch>
             </BrowserRouter>
