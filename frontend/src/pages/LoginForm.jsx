@@ -44,6 +44,16 @@ export default class LoginForm extends React.Component {
         store.dispatch(UpdateForm(("password"), this.state.password));
         store.dispatch(UpdateForm(("username"), this.state.username));
 
+        // TODO: check if valid
+        
+        // Redirect the user to initial quiz
+        const { history } = this.props;
+        if (history) {
+            history.push(`/profile/${this.state.username}`);
+            window.location.reload();
+        }
+
+
     }
 
     render() {

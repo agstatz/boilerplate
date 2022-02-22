@@ -7,6 +7,9 @@
  *  @author Ashton Statz
  */
 
+// Redux imports
+import { store } from './store/store'
+
 // Image imports
 import logo_dark from './assets/boilerplate_logo_black_1.png';
 import logo_light from './assets/boilerplate_logo_light_gray_1.png';
@@ -21,6 +24,7 @@ import { Footer } from './components';
 
 function App() {
 
+    const username = store.getState().app.username;
     const defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const [theme, setTheme] = useState(defaultDark ? 'dark' : 'light');
 
@@ -123,7 +127,8 @@ function App() {
                 <Nav.Link href="/" >Home</Nav.Link>
                 <Nav.Link href="/popular">Popular</Nav.Link>
                 <Nav.Link href="/map" >Map</Nav.Link>
-                <Nav.Link href="/profile/a" >Profile</Nav.Link>
+                <Nav.Link href="/search" >Search</Nav.Link>
+                <Nav.Link href={`/profile/${username}`} >Profile</Nav.Link>
             </Nav>
             </Container>
         </Navbar>
