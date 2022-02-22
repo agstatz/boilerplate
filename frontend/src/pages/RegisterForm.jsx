@@ -14,7 +14,7 @@ import { withRouter } from "react-router-dom";
 
 // redux imports
 // import { login } from "../features/userSlice.js";
-import { store } from "../store/store.js";
+import { store, UpdateForm } from "../store/store.js";
 
 
 class RegisterForm extends React.Component {
@@ -56,18 +56,17 @@ class RegisterForm extends React.Component {
         // username, unique usernames
         
         // update state in redux with new information
-        /*store.dispatch(login({
-            email: this.state.email,
-            password: this.state.password,
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            username: this.state.username
-        }));*/
+        store.dispatch(UpdateForm(("password"), this.state.password));
+        store.dispatch(UpdateForm(("username"), this.state.username));
+        store.dispatch(UpdateForm(("email"), this.state.email));
+        store.dispatch(UpdateForm(("firstName"), this.state.firstName));
+        store.dispatch(UpdateForm(("lastName"), this.state.lastName));
         
         // Redirect the user to initial quiz
         const { history } = this.props;
         if (history) {
             history.push("/preference-quiz");
+            window.location.reload();
         }
 
         //TODO: refresh page and persist state
