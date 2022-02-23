@@ -22,7 +22,7 @@
                     <Col className="p-2 mx-auto" xs={6} md={3}>
                         <Stack>
                             <h4 className="fw-bold mx-auto">Quick Links</h4>
-                            <div className="mx-auto">link1</div>
+                            <div className="mx-auto"><a href="/meal-plans/">Public Meal Plans</a></div>
                             <div className="mx-auto">link2</div>
                             <div className="mx-auto">link3</div>
                         </Stack>

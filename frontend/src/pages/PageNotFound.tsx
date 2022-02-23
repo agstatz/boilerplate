@@ -1,7 +1,6 @@
 /**
- *  Home.tsx
- *  The home page for the application. Primary landing
- *  page.
+ *  PageNotFound.tsx
+ *  Page for when the user gets lost
  * 
  * @author Ashton Statz
  */

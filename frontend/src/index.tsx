@@ -13,6 +13,7 @@ import ReactDOM from 'react-dom';
 // CSS imports
 import './styles/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 // Component imports
 import App from './App';

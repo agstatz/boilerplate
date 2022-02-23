@@ -31,17 +31,17 @@
 
     return (
             <Row>
-                <Col xs={6} sm={5} md={4} lg={3} xl={2}>
-                    <Card className="my-3" bg="light">
+                <Col xs={6} sm={5} md={4} lg={3} xl={3}>
+                    <Card className="my-3" bg="light" style={{maxWidth: "200px", minWidth: "200px"}}>
                         <img alt="Profile" 
                              height="200"
                              src="https://www.personality-insights.com/wp-content/uploads/2017/12/default-profile-pic-e1513291410505.jpg">
                         </img>
                         <Card.Body>
                         <div>
-                            <h3><strong>
+                            <h5><strong>
                                 {id ? id : "username"}
-                            </strong></h3>
+                            </strong></h5>
                             <Button href={"/edit/" + (id ? id : "a")} className="btn-sm" variant="outline-primary">Edit Account</Button>
                             <Row className="mt-3">
                                 <Col className="text-center">
@@ -63,12 +63,12 @@
                         </Card.Footer>
                     </Card>
                 </Col>
-                <Col xs={6} sm={7} md={8} lg={9} xl={10}>
+                <Col xs={6} sm={7} md={8} lg={9} xl={9}>
                     <Card className="my-3" bg="light" >
                         <Card.Body>
                         <Tabs className="mx-3">
                             <Tab label="Meal History" >Tab 1 content</Tab>
-                            <Tab label="Meal Plans"><MealPlanList /></Tab>
+                            <Tab label="Meal Plans"><MealPlanList displayPrivate={true} /></Tab>
                             <Tab label="My Dietary Info">Tab 3 content</Tab>
                         </Tabs>
                         </Card.Body>

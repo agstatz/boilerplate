@@ -20,6 +20,7 @@
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.2",
     "react-bootstrap-range-slider": "^3.0.3",
+    "react-bootstrap-table-next": "^4.0.3",
     "react-bootstrap-tabs": "^2.0.0",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",
@@ -56,6 +57,8 @@
     ]
   },
   "devDependencies": {
+    "@types/react-bootstrap-table": "^4.3.11",
+    "@types/react-bootstrap-table-next": "^4.0.17",
     "@types/react-router-dom": "^5.3.3"
   }
 }

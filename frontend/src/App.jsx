@@ -19,7 +19,7 @@ import { useState, useEffect } from 'react';
 import { Container, Navbar, Nav, Toast } from 'react-bootstrap';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Home, PageNotFound, RegisterForm, LoginForm, PreferenceQuiz, 
-         About, Profile, EditAccountForm, Popular, Map } from './pages';
+         About, Profile, EditAccountForm, Popular, Map, MealPlans } from './pages';
 import { Footer } from './components';
 
 function App() {
@@ -30,6 +30,7 @@ function App() {
     const [showLoggedInWarning, setShowLoggedInWarning] = useState(false);
 
     // handles toggling the values that keep track of the current theme
+    // aka dark mode/light mode
     const toggleDarkMode = () => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
         setTheme(newTheme);
@@ -90,9 +91,9 @@ function App() {
                   }
 
                   // change tables to dark tables
-                  if (all[i].classList.contains("table-light")) {
-                      all[i].classList.remove("table-light");
-                      all[i].classList.add("table-dark");
+                  if (all[i].classList.contains("black-content")) {
+                      all[i].classList.remove("black-content");
+                      all[i].classList.add("white-content");
                   }
               }
               break;
@@ -121,9 +122,9 @@ function App() {
 
                   
                   // change tables to light tables
-                  if (all[i].classList.contains("table-dark")) {
-                    all[i].classList.remove("table-dark");
-                    all[i].classList.add("table-light");
+                  if (all[i].classList.contains("white-content")) {
+                    all[i].classList.remove("white-content");
+                    all[i].classList.add("black-content");
                 }
               }
               break;
@@ -179,6 +180,7 @@ function App() {
                         <Route path="/edit/:id" component={EditAccountForm} />
                         <Route path="/login" component={LoginForm} />
                         <Route path="/map" component={Map} />
+                        <Route exact path="/meal-plans" component={MealPlans} />
                         <Route path="/popular" component={Popular} />
                         <Route path="/preference-quiz" component={PreferenceQuiz} />
                         <Route path="/profile/:id" component={Profile} />

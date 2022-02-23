@@ -8,3 +8,4 @@ export { default as PreferenceQuiz } from "./PreferenceQuiz.jsx";
 export { default as Profile } from "./Profile";
 export { default as Popular } from "./Popular";
 export { default as Map } from "./Map";
+export { default as MealPlans } from "./MealPlans";
