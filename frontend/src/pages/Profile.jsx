@@ -2,7 +2,7 @@
  *  Profile.jsx
  *  The profile page of a given user
  * 
- * @author Ashton Statz
+ * @author Ashton Statz, Gaurav Manglani
  */
 
  import { Row, Card, Col, Button} from "react-bootstrap";
