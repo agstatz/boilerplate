@@ -7,7 +7,7 @@
 
  import { Row, Card, Col, Button} from "react-bootstrap";
  import { Tabs, Tab } from "react-bootstrap-tabs";
- import { RecommendedFood, MealPlanList } from "../components";
+ import { RecommendedFood, MealPlanList, RecommendedDiningCourts } from "../components";
  import { PageNotFound } from "./";
 
  import { useParams } from 'react-router-dom';
@@ -97,9 +97,20 @@
                             <Card.Text>
                                 Here are some recommendations based on your history and feedback:
                             </Card.Text>
-                            <RecommendedFood title={"Chicken Stir Fry"} nutrition={"200g Protein"}/>
-                            <RecommendedFood title={"Cheeseburger"} nutrition={"150g Protein"}/>
-                            <RecommendedFood title={"Chicken Stir Fry"} nutrition={"200g Protein"}/>
+                            <Row>
+                                <Col>
+                                    <Card.Text>Food Items:</Card.Text>
+                                    <RecommendedFood title={"Chicken Stir Fry"} nutrition={"200g Protein"}/>
+                                    <RecommendedFood title={"Cheeseburger"} nutrition={"150g Protein"}/>
+                                    <RecommendedFood title={"Chicken Stir Fry"} nutrition={"200g Protein"}/>
+                                </Col>
+                                <Col>
+                                    <Card.Text>Dining Courts:</Card.Text>
+                                    <RecommendedDiningCourts name={"Wiley"} topFoodItems={["Pasta", "Salad", "Cookies"]}/>
+                                    <RecommendedDiningCourts name={"Hillenbrand"} topFoodItems={["Wings", "Pancakes", "Yogurt Bowl"]}/>
+                                    <RecommendedDiningCourts name={"Earhart"} topFoodItems={["Chicken Stir Fry", "Pizza", "Salad"]}/>
+                                </Col>
+                            </Row>
                         </Card.Body>
                     </Card>
                 </Col>
