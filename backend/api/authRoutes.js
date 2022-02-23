@@ -15,4 +15,5 @@ module.exports = function(app) {
     controller.registerUser
   );
   app.post("/api/signinuser", bodyParser.json(), controller.signinUser);
+  app.post("/api/editUser", bodyParser.json(), controller.editUser);
 };

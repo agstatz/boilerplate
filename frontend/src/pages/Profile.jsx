@@ -40,7 +40,7 @@
                             <h3><strong>
                                 {id ? id : "username"}
                             </strong></h3>
-                            <Button href={"/edit/" + (props.username ? props.username : "a")} className="btn-sm" variant="outline-primary">Edit Account</Button>
+                            <Button href={"/edit/" + (id ? id : "a")} className="btn-sm" variant="outline-primary">Edit Account</Button>
                             <Row className="mt-3">
                                 <Col className="text-center">
                                     <strong>40</strong>

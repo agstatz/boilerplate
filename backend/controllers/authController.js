@@ -94,3 +94,30 @@ exports.signinUser = (req, res) => {
       });
     });
 };
+
+
+// edit user information
+exports.editUser = (req, res) => {
+  User.updateOne(
+    {username: req.body.data.oldUsername},
+    {$set: {
+      username: req.body.data.username,
+      firstName: req.body.data.firstName,
+      lastName: req.body.data.lastName,
+      email: req.body.data.email,
+      password: bcrypt.hashSync(req.body.data.password, 8)
+    }}
+  )
+    .exec((err, user) => {
+      if (err) {
+        res.status(500).send({ message: err });
+        return;
+      }
+      if (!user) {
+        return res.status(404).send({ message: "User Not found." });
+      }
+      res.status(200).send({
+        message: "User information was updated successfully!"
+      });
+    });
+};
