@@ -26,7 +26,8 @@ class RegisterForm extends React.Component {
             password: "",
             firstName: "",
             lastName: "",
-            username: ""
+            username: "",
+            message: ""
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -65,28 +66,51 @@ class RegisterForm extends React.Component {
             password: this.state.password,
             email: this.state.email
         }
+        this.setState({ message: "" })
+        var noErr = true
+        if (noErr && !/^([a-zA-Z]{4,})$/.test(this.state.username)) {
+            this.setState({ message: "Username must be at least 4 characters long" })
+            noErr = false
+        }
+        if (noErr && !/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(this.state.email)) {
+            this.setState({ message: "Invalid email" })
+            noErr = false
+        }
+        if (noErr && !/^([a-zA-Z]{2,})$/.test(this.state.firstName)) {
+            this.setState({ message: "Invalid first name length" })
+            noErr = false
+        }
+        if (noErr && !/^([a-zA-Z]{2,})$/.test(this.state.lastName)) {
+            this.setState({ message: "Invalid last name length" })
+            noErr = false
+        }
+        if (noErr && !/^([a-zA-Z0-9]{8,})$/.test(this.state.password)) {
+            this.setState({ message: "Password must be at least 8 characters" })
+            noErr = false
+        }
+        if (noErr) {
+            axios
+                .post('http://localhost:3001/api/registeruser', { data: userInfo })
+                .then((res) => {
+                    // update state in redux with new information
+                    store.dispatch(UpdateForm(("password"), this.state.password));
+                    store.dispatch(UpdateForm(("username"), this.state.username));
+                    store.dispatch(UpdateForm(("email"), this.state.email));
+                    store.dispatch(UpdateForm(("firstName"), this.state.firstName));
+                    store.dispatch(UpdateForm(("lastName"), this.state.lastName));
 
-        axios
-            .post('http://localhost:3001/api/registeruser', { data: userInfo })
-            .then((res) => {
-                // update state in redux with new information
-                store.dispatch(UpdateForm(("password"), this.state.password));
-                store.dispatch(UpdateForm(("username"), this.state.username));
-                store.dispatch(UpdateForm(("email"), this.state.email));
-                store.dispatch(UpdateForm(("firstName"), this.state.firstName));
-                store.dispatch(UpdateForm(("lastName"), this.state.lastName));
+                    // Redirect the user to initial quiz
+                    const { history } = this.props;
+                    if (history) {
+                        history.push("/preference-quiz");
+                        window.location.reload();
+                    }
+                })
+                .catch(err => {
+                    this.setState({ message: "Error sending data" })
+                })
+        }
 
-                // Redirect the user to initial quiz
-                const { history } = this.props;
-                if (history) {
-                    history.push("/preference-quiz");
-                    window.location.reload();
-                }
-            })
-            .catch(err => {
-                this.setState({ message: "err" })
-            })
-        
         // update state in redux with new information
         /*store.dispatch(UpdateForm(("password"), this.state.password));
         store.dispatch(UpdateForm(("username"), this.state.username));
@@ -143,6 +167,7 @@ class RegisterForm extends React.Component {
                         <Form.Control type="password" placeholder="Enter your password" onChange={this.handleChange} />
                     </Form.Group>
                     <Stack spacing={4}>
+                        <p align="center">{this.state.message}</p>
                         <Button className="mb-2 mt-3 btn btn-primary btn-sm" onClick={this.handleSubmit} type="submit">Register</Button>
                         <a href="/Login" align="center">Already have an account? Login here!</a>
                     </Stack>

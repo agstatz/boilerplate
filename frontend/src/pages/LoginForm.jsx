@@ -55,23 +55,33 @@ export default class LoginForm extends React.Component {
             username: this.state.username,
             password: this.state.password
         }
-
-        axios
-            .post('http://localhost:3001/api/signinuser', { data: userInfo })
-            .then((res) => {
-                return res.redirect('/');
-            })
-            .catch(err => {
-                this.setState({ message: "err" })
-            });
+        this.setState({ message: "" })
+        var noErr = true
+        if (noErr && !/^([a-zA-Z]{1,})$/.test(this.state.username)) {
+            this.setState({ message: "Username field is empty" })
+            noErr = false
+        }
+        if (noErr && !/^([a-zA-Z]{1,})$/.test(this.state.password)) {
+            this.setState({ message: "Password field is empty" })
+            noErr = false
+        }
+        if (noErr) {
+            axios
+                .post('http://localhost:3001/api/signinuser', { data: userInfo })
+                .then((res) => {
+                    return res.redirect('/');
+                })
+                .catch(err => {
+                    this.setState({ message: "Your password or username is incorrect" })
+                });
 
             
-        const { history } = this.props;
-        if (history) {
-            history.push(`/profile/${this.state.username}`);
+            const { history } = this.props;
+            if (history) {
+                history.push(`/profile/${this.state.username}`);
             window.location.reload();
+            }
         }
-
     }
 
     render() {
