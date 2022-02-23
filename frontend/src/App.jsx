@@ -16,7 +16,7 @@ import logo_light from './assets/boilerplate_logo_light_gray_1.png';
 
 // Component imports
 import { useState, useEffect } from 'react';
-import { Container, Navbar, Nav, Form } from 'react-bootstrap';
+import { Container, Navbar, Nav, Toast } from 'react-bootstrap';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Home, PageNotFound, RegisterForm, LoginForm, PreferenceQuiz, 
          About, Profile, EditAccountForm, Popular, Map } from './pages';
@@ -27,6 +27,7 @@ function App() {
     const username = store.getState().app.username;
     const defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const [theme, setTheme] = useState(defaultDark ? 'dark' : 'light');
+    const [showLoggedInWarning, setShowLoggedInWarning] = useState(false);
 
     // handles toggling the values that keep track of the current theme
     const toggleDarkMode = () => {
@@ -116,40 +117,65 @@ function App() {
           }
     }
 
+    // handles when a user attempts to sign in
+    // (if already signed in, they just get a warning)
+    const handleSignInButton = () => {
+        if (username) {
+            setShowLoggedInWarning(true);
+        } else {
+            const { history } = this.props;
+            if (history) {
+                history.push('/login');
+                window.location.reload();
+            }
+        }
+    }
+
     return (
-        <div data-theme={theme}>
-        <Navbar className="px-0 bg-light border" variant="light">
-            <Container fluid>
-            <Navbar.Brand href="/"><img src={theme === 'light' ? logo_dark : logo_light} 
-                                        className="primary-logo px-4" 
-                                        alt="Boilerplate"></img></Navbar.Brand>
-            <Nav className="ml-auto">
-                <Nav.Link href="/" >Home</Nav.Link>
-                <Nav.Link href="/popular">Popular</Nav.Link>
-                <Nav.Link href="/map" >Map</Nav.Link>
-                <Nav.Link href="/search" >Search</Nav.Link>
-                <Nav.Link href={`/profile/${username}`} >Profile</Nav.Link>
-            </Nav>
+        <div data-theme={theme} style={{position: 'relative'}}>
+            <Navbar className="px-0 bg-light border" variant="light">
+                <Container fluid>
+                <Navbar.Brand href="/"><img src={theme === 'light' ? logo_dark : logo_light} 
+                                            className="primary-logo px-4" 
+                                            alt="Boilerplate"></img></Navbar.Brand>
+                <Nav className="ml-auto">
+                    <Nav.Link href="/" >Home</Nav.Link>
+                    <Nav.Link href="/popular">Popular</Nav.Link>
+                    <Nav.Link href="/map" >Map</Nav.Link>
+                    <Nav.Link href="/search" >Search</Nav.Link>
+                    <Nav.Link href={`/profile/${username}`} >Profile</Nav.Link>
+                </Nav>
+                </Container>
+            </Navbar>   
+            <Toast  onClose={() => setShowLoggedInWarning(false)}
+                    className="bg-light"
+                    show={showLoggedInWarning}
+                    style={{position: 'fixed', top: '2em', right: '2em', zIndex: '1', color: 'black'}} 
+                    delay={3000} autohide >
+                <Toast.Header>
+                    <strong className="me-auto">Alert</strong>
+                    <small>Now</small>
+                </Toast.Header>
+                <Toast.Body>You are already logged in.</Toast.Body>
+            </Toast>
+            <Container>
+                <BrowserRouter>
+                    <Switch>
+                        <Route exact path="/" component={Home} />
+                        <Route path="/about" component={About} />
+                        <Route path="/edit/:id" component={EditAccountForm} />
+                        <Route path="/login" component={LoginForm} />
+                        <Route path="/map" component={Map} />
+                        <Route path="/popular" component={Popular} />
+                        <Route path="/preference-quiz" component={PreferenceQuiz} />
+                        <Route path="/profile/:id" component={Profile} />
+                        <Route path="/profile/" exact component={PageNotFound} />
+                        <Route path="/register" component={RegisterForm}/>
+                        <Route path="*" component={PageNotFound} />
+                    </Switch>
+                </BrowserRouter>
             </Container>
-        </Navbar>
-        <Container>
-            <BrowserRouter>
-                <Switch>
-                    <Route exact path="/" component={Home} />
-                    <Route path="/about" component={About} />
-                    <Route path="/edit/:id" component={EditAccountForm} />
-                    <Route path="/login" component={LoginForm} />
-                    <Route path="/map" component={Map} />
-                    <Route path="/popular" component={Popular} />
-                    <Route path="/preference-quiz" component={PreferenceQuiz} />
-                    <Route path="/profile/:id" component={Profile} />
-                    <Route path="/profile/" exact component={PageNotFound} />
-                    <Route path="/register" component={RegisterForm}/>
-                    <Route path="*" component={PageNotFound} />
-                </Switch>
-            </BrowserRouter>
-        </Container>
-            <Footer toggleDark={() => toggleDarkMode()} theme={theme === 'dark' ? true : false}/>
+            <Footer toggleDark={() => toggleDarkMode()} theme={theme === 'dark' ? true : false} handleSignIn={() => handleSignInButton()}/>
         </div>
     );
 }

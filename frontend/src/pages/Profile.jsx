@@ -18,17 +18,16 @@
 
     // load the profile based on the id
     useEffect(() => {
+        const getProfile = async(username) => {
+            try {
+                // check if the user actually exists in the backend
+            } catch (err) {
+                return <PageNotFound />
+            }
+        }
         getProfile(id);
     }, []);
 
-    const getProfile = async(username) => {
-        try {
-            // check if the user actually exists in the backend
-        } catch (err) {
-            return <PageNotFound />
-        }
-    }
-    
 
     return (
             <Row>

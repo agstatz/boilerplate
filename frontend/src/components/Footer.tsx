@@ -5,13 +5,9 @@
  * @author Ashton Statz
  */
 
- import { Container, Stack, Button, Col, Row, Form} from "react-bootstrap";
-
- import { store } from "../store/store.js";
+ import { Container, Stack, Button, Col, Row, Form } from "react-bootstrap";
 
  function Footer(props: any) {
-
-    const username = store.getState().app.username;
 
    return (
        <Container fluid className="p-5 position-absolute bg-light border justify-content-center">
@@ -34,14 +30,14 @@
                     <Col className="p-2" xs={6} md={3} > 
                         <Stack>
                             <h4 className="fw-bold mx-auto">Get Started</h4>
-                            <Button className="mx-auto btn btn-primary btn-sm" href={ username ? `/profile/${username}` : "/login"} >Register/Sign in</Button>
+                            <Button className="mx-auto btn btn-primary btn-sm" onClick={props.handleSignIn} >Register/Sign in</Button>
                             <br />
                             <Form.Check
                                 className="mx-auto"
                                 type="switch"
                                 label="Dark Mode"
-                                defaultChecked={props.theme}
-                                onClick={props.toggleDark}
+                                checked={props.theme}
+                                onChange={props.toggleDark}
                             >
                             </Form.Check>
                         </Stack>
