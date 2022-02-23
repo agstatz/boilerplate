@@ -12,7 +12,21 @@ exports.registerUser = (req, res) => {
     firstName: req.body.data.firstName,
     lastName: req.body.data.lastName,
     email: req.body.data.email,
-    password: bcrypt.hashSync(req.body.data.password, 8)
+    password: bcrypt.hashSync(req.body.data.password, 8),
+    lightMode: 1,
+    carbOpt: 0,
+    starNotifs: 0,
+    newMenuNotifs: 0,
+    mealSwipes: -1,
+    friends: [],
+    diets: [],
+    allergies: [],
+    locationStars: [],
+    foodStars: [],
+    foodBlacklist: [],
+    intakePlans: [],
+    mealPlans: [],
+    locationsVisited: []
   });
   user.save((err, user) => {
     if (err) {
