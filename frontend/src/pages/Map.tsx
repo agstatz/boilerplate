@@ -6,7 +6,7 @@
  * @author Ashton Statz
  */
 
-import { Stack, Container } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import map_img from "../assets/Purdue-Dining-Map_20210813.jpg";
 
  function Map() {
