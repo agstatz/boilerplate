@@ -20,7 +20,7 @@
  require('./api/authRoutes')(app);
 
 // internal config
- const url = "mongodb://localhost:27017/"; // Change url as needed, this is default if hosting locally
+ const url = "mongodb+srv://boilerplate:boilerPlate407!!@cluster0.ggera.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"; // Change url as needed, this is default if hosting locally
  const tableUrl = "mongodb://localhost:27017/boilerplate"; // likewise to above
  const requireDatabase = true; // If false, disables startup of database
  const importJSONs = false; // If false, will restrict the importing of JSON files into the database
