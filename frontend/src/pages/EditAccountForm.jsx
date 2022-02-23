@@ -3,7 +3,6 @@
  * 
  * This form component handles editing of account details
  * of a user. Utilizes redux to store the information
- * TODO: add corresponding database calls
  * 
  * @author Gaurav Manglani
  */
@@ -18,7 +17,6 @@ import { withRouter } from "react-router-dom";
 import { FormErrors } from "../components/FormErrors.js";
 
 // redux imports
-// import { login } from "../features/userSlice.js";
 import { store, UpdateForm } from "../store/store.js";
 
 class EditAccountForm extends React.Component {

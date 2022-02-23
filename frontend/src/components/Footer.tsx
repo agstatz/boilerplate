@@ -23,8 +23,8 @@
                         <Stack>
                             <h4 className="fw-bold mx-auto">Quick Links</h4>
                             <div className="mx-auto"><a href="/meal-plans/">Public Meal Plans</a></div>
-                            <div className="mx-auto">link2</div>
-                            <div className="mx-auto">link3</div>
+                            <div className="mx-auto"><a href="/dining-courts/">Browse Dining Courts</a></div>
+                            <div className="mx-auto"><a href="/updates/">Live Updates</a></div>
                         </Stack>
                     </Col>
                     <Col className="p-2" xs={6} md={3} > 
