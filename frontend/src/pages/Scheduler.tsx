@@ -6,6 +6,7 @@
  */
 
  import { Container, Button } from 'react-bootstrap';
+ import Calendar from 'react-calendar';
 
  function Scheduler() {
    return (
@@ -14,7 +15,8 @@
             <h1 className="text-center">
                 <br />
                 <br />
-                <i className="bi bi-exclamation-octagon"></i> Schedule! <i className="bi bi-exclamation-octagon"></i>
+                <p>Select a date to schedule a meal</p>
+                <Calendar />
                 <br />
                 <br />
                 <br />

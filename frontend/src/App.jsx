@@ -17,6 +17,7 @@ import { Container, Navbar, Nav } from 'react-bootstrap';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Home, PageNotFound, RegisterForm, LoginForm, PreferenceQuiz, About, Profile, EditAccountForm } from './pages';
 import { Footer } from './components';
+import Scheduler from './pages/Scheduler';
 
 function App() {
 
@@ -137,6 +138,7 @@ function App() {
                     <Route path="/about" component={About} />
                     <Route path="/preference-quiz" component={PreferenceQuiz} />
                     <Route path="/profile/:id" component={Profile} />
+                    <Route path="/schedule/" component={Scheduler} />
                     <Route path="*" component={PageNotFound} />
                 </Switch>
             </BrowserRouter>
