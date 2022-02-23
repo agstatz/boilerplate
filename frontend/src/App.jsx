@@ -72,7 +72,7 @@ function App() {
               var all = document.getElementsByTagName("*");
               
               for (var i=0, max=all.length; i < max; i++) {
-                  // change all references to bg-light to bg-dark
+                  // change all references of bg-light to bg-dark
                   if (all[i].classList.contains("bg-light")) {
                       all[i].classList.remove("bg-light");
                       all[i].classList.add("bg-dark");
@@ -87,6 +87,12 @@ function App() {
                   if (all[i].classList.contains("navbar-light")) {
                       all[i].classList.remove("navbar-light");
                       all[i].classList.add("navbar-dark");
+                  }
+
+                  // change tables to dark tables
+                  if (all[i].classList.contains("table-light")) {
+                      all[i].classList.remove("table-light");
+                      all[i].classList.add("table-dark");
                   }
               }
               break;
@@ -112,6 +118,13 @@ function App() {
                       all[i].classList.remove("navbar-dark");
                       all[i].classList.add("navbar-light");
                   }
+
+                  
+                  // change tables to light tables
+                  if (all[i].classList.contains("table-dark")) {
+                    all[i].classList.remove("table-dark");
+                    all[i].classList.add("table-light");
+                }
               }
               break;
           }

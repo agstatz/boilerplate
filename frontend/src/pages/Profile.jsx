@@ -6,8 +6,8 @@
  */
 
  import { Row, Card, Col, Button} from "react-bootstrap";
- import { RecommendedFood } from "../components";
-
+ import { Tabs, Tab } from "react-bootstrap-tabs";
+ import { RecommendedFood, MealPlanList } from "../components";
  import { PageNotFound } from "./";
 
  import { useParams } from 'react-router-dom';
@@ -33,7 +33,10 @@
             <Row>
                 <Col xs={6} sm={5} md={4} lg={3} xl={2}>
                     <Card className="my-3" bg="light">
-                        <img height="200px" src="https://www.personality-insights.com/wp-content/uploads/2017/12/default-profile-pic-e1513291410505.jpg"></img>
+                        <img alt="Profile" 
+                             height="200"
+                             src="https://www.personality-insights.com/wp-content/uploads/2017/12/default-profile-pic-e1513291410505.jpg">
+                        </img>
                         <Card.Body>
                         <div>
                             <h3><strong>
@@ -63,11 +66,11 @@
                 <Col xs={6} sm={7} md={8} lg={9} xl={10}>
                     <Card className="my-3" bg="light" >
                         <Card.Body>
-                            <Card.Text>
-                                ADD THE FOLLOWING TABS TO THIS PAGE:<br />
-                                Meal History, Meal Plans/Schedule, Dietary Info
-                            </Card.Text>
-
+                        <Tabs className="mx-3">
+                            <Tab label="Meal History" >Tab 1 content</Tab>
+                            <Tab label="Meal Plans"><MealPlanList /></Tab>
+                            <Tab label="My Dietary Info">Tab 3 content</Tab>
+                        </Tabs>
                         </Card.Body>
                     </Card>
                 </Col>
