@@ -69,10 +69,18 @@ class RegisterForm extends React.Component {
         axios
             .post('http://localhost:3001/api/registeruser', { data: userInfo })
             .then((res) => {
+                // update state in redux with new information
+                store.dispatch(UpdateForm(("password"), this.state.password));
+                store.dispatch(UpdateForm(("username"), this.state.username));
+                store.dispatch(UpdateForm(("email"), this.state.email));
+                store.dispatch(UpdateForm(("firstName"), this.state.firstName));
+                store.dispatch(UpdateForm(("lastName"), this.state.lastName));
+
                 // Redirect the user to initial quiz
                 const { history } = this.props;
                 if (history) {
                     history.push("/preference-quiz");
+                    window.location.reload();
                 }
             })
             .catch(err => {
@@ -80,18 +88,18 @@ class RegisterForm extends React.Component {
             })
         
         // update state in redux with new information
-        store.dispatch(UpdateForm(("password"), this.state.password));
+        /*store.dispatch(UpdateForm(("password"), this.state.password));
         store.dispatch(UpdateForm(("username"), this.state.username));
         store.dispatch(UpdateForm(("email"), this.state.email));
         store.dispatch(UpdateForm(("firstName"), this.state.firstName));
-        store.dispatch(UpdateForm(("lastName"), this.state.lastName));
+        store.dispatch(UpdateForm(("lastName"), this.state.lastName));*/
         
         // Redirect the user to initial quiz
-        const { history } = this.props;
+        /*const { history } = this.props;
         if (history) {
             history.push("/preference-quiz");
             window.location.reload();
-        }
+        }*/
 
         /*store.dispatch(login({
             email: this.state.email,

@@ -5,7 +5,6 @@ const User = dbm.users;
 // checks for duplicate usernames and emails
 
 checkDuplicates = (req, res, next) => {
-  console.log(req.body.data)
   try {
     User.findOne({
       username: req.body.data.username
