@@ -30,4 +30,11 @@
 .white-content {
     background: #292e33;
     color: white;
+    border-color:white;
+}
+
+.black-content {
+    background: #f8f9fa;
+    color: black;
+    border-color: black;
 }

@@ -5,16 +5,51 @@
  * @author Ashton Statz, Dawson Smith, Arjan Mobin
  */
 
+// require prerequisites
  const express = require('express');
  const fs = require('fs');
+ const cors = require("cors");
+ const mongoose = require("mongoose");
+ const bodyParser = require("body-parser");
+ const dbm = require("./models");
+ const PrivilegeClass = dbm.privilege_classes;
  const MongoClient = require('mongodb').MongoClient;
- const url = "mongodb+srv://admin:1234@cluster0.ggera.mongodb.net/boilerplate?retryWrites=true&w=majority"; // Change url as needed, this is default if hosting locally
+ const app = express();
+
+// require routes
+ require('./api/authRoutes')(app);
+
+// internal config
+ const url = "mongodb://localhost:27017/"; // Change url as needed, this is default if hosting locally
+ const tableUrl = "mongodb://localhost:27017/boilerplate"; // likewise to above
  const requireDatabase = true; // If false, disables startup of database
  const importJSONs = false; // If false, will restrict the importing of JSON files into the database
  const exportJSONs = false; // If false, will restrict the exporting of the database collections as a JSON
 
 // Create an Express application
-const app = express();
+ const corsOptions ={
+    origin: "*",
+    credentials:true,
+    optionSuccessStatus:200,
+ }
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+// allows requests from host
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // change address to frontend host if needed
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+app.get("/test", (req, res) => {
+  res.json({ message: "working" });
+});
+const PORT = process.env.PORT || 3001;
+console.log(PORT);
+app.listen(PORT, () => { });
 
 
 
@@ -26,6 +61,7 @@ try {
       if (err) throw err;
       var db = dbt.db("boilerplate");
       db.createCollection("users", function(err, res) {});
+      db.createCollection("privilege_classes", function(err, res) {});
       db.createCollection("foods", function(err, res) {});
       db.createCollection("food_categories", function(err, res) {});
       db.createCollection("visits", function(err, res) {});
