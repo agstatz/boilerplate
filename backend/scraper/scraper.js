@@ -70,18 +70,27 @@ async function get_nutrition_facts(browser, item_link) {
     const calories = nutrition.find('.nutrition-feature-calories-quantity').text()
     console.log(serving_size, calories)
 
-    // for (const row of nutrition.find('.nutrition-table-row')) {
-    //     const label = $(row).find('.table-row-label').text()
-    //     const value = $(row).find('.table-row-labelValue').text()
-    //     const daily_value = $(row).find('.table-row-dailyValue').text()
+    for (const row of nutrition.find('.nutrition-table-row')) {
+        const label = $(row).find('.table-row-label').text()
+        const value = $(row).find('.table-row-labelValue').text()
+        const daily_value = $(row).find('.table-row-dailyValue').text()
 
-    //     nutrition_facts[label] = {
-    //         value: value,
-    //         daily_value: daily_value
-    //     }
-    // }
+        nutrition_facts[label] = {
+            value: value,
+            daily_value: daily_value
+        }
+    }
+    console.log(nutrition_facts)
+
+    //TAGS
+    allergens = []
+    const tags = $('.item-widget-allergens')
+    for (const tag of $(tags).find('.allergen-name')) {
+        allergens.append($(tag).text())
+    }
+
+    console.log(allergens)
 
     const ingredients = $('.nutrition-ingredient-list').children('div').text()
-    let ingredients_list = ingredients.split('),')
     console.log(ingredients)
 }
