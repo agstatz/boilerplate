@@ -3,12 +3,13 @@ mongoose.Promise = global.Promise;
 const dbm = {};
 dbm.mongoose = mongoose;
 dbm.privilege_classes = require("./privilegeClassModel");
+// const PrivilegeClass = require("./privilegeClassModel");
 dbm.users = require("./userModel");
 dbm.PRIVILEGE_CLASSES = ["user", "admin", "moderator", "dining staff"];
 
 //connect Mongoose to MongoDB
 dbm.mongoose
-  .connect("mongodb://localhost:27017/boilerplate", {
+  .connect("mongodb+srv://admin:1234@cluster0.ggera.mongodb.net/boilerplate?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
