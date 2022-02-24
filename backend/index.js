@@ -14,10 +14,12 @@
  const dbm = require("./models");
  const PrivilegeClass = dbm.privilege_classes;
  const MongoClient = require('mongodb').MongoClient;
+ const connectDB = require('./config/db');
  const app = express();
 
+
 // require routes
- require('./api/authRoutes')(app);
+require('./api/authRoutes')(app);
 
 // internal config
  const url = "mongodb+srv://boilerplate:boilerPlate407!!@cluster0.ggera.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"; // Change url as needed, this is default if hosting locally
@@ -25,6 +27,8 @@
  const requireDatabase = true; // If false, disables startup of database
  const importJSONs = false; // If false, will restrict the importing of JSON files into the database
  const exportJSONs = false; // If false, will restrict the exporting of the database collections as a JSON
+
+//connectDB();
 
 // Create an Express application
  const corsOptions ={
@@ -35,6 +39,10 @@
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Food route
+app.use('/api/foods', require('./routes/foods'));
+
 // allows requests from host
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // change address to frontend host if needed
