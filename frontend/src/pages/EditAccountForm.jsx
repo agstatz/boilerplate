@@ -71,6 +71,7 @@ class EditAccountForm extends React.Component {
         const userInfo = {
             oldUsername: this.state.oldUsername,
             username: this.state.username,
+            email: this.state.email,
             password: this.state.password,
             firstName: this.state.firstName,
             lastName: this.state.lastName
@@ -120,10 +121,6 @@ class EditAccountForm extends React.Component {
       
     validateForm() {
         this.setState({formValid: this.state.emailValid && this.state.passwordValid});
-    }
-
-    errorClass(error) {
-        return(error.length === 0 ? '' : 'has-error');
     }
 
     render() {

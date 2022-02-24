@@ -114,13 +114,13 @@ exports.signinUser = (req, res) => {
 exports.editUser = (req, res) => {
   User.updateOne(
     {username: req.body.data.oldUsername},
-    {$set: {
+    {
       username: req.body.data.username,
       firstName: req.body.data.firstName,
       lastName: req.body.data.lastName,
       email: req.body.data.email,
       password: bcrypt.hashSync(req.body.data.password, 8)
-    }}
+    }
   )
     .exec((err, user) => {
       if (err) {
