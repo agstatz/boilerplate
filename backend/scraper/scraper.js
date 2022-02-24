@@ -42,15 +42,15 @@ async function get_stations(browser, menu_link) {
     
     for (const station of stations_html) {
         let station_name = $(station).find('.station-name').text()
-        console.log('STATION: ', station_name)
+        console.log('\nSTATION: ', station_name)
 
         for (const item of $(station).find('.station-item')) {
             let item_link  = page_details.location.origin + $(item).attr('href')
             let item_name = $(item).find('.station-item-text').text()
-            console.log(item_link)
+            console.log('FOOD: ' + item_name)
             await get_nutrition_facts(browser, item_link)
         }
-        console.log('\n')
+        
 
         // console.log(station.children[0].children[0].data)
     }
@@ -80,17 +80,17 @@ async function get_nutrition_facts(browser, item_link) {
             daily_value: daily_value
         }
     }
-    console.log(nutrition_facts)
+    console.log('Nutritional Facts: ', nutrition_facts)
 
     //TAGS
     allergens = []
     const tags = $('.item-widget-allergens')
     for (const tag of $(tags).find('.allergen-name')) {
-        allergens.append($(tag).text())
+        allergens.push($(tag).text())
     }
 
-    console.log(allergens)
+    console.log('Allergens:', allergens)
 
     const ingredients = $('.nutrition-ingredient-list').children('div').text()
-    console.log(ingredients)
+    console.log('Ingredients: ', ingredients)
 }
