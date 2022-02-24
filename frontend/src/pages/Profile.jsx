@@ -7,7 +7,7 @@
 
  import { Row, Card, Col, Button} from "react-bootstrap";
  import { Tabs, Tab } from "react-bootstrap-tabs";
- import { RecommendedFood, MealPlanList, RecommendedDiningCourts } from "../components";
+ import { RecommendationList, MealPlanList, RecommendedDiningCourts } from "../components";
  import { PageNotFound } from "./";
 
  import { useParams } from 'react-router-dom';
@@ -100,9 +100,7 @@
                             <Row>
                                 <Col>
                                     <Card.Text>Food Items:</Card.Text>
-                                    <RecommendedFood title={"Chicken Stir Fry"} nutrition={"200g Protein"}/>
-                                    <RecommendedFood title={"Cheeseburger"} nutrition={"150g Protein"}/>
-                                    <RecommendedFood title={"Chicken Stir Fry"} nutrition={"200g Protein"}/>
+                                    <RecommendationList />
                                 </Col>
                                 <Col>
                                     <Card.Text>Dining Courts:</Card.Text>
