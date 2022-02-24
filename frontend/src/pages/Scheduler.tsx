@@ -6,47 +6,41 @@
  */
 
 import { Container, Button, Row, Col, Form, Dropdown } from "react-bootstrap";
-import React from "react";
+import axios from "axios";
 
-class Scheduler extends React.Component {
-  state = {
-    meals: [{ food: "", date: "" }],
-    name: "",
-    description: "",
-  };
+const foods = axios.get('http://localhost:3001/api/foods');
 
+function form_column(day:string) {
+  return (
+  <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
+    <Form.Label column sm={2}>
+      <h3>Day:</h3>
+    </Form.Label>
+    <Col sm={4}>
+      <Form.Label column sm={2}>
+        <h2>{day}</h2>
+      </Form.Label>
+    </Col>
+    <Form.Label column sm={2}>
+      <h3>Food:</h3>
+    </Form.Label>
+    <Col sm={4}>
+      <Dropdown>
+        <Dropdown.Toggle variant="success" id="dropdown-basic">
+          Select a Food Item
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu>
+          <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    </Col>
+  </Form.Group>
   
+  )
+}
 
-  render() {
-    function form_column(day:string) {
-      return (
-      <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
-        <Form.Label column sm={2}>
-          <h3>Day:</h3>
-        </Form.Label>
-        <Col sm={4}>
-          <Form.Label column sm={2}>
-            <h2>{day}</h2>
-          </Form.Label>
-        </Col>
-        <Form.Label column sm={2}>
-          <h3>Food:</h3>
-        </Form.Label>
-        <Col sm={4}>
-          <Dropdown>
-            <Dropdown.Toggle variant="success" id="dropdown-basic">
-              Select a Food Item
-            </Dropdown.Toggle>
-  
-            <Dropdown.Menu>
-              <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </Col>
-      </Form.Group>
-      )
-    }
-    
+ function Scheduler (){
     return [
       <Container style={{ paddingTop: "15vh", paddingBottom: "15vh" }}>
         <h1>Schedule</h1>
@@ -78,7 +72,6 @@ class Scheduler extends React.Component {
         </Button>
       </Container>,
     ];
-  }
 }
 
 export default Scheduler;
