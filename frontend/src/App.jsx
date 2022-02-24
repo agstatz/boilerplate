@@ -187,6 +187,7 @@ function App() {
                         <Route path="/profile/:id" component={Profile} />
                         <Route path="/profile/" exact component={PageNotFound} />
                         <Route path="/register" component={RegisterForm}/>
+                        <Route path="/schedule" component={Scheduler} />
                         <Route path="*" component={PageNotFound} />
                     </Switch>
                 </BrowserRouter>
