@@ -1,16 +1,16 @@
 /**
  * RecommendedFood.tsx
- * Upon signing up, a user must take a quiz that will
- * assess their food preferences. This holds the framework
- * for an individual question component
+ * Recommended foods
  * 
  * @author Ashton Statz
  */
 
- import { Stack, Container } from "react-bootstrap";
+import { Stack, Container } from "react-bootstrap";
 
- function RecommendedFood(props : any) {
-   return (
+
+function RecommendedFood(props : any) {
+
+    return (
         <Container>
             <div className="p-2 my-2 mx-2 bg-light border rounded">
                 <Stack gap={2}>
@@ -19,8 +19,8 @@
                 </Stack>
             </div>
         </Container>
-   );
- }
+    );
+}
  
  export default RecommendedFood;
  
