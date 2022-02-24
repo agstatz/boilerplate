@@ -1,7 +1,6 @@
 /**
- *  Home.tsx
- *  The home page for the application. Primary landing
- *  page.
+ *  PageNotFound.tsx
+ *  Page for when the user gets lost
  * 
  * @author Ashton Statz
  */
@@ -16,12 +15,12 @@ import { Container, Button } from 'react-bootstrap';
                 <br />
                 <br />
                 <i className="bi bi-exclamation-octagon"></i> Oops! Page Not Found <i className="bi bi-exclamation-octagon"></i>
-                <br />
-                <br />
+                <br /><br />
+                <Button className="mx-auto btn btn-primary btn-md" href="/">Home</Button>
                 <br />
             </h1>
         </div>
-        <Button className="mx-auto btn btn-primary btn-sm" href="/">Home</Button>
+        
         </Container>
    );
  }

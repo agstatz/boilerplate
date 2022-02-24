@@ -5,7 +5,7 @@
  * @author Ashton Statz
  */
 
- import { Container, Stack, Button, Col, Row, Form} from "react-bootstrap";
+ import { Container, Stack, Button, Col, Row, Form } from "react-bootstrap";
 
  function Footer(props: any) {
 
@@ -22,22 +22,22 @@
                     <Col className="p-2 mx-auto" xs={6} md={3}>
                         <Stack>
                             <h4 className="fw-bold mx-auto">Quick Links</h4>
-                            <div className="mx-auto">link1</div>
-                            <div className="mx-auto">link2</div>
-                            <div className="mx-auto">link3</div>
+                            <div className="mx-auto"><a href="/meal-plans/">Public Meal Plans</a></div>
+                            <div className="mx-auto"><a href="/dining-courts/">Browse Dining Courts</a></div>
+                            <div className="mx-auto"><a href="/updates/">Live Updates</a></div>
                         </Stack>
                     </Col>
                     <Col className="p-2" xs={6} md={3} > 
                         <Stack>
                             <h4 className="fw-bold mx-auto">Get Started</h4>
-                            <Button className="mx-auto btn btn-primary btn-sm" href="/login">Register/Sign in</Button>
+                            <Button className="mx-auto btn btn-primary btn-sm" onClick={props.handleSignIn} >Register/Sign in</Button>
                             <br />
                             <Form.Check
                                 className="mx-auto"
                                 type="switch"
                                 label="Dark Mode"
                                 checked={props.theme}
-                                onClick={props.toggleDark}
+                                onChange={props.toggleDark}
                             >
                             </Form.Check>
                         </Stack>

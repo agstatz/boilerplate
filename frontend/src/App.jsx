@@ -7,24 +7,31 @@
  *  @author Ashton Statz
  */
 
+// Redux imports
+import { store } from './store/store'
+
 // Image imports
 import logo_dark from './assets/boilerplate_logo_black_1.png';
 import logo_light from './assets/boilerplate_logo_light_gray_1.png';
 
 // Component imports
 import { useState, useEffect } from 'react';
-import { Container, Navbar, Nav } from 'react-bootstrap';
+import { Container, Navbar, Nav, Toast } from 'react-bootstrap';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { Home, PageNotFound, RegisterForm, LoginForm, PreferenceQuiz, About, Profile, EditAccountForm } from './pages';
+import { Home, PageNotFound, RegisterForm, LoginForm, PreferenceQuiz, 
+         About, Profile, EditAccountForm, Popular, Map, MealPlans } from './pages';
 import { Footer } from './components';
 import Scheduler from './pages/Scheduler';
 
 function App() {
 
+    const username = store.getState().app.username;
     const defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const [theme, setTheme] = useState(defaultDark ? 'dark' : 'light');
+    const [showLoggedInWarning, setShowLoggedInWarning] = useState(false);
 
     // handles toggling the values that keep track of the current theme
+    // aka dark mode/light mode
     const toggleDarkMode = () => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
         setTheme(newTheme);
@@ -67,7 +74,7 @@ function App() {
               var all = document.getElementsByTagName("*");
               
               for (var i=0, max=all.length; i < max; i++) {
-                  // change all references to bg-light to bg-dark
+                  // change all references of bg-light to bg-dark
                   if (all[i].classList.contains("bg-light")) {
                       all[i].classList.remove("bg-light");
                       all[i].classList.add("bg-dark");
@@ -82,6 +89,12 @@ function App() {
                   if (all[i].classList.contains("navbar-light")) {
                       all[i].classList.remove("navbar-light");
                       all[i].classList.add("navbar-dark");
+                  }
+
+                  // change tables to dark tables
+                  if (all[i].classList.contains("black-content")) {
+                      all[i].classList.remove("black-content");
+                      all[i].classList.add("white-content");
                   }
               }
               break;
@@ -107,43 +120,78 @@ function App() {
                       all[i].classList.remove("navbar-dark");
                       all[i].classList.add("navbar-light");
                   }
+
+                  
+                  // change tables to light tables
+                  if (all[i].classList.contains("white-content")) {
+                    all[i].classList.remove("white-content");
+                    all[i].classList.add("black-content");
+                }
               }
               break;
           }
     }
 
+    // handles when a user attempts to sign in
+    // (if already signed in, they just get a warning)
+    const handleSignInButton = () => {
+        if (username) {
+            setShowLoggedInWarning(true);
+        } else {
+            const { history } = this.props;
+            if (history) {
+                history.push('/login');
+                window.location.reload();
+            }
+        }
+    }
+
     return (
-        <div data-theme={theme}>
-        <Navbar className="px-0 bg-light border" variant="light">
-            <Container fluid>
-            <Navbar.Brand href="/"><img src={theme === 'light' ? logo_dark : logo_light} 
-                                        className="primary-logo px-4" 
-                                        alt="Boilerplate"></img></Navbar.Brand>
-            <Nav className="ml-auto">
-                <Nav.Link href="/" >Home</Nav.Link>
-                <Nav.Link href="/profile/a" >Profile</Nav.Link>
-                <Nav.Link href="/profile/a" >Maps</Nav.Link>
-                <Nav.Link href="/dining">Dining Info</Nav.Link>
-                <Nav.Link href="/settings">Settings</Nav.Link>
-            </Nav>
+        <div data-theme={theme} style={{position: 'relative'}}>
+            <Navbar className="px-0 bg-light border" variant="light">
+                <Container fluid>
+                <Navbar.Brand href="/"><img src={theme === 'light' ? logo_dark : logo_light} 
+                                            className="primary-logo px-4" 
+                                            alt="Boilerplate"></img></Navbar.Brand>
+                <Nav className="ml-auto">
+                    <Nav.Link href="/" >Home</Nav.Link>
+                    <Nav.Link href="/popular">Popular</Nav.Link>
+                    <Nav.Link href="/map" >Map</Nav.Link>
+                    <Nav.Link href="/search" >Search</Nav.Link>
+                    <Nav.Link href={`/profile/${username}`} >Profile</Nav.Link>
+                </Nav>
+                </Container>
+            </Navbar>   
+            <Toast  onClose={() => setShowLoggedInWarning(false)}
+                    className="bg-light"
+                    show={showLoggedInWarning}
+                    style={{position: 'fixed', top: '2em', right: '2em', zIndex: '1', color: 'black'}} 
+                    delay={3000} autohide >
+                <Toast.Header>
+                    <strong className="me-auto">Alert</strong>
+                    <small>Now</small>
+                </Toast.Header>
+                <Toast.Body>You are already logged in.</Toast.Body>
+            </Toast>
+            <Container>
+                <BrowserRouter>
+                    <Switch>
+                        <Route exact path="/" component={Home} />
+                        <Route path="/about" component={About} />
+                        <Route path="/edit/:id" component={EditAccountForm} />
+                        <Route path="/login" component={LoginForm} />
+                        <Route path="/map" component={Map} />
+                        <Route exact path="/meal-plans" component={MealPlans} />
+                        <Route path="/popular" component={Popular} />
+                        <Route path="/preference-quiz" component={PreferenceQuiz} />
+                        <Route path="/profile/:id" component={Profile} />
+                        <Route path="/profile/" exact component={PageNotFound} />
+                        <Route path="/register" component={RegisterForm}/>
+                        <Route path="*" component={PageNotFound} />
+                    </Switch>
+                </BrowserRouter>
             </Container>
-        </Navbar>
-        <Container>
-            <BrowserRouter>
-                <Switch>
-                    <Route exact path="/" component={Home} />
-                    <Route path="/login" component={LoginForm} />
-                    <Route path="/register" component={RegisterForm} changeDisplayMode={changeDisplayMode}/>
-                    <Route path="/edit/:id" component={EditAccountForm} changeDisplayMode={changeDisplayMode}/>
-                    <Route path="/about" component={About} />
-                    <Route path="/preference-quiz" component={PreferenceQuiz} />
-                    <Route path="/profile/:id" component={Profile} />
-                    <Route path="/schedule/" component={Scheduler} />
-                    <Route path="*" component={PageNotFound} />
-                </Switch>
-            </BrowserRouter>
-        </Container>
-            <Footer toggleDark={() => toggleDarkMode()} theme={theme === 'dark' ? true : false}/>
+            <Footer toggleDark={() => toggleDarkMode()} theme={theme === 'dark' ? true : false} handleSignIn={() => handleSignInButton()}/>
         </div>
     );
 }

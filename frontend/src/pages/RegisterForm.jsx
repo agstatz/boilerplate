@@ -9,12 +9,12 @@
  */
 
 import React from "react";
+import axios from 'axios';
 import { Stack, Button, Container, Form } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 
 // redux imports
-import { login } from "../features/userSlice.js";
-import store from "../store/store.js";
+import { store, UpdateForm } from "../store/store.js";
 
 
 class RegisterForm extends React.Component {
@@ -54,23 +54,60 @@ class RegisterForm extends React.Component {
         // that doesn't meet requirements
         // e.g. min password length, min characters in a
         // username, unique usernames
+
+        const userInfo = {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            username: this.state.username,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            password: this.state.password,
+            email: this.state.email
+        }
+
+        axios
+            .post('http://localhost:3001/api/registeruser', { data: userInfo })
+            .then((res) => {
+                // update state in redux with new information
+                store.dispatch(UpdateForm(("password"), this.state.password));
+                store.dispatch(UpdateForm(("username"), this.state.username));
+                store.dispatch(UpdateForm(("email"), this.state.email));
+                store.dispatch(UpdateForm(("firstName"), this.state.firstName));
+                store.dispatch(UpdateForm(("lastName"), this.state.lastName));
+
+                // Redirect the user to initial quiz
+                const { history } = this.props;
+                if (history) {
+                    history.push("/preference-quiz");
+                    window.location.reload();
+                }
+            })
+            .catch(err => {
+                this.setState({ message: "err" })
+            })
         
         // update state in redux with new information
-        store.dispatch(login({
+        /*store.dispatch(UpdateForm(("password"), this.state.password));
+        store.dispatch(UpdateForm(("username"), this.state.username));
+        store.dispatch(UpdateForm(("email"), this.state.email));
+        store.dispatch(UpdateForm(("firstName"), this.state.firstName));
+        store.dispatch(UpdateForm(("lastName"), this.state.lastName));*/
+        
+        // Redirect the user to initial quiz
+        /*const { history } = this.props;
+        if (history) {
+            history.push("/preference-quiz");
+            window.location.reload();
+        }*/
+
+        /*store.dispatch(login({
             email: this.state.email,
             password: this.state.password,
             firstName: this.state.firstName,
             lastName: this.state.lastName,
             username: this.state.username
-        }));
-        
-        // Redirect the user to initial quiz
-        const { history } = this.props;
-        if (history) {
-            history.push("/preference-quiz");
-        }
-
-        //TODO: refresh page and persist state
+        }));*/
     }
 
     render() {

@@ -3,13 +3,13 @@
  * 
  * This form component handles editing of account details
  * of a user. Utilizes redux to store the information
- * TODO: add corresponding database calls
  * 
  * @author Gaurav Manglani
  */
 
 // React imports
 import React from "react";
+import axios from 'axios';
 import { Stack, Button, Container, Form } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 
@@ -17,9 +17,7 @@ import { withRouter } from "react-router-dom";
 import { FormErrors } from "../components/FormErrors.js";
 
 // redux imports
-import { login } from "../features/userSlice.js";
-import store from "../store/store.js";
-
+import { store, UpdateForm } from "../store/store.js";
 
 class EditAccountForm extends React.Component {
     constructor(props) {
@@ -31,6 +29,7 @@ class EditAccountForm extends React.Component {
             firstName: "",
             lastName: "",
             username: "",
+            oldUsername: props.match.params.id,
             formErrors: {email: '', password: ''},
             emailValid: false,
             passwordValid: false,
@@ -57,29 +56,41 @@ class EditAccountForm extends React.Component {
         // prevent page from reloading
         event.preventDefault();
 
-        // TODO: validate input on the frontend,
-        // check the input on the backend, in that 
-        // someone should not be able to edit account details
-        // that don't meet requirements
-        // e.g. min password length, min characters in a
-        // username, unique usernames
+        store.dispatch(UpdateForm(("password"), this.state.password));
+        store.dispatch(UpdateForm(("username"), this.state.username));
+        store.dispatch(UpdateForm(("email"), this.state.email));
+        store.dispatch(UpdateForm(("password"), this.state.password));
+        store.dispatch(UpdateForm(("firstName"), this.state.firstName));
+        store.dispatch(UpdateForm(("lastName"), this.state.lastName));
+
+        // TODO: check if valid
         
-        // update state in redux with new information
-        // store.dispatch(login({
-        //     email: this.state.email,
-        //     password: this.state.password,
-        //     firstName: this.state.firstName,
-        //     lastName: this.state.lastName,
-        //     username: this.state.username
-        // }));
+        // Redirect the user to initial quiz
         
-        // Redirect the user to profile page on submit
-        const { history } = this.props;
-        if (history) {
-            history.push("/profile/" + this.state.username);
+
+        const userInfo = {
+            oldUsername: this.state.oldUsername,
+            username: this.state.username,
+            password: this.state.password,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName
         }
 
-        //TODO: refresh page and persist state
+        axios
+            .post('http://localhost:3001/api/editUser', { data: userInfo })
+            .then((res) => {
+                return res.redirect('/');
+            })
+            .catch(err => {
+                this.setState({ message: "err" })
+            });
+
+            
+        const { history } = this.props;
+        if (history) {
+            history.push(`/profile/${this.state.username}`);
+            window.location.reload();
+        }
     }
 
     validateField(fieldName, value) {
@@ -116,8 +127,6 @@ class EditAccountForm extends React.Component {
     }
 
     render() {
-        const id = this.props.match.params.id;
-
         return (
         <Container className="d-flex justify-content-center" >
         <div className="p-5 my-4 mx-3  d-flex justify-content-center bg-light border rounded">
@@ -128,7 +137,7 @@ class EditAccountForm extends React.Component {
                         <h3>Edit Account</h3>
                 </Container>
                 <Container className="d-flex justify-content-center">
-                        <h5>{id}</h5>
+                        <h5>{this.state.oldUsername}</h5>
                 </Container>
                 <Container className="d-flex justify-content-center">
                     <h1><i className="bi bi-person-circle" style={{ fontSize: '80px'}}></i></h1>
@@ -156,7 +165,7 @@ class EditAccountForm extends React.Component {
                     </Form.Group>
                     <Stack spacing={4}>
                         <Button className="mb-2 mt-3 btn btn-primary btn-sm" onClick={this.handleSubmit} type="submit" disabled={!this.state.formValid}>Submit</Button>
-                        <a href={"/profile/" + id} align="center">Cancel</a>
+                        <a href={"/profile/" + this.state.oldUsername} align="center">Cancel</a>
                     </Stack>
                 </Form>
             </Stack>
