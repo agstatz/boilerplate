@@ -1,30 +1,76 @@
 /**
  *  Scheduler.tsx
  *  The scheduler page for the application.
- * 
+ *
  * @author Arjan Mobin
  */
 
- import { Container, Button } from 'react-bootstrap';
- import Calendar from 'react-calendar';
+import { Container, Button, Row, Col, Form, Dropdown } from "react-bootstrap";
+import React from "react";
 
- function Scheduler() {
-   return (
-       <Container style={{ paddingTop: '15vh', paddingBottom: '15vh'}} >
-        <div className="p-3 my-4 mx-4 bg-light border rounded" >
-            <h1 className="text-center">
-                <br />
-                <br />
-                <p>Select a date to schedule a meal</p>
-                <Calendar />
-                <br />
-                <br />
-                <br />
-            </h1>
+class Scheduler extends React.Component {
+  state = {
+    meals: [{ food: "", date: "" }],
+    name: "",
+    description: "",
+  };
+  render() {
+    return (
+      <Container style={{ paddingTop: "15vh", paddingBottom: "15vh" }}>
+        <h1>Schedule</h1>
+        <div className="p-3 my-4 mx-4 bg-light border rounded">
+          <h2>Add Meals</h2>
+          <div>
+            <Form>
+              <Form.Group
+                as={Row}
+                className="mb-3"
+                controlId="formHorizontalEmail"
+              >
+                <Form.Label column sm={3}>
+                  <h3>Meal Schedule Name:</h3>
+                </Form.Label>
+                <Col sm={4}>
+                  <Form.Control type="text" placeholder="healthy"/>
+                </Col>
+                
+              </Form.Group>
+              <Form.Group
+                as={Row}
+                className="mb-3"
+                controlId="formHorizontalEmail"
+              >
+                <Form.Label column sm={2}>
+                  <h3>Date:</h3>
+                </Form.Label>
+                <Col sm={4}>
+                  <Form.Control type="date" placeholder="Email" />
+                </Col>
+                <Form.Label column sm={2}>
+                  <h3>Food:</h3>
+                </Form.Label>
+                <Col sm={4}>
+                  <Dropdown>
+                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                      Select a Food Item
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </Col>
+              </Form.Group>
+            </Form>
+          </div>
         </div>
-        <Button className="mx-auto btn btn-primary btn-sm" href="/">Home</Button>
-        </Container>
-   );
- }
- 
- export default Scheduler;
+
+        <Button className="mx-auto btn btn-primary btn-sm" href="/">
+          Home
+        </Button>
+      </Container>
+    );
+  }
+}
+
+export default Scheduler;
