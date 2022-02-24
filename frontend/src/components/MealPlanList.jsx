@@ -38,7 +38,6 @@
         formatter: privateFormatter,
         classes: 'black-content',
         headerClasses: 'black-content',
-        hidden: props.displayPrivate
     }, {
         dataField: 'owner',
         text: "Owner",
