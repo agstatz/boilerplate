@@ -67,9 +67,9 @@
                     <Card className="my-3" bg="light" >
                         <Card.Body>
                         <Tabs className="mx-3">
-                            <Tab label="Meal History" >Tab 1 content</Tab>
-                            <Tab label="Meal Plans"><MealPlanList displayPrivate={true} /></Tab>
-                            <Tab label="My Dietary Info">Tab 3 content</Tab>
+                            <Tab label="Meal History" >Meal History Not Loading...</Tab>
+                            <Tab label="Meal Plans"><MealPlanList filterValue={id}/></Tab>
+                            <Tab label="My Dietary Info">Dietary Info Not Loading...</Tab>
                         </Tabs>
                         </Card.Body>
                     </Card>
