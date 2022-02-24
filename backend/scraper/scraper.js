@@ -4,17 +4,18 @@ const MongoClient = require('mongodb').MongoClient;
 const puppeteer = require('puppeteer');
 const selectors = require('./selectors');
 
+// ConnectDB
+const connectDB = require('../config/db.js')
+
 // Import schemas
 const Food = require('../models/Food');
 
-const url = "mongodb+srv://admin:1234@cluster0.ggera.mongodb.net/boilerplate?retryWrites=true&w=majority"; 
+// const url = "mongodb+srv://admin:1234@cluster0.ggera.mongodb.net/boilerplate?retryWrites=true&w=majority"; 
 const DINING_PAGE_URL = 'https://dining.purdue.edu/menus/'
 
-MongoClient.connect(url, async (err, dbt) => {
-    if (err) throw err;
-    console.log('connected to database');
-    const db = dbt.db("boilerplate");
 
+// Connect to Database
+connectDB(async () => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(DINING_PAGE_URL);
@@ -23,17 +24,14 @@ MongoClient.connect(url, async (err, dbt) => {
     let $ = cheerio.load(html);
 
     for (const [dining_court, selector] of Object.entries(selectors.dining_court_links)) {
-        const menu_link = page_details.location.origin +  $(selector).attr('href');
-        console.log(menu_link)
+    const menu_link = page_details.location.origin +  $(selector).attr('href');
+    console.log(menu_link)
 
-        await get_stations(browser, menu_link)
+    await get_stations(browser, menu_link)
     }
 
-
     await browser.close();
-    dbt.close();
 });
-
 
 async function get_stations(browser, menu_link) {
     const page = await browser.newPage();
@@ -53,11 +51,8 @@ async function get_stations(browser, menu_link) {
             console.log('FOOD: ' + item_name)
             await get_nutrition_facts(browser, item_name, item_link)
         }
-        
-
         // console.log(station.children[0].children[0].data)
     }
-
 }
 
 async function get_nutrition_facts(browser, item_name, item_link) {
