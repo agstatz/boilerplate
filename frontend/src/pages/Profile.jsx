@@ -68,7 +68,7 @@
                         <Card.Body>
                         <Tabs className="mx-3">
                             <Tab label="Meal History" >Tab 1 content</Tab>
-                            <Tab label="Meal Plans"><MealPlanList displayPrivate={true} /></Tab>
+                            <Tab label="Meal Plans"><MealPlanList displayPrivate={true} filterValue={id}/></Tab>
                             <Tab label="My Dietary Info">Tab 3 content</Tab>
                         </Tabs>
                         </Card.Body>
