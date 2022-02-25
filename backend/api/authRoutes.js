@@ -1,4 +1,5 @@
 const { verifySignup } = require("../middleware");
+const { checkTagNotExists } = require("../middleware/tagChecking");
 const controller = require("../controllers/authController");
 const foodController = require("../controllers/foodController");
 const bodyParser = require("body-parser");
@@ -15,14 +16,7 @@ module.exports = function(app) {
     ],
     controller.registerUser
   );
-  app.post("/api/registeruser", bodyParser.json(), [
-      verifySignup.checkDuplicates,
-      verifySignup.checkPrivilegeClassExists
-    ],
-    foodController.addUserTag
-  );
+  app.post("/api/addUserTag", bodyParser.json(), foodController.addUserCreatedTag);
   app.post("/api/signinuser", bodyParser.json(), controller.signinUser);
   app.post("/api/editUser", bodyParser.json(), controller.editUser);
-  app.get("/api/searchusertag/:name", bodyParser.json(), foodController.searchUserTag);
-  app.get("/api/searchtags/:name", bodyParser.json(), foodController.searchTags);
 };
