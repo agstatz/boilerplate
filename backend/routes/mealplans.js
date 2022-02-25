@@ -16,6 +16,23 @@ router.get('/', async (req, res) => {
     }
 })
 
+// @route   GET api/meal-plans/:id
+// @desc    Get a specific meal plan via id
+// @access  Public
+router.get('/:id', async (req, res) => {
+    try {
+        const mealplan = await Meal_Plan.findById(req.params.id);
+
+        if (!mealplan) return res.status(400).json({ msg: 'Food item does not exist'});
+
+        res.json(mealplan);
+
+    } catch(err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+})
+
 // @route   POST api/meal-plans
 // @desc    set a new meal-plan
 // @access  Public
