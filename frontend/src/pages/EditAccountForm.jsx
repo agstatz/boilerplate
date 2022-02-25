@@ -56,25 +56,14 @@ class EditAccountForm extends React.Component {
         // prevent page from reloading
         event.preventDefault();
 
-        store.dispatch(UpdateForm(("password"), this.state.password));
-        store.dispatch(UpdateForm(("username"), this.state.username));
-        store.dispatch(UpdateForm(("email"), this.state.email));
-        store.dispatch(UpdateForm(("password"), this.state.password));
-        store.dispatch(UpdateForm(("firstName"), this.state.firstName));
-        store.dispatch(UpdateForm(("lastName"), this.state.lastName));
-
-        // TODO: check if valid
-        
-        // Redirect the user to initial quiz
-        
-
         const userInfo = {
             oldUsername: this.state.oldUsername,
             username: this.state.username,
             email: this.state.email,
             password: this.state.password,
             firstName: this.state.firstName,
-            lastName: this.state.lastName
+            lastName: this.state.lastName,
+            light: this.state.light
         }
 
         axios
@@ -85,6 +74,14 @@ class EditAccountForm extends React.Component {
             .catch(err => {
                 this.setState({ message: "err" })
             });
+        
+        store.dispatch(UpdateForm(("password"), this.state.password));
+        store.dispatch(UpdateForm(("username"), this.state.username));
+        store.dispatch(UpdateForm(("email"), this.state.email));
+        store.dispatch(UpdateForm(("password"), this.state.password));
+        store.dispatch(UpdateForm(("firstName"), this.state.firstName));
+        store.dispatch(UpdateForm(("lastName"), this.state.lastName));
+        store.dispatch(UpdateForm(("light"), this.state.light));
 
             
         const { history } = this.props;
@@ -159,6 +156,10 @@ class EditAccountForm extends React.Component {
                     <Form.Group className="mb-3" style={{width: '16.5em'}} controlId="password" >
                         <Form.Label>Password</Form.Label>
                         <Form.Control type="password" placeholder="Enter your password" onChange={this.handleChange} />
+                    </Form.Group>
+                    <Form.Group className="mb-3" style={{width: '16.5em'}} controlId="light" >
+                        <Form.Label>Prefers Dark Mode?</Form.Label>
+                        <Form.Check onChange={this.handleChange}/>
                     </Form.Group>
                     <Stack spacing={4}>
                         <Button className="mb-2 mt-3 btn btn-primary btn-sm" onClick={this.handleSubmit} type="submit" disabled={!this.state.formValid}>Submit</Button>

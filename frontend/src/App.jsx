@@ -19,13 +19,15 @@ import { useState, useEffect } from 'react';
 import { Container, Navbar, Nav, Toast } from 'react-bootstrap';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Home, PageNotFound, RegisterForm, LoginForm, PreferenceQuiz, 
-         About, Profile, EditAccountForm, Popular, Map, MealPlans } from './pages';
+         About, Profile, EditAccountForm, Popular, Map, MealPlans, Food, Foods,
+         Search_Food, Dining_Court, Dining_Courts, Search, MealPlanIndividual} from './pages';
 import { Footer } from './components';
 
 function App() {
 
     const username = store.getState().app.username;
     const defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
     const [theme, setTheme] = useState(defaultDark ? 'dark' : 'light');
     const [showLoggedInWarning, setShowLoggedInWarning] = useState(false);
 
@@ -136,12 +138,6 @@ function App() {
     const handleSignInButton = () => {
         if (username) {
             setShowLoggedInWarning(true);
-        } else {
-            const { history } = this.props;
-            if (history) {
-                history.push('/login');
-                window.location.reload();
-            }
         }
     }
 
@@ -157,7 +153,7 @@ function App() {
                     <Nav.Link href="/popular">Popular</Nav.Link>
                     <Nav.Link href="/map" >Map</Nav.Link>
                     <Nav.Link href="/search" >Search</Nav.Link>
-                    <Nav.Link href={`/profile/${username}`} >Profile</Nav.Link>
+                    <Nav.Link href={username !== undefined ? `/profile/${username}` : '/'} >Profile</Nav.Link>
                 </Nav>
                 </Container>
             </Navbar>   
@@ -181,11 +177,18 @@ function App() {
                         <Route path="/login" component={LoginForm} />
                         <Route path="/map" component={Map} />
                         <Route exact path="/meal-plans" component={MealPlans} />
+                        <Route path="/meal-plans/:id" component={MealPlanIndividual} />
                         <Route path="/popular" component={Popular} />
                         <Route path="/preference-quiz" component={PreferenceQuiz} />
                         <Route path="/profile/:id" component={Profile} />
                         <Route path="/profile/" exact component={PageNotFound} />
                         <Route path="/register" component={RegisterForm}/>
+                        <Route path="/Search_Food" component={Search_Food}/>
+                        <Route path="/Foods" component={Foods}/>
+                        <Route path="/Food" component={Food}/>
+                        <Route path="/Dining_Courts" component={Dining_Courts}/>
+                        <Route path="/Dining_Court" component={Dining_Court}/>
+                        <Route path="/Search" component={Search}/>
                         <Route path="*" component={PageNotFound} />
                     </Switch>
                 </BrowserRouter>
