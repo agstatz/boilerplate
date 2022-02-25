@@ -1,5 +1,5 @@
 /**
- * RegisterForm.jsx
+ * EditAccountForm.jsx
  * 
  * This form component handles editing of account details
  * of a user. Utilizes redux to store the information
@@ -29,6 +29,7 @@ class EditAccountForm extends React.Component {
             firstName: "",
             lastName: "",
             username: "",
+            light: false,
             oldUsername: props.match.params.id,
             formErrors: {email: '', password: ''},
             emailValid: false,
@@ -72,7 +73,7 @@ class EditAccountForm extends React.Component {
                 return res.redirect('/');
             })
             .catch(err => {
-                this.setState({ message: "err" })
+                this.setState({ message: err })
             });
         
         store.dispatch(UpdateForm(("password"), this.state.password));
@@ -158,7 +159,7 @@ class EditAccountForm extends React.Component {
                         <Form.Control type="password" placeholder="Enter your password" onChange={this.handleChange} />
                     </Form.Group>
                     <Form.Group className="mb-3" style={{width: '16.5em'}} controlId="light" >
-                        <Form.Label>Prefers Dark Mode?</Form.Label>
+                        <Form.Label>Prefers Light Mode?</Form.Label>
                         <Form.Check onChange={this.handleChange}/>
                     </Form.Group>
                     <Stack spacing={4}>

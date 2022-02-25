@@ -1,14 +1,15 @@
 const mongoose = require("mongoose");
+const Meal_Schema =   new mongoose.Schema({
+  food: 
+      {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "foods"
+      }
+  ,
+  day: String,
+})
 const Meals = mongoose.model(
-  "meals",
-  new mongoose.Schema({
-    food: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "foods"
-        }
-    ],
-    day: String,
-  })
+  "meals", Meal_Schema
+
 );
-module.exports = Meals;
+module.exports = {Meals, Meal_Schema};
