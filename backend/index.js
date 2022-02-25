@@ -17,6 +17,10 @@
  const connectDB = require('./config/db');
  const app = express();
 
+ app.use(bodyParser.urlencoded({ extended: false }));
+ app.use(bodyParser.json());
+ 
+
 
 // require routes
 require('./api/authRoutes')(app);
