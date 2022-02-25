@@ -19,8 +19,8 @@ import { useState, useEffect } from 'react';
 import { Container, Navbar, Nav, Toast } from 'react-bootstrap';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Home, PageNotFound, RegisterForm, LoginForm, PreferenceQuiz, 
-         About, Profile, EditAccountForm, Popular, Map, MealPlans,
-         MealPlanIndividual } from './pages';
+         About, Profile, EditAccountForm, Popular, Map, MealPlans, Food, Foods,
+         Search_Food, Dining_Court, Dining_Courts, Search, MealPlanIndividual} from './pages';
 import { Footer } from './components';
 import Scheduler from './pages/Scheduler';
 
@@ -185,6 +185,12 @@ function App() {
                         <Route path="/profile/" exact component={PageNotFound} />
                         <Route path="/register" component={RegisterForm}/>
                         <Route path="/schedule" component={Scheduler} />
+                        <Route path="/Search_Food" component={Search_Food}/>
+                        <Route path="/Foods" component={Foods}/>
+                        <Route path="/Food" component={Food}/>
+                        <Route path="/Dining_Courts" component={Dining_Courts}/>
+                        <Route path="/Dining_Court" component={Dining_Court}/>
+                        <Route path="/Search" component={Search}/>
                         <Route path="*" component={PageNotFound} />
                     </Switch>
                 </BrowserRouter>
