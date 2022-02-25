@@ -10,17 +10,23 @@
  import { RecommendationList, MealPlanList, RecommendedDiningCourts } from "../components";
  import { PageNotFound } from "./";
 
+ import { store } from "../store/store";
+
  import { useParams } from 'react-router-dom';
- import { useEffect } from 'react';
+ import { useEffect, useState } from 'react';
 
  function Profile(props) {
-    const { id } = useParams();
 
-    // load the profile based on the id
+    const [user, setUser] = useState([{}]);
+
+    const { id } = useParams();
+    const username = store.getState().app.username;
+
     useEffect(() => {
-        const getProfile = async(username) => {
+        const getProfile = async() => {
             try {
-                // check if the user actually exists in the backend
+                // TODO: get user based on username
+
             } catch (err) {
                 return <PageNotFound />
             }
@@ -42,7 +48,7 @@
                             <h5><strong>
                                 {id ? id : "username"}
                             </strong></h5>
-                            <Button href={"/edit/" + (id ? id : "a")} className="btn-sm" variant="outline-primary">Edit Account</Button>
+                            {username === id ? <Button href={`/edit/${id}`} className="btn-sm" variant="outline-primary">Edit Account</Button> : <></>}
                             <Row className="mt-3">
                                 <Col className="text-center">
                                     <strong>40</strong>

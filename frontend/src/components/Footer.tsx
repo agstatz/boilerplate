@@ -6,14 +6,12 @@
  */
 
  import { Container, Stack, Button, Col, Row, Form } from "react-bootstrap";
- import { withRouter, useHistory } from 'react-router-dom';
 
  import { store } from '../store/store'
 
  function Footer(props: any) {
 
     const username = store.getState().app.username;
-    const history = useHistory();
 
    return (
        <Container fluid className="p-5 position-absolute bg-light border justify-content-center">

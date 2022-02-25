@@ -66,8 +66,6 @@ router.put('/:id', async (req, res) => {
         const mealplan = await Meal_Plan.findById(req.params.id);
         if (!mealplan) return res.status(400).json({ msg: 'Meal Plan does not exist'});
 
-        console.log(req.body);
-
         const filter = { _id: req.params.id };
 
         const updateDoc = {
