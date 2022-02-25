@@ -151,6 +151,7 @@ function App() {
                                             alt="Boilerplate"></img></Navbar.Brand>
                 <Nav className="ml-auto">
                     <Nav.Link href="/" >Home</Nav.Link>
+                    <Nav.Link href="/schedule" >Schedule a Meal</Nav.Link>
                     <Nav.Link href="/popular">Popular</Nav.Link>
                     <Nav.Link href="/map" >Map</Nav.Link>
                     <Nav.Link href="/search" >Search</Nav.Link>
