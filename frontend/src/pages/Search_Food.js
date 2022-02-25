@@ -48,7 +48,7 @@ function getToday() {
 
 
 
-export default class Dining_Courts extends React.Component {
+export default class Search_Food extends React.Component {
 
     constructor() {
         super();

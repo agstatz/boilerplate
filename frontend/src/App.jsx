@@ -188,7 +188,7 @@ function App() {
                         <Route path="/profile/" exact component={PageNotFound} />
                         <Route path="/register" component={RegisterForm}/>
                         <Route path="/schedule" component={Scheduler} />
-                        <Route path="/search-food" component={Search_Food}/>
+                        <Route path="/search_food" component={Search_Food}/>
                         <Route path="/foods" component={Foods}/>
                         <Route path="/food" component={Food}/>
                         <Route exact path="/dining-courts" component={Dining_Courts}/>
