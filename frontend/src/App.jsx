@@ -23,7 +23,6 @@ import { Home, PageNotFound, RegisterForm, LoginForm, PreferenceQuiz,
          MealPlanIndividual } from './pages';
 import { Footer } from './components';
 
-
 function App() {
 
     const username = store.getState().app.username;
@@ -154,7 +153,7 @@ function App() {
                     <Nav.Link href="/popular">Popular</Nav.Link>
                     <Nav.Link href="/map" >Map</Nav.Link>
                     <Nav.Link href="/search" >Search</Nav.Link>
-                    <Nav.Link href={`/profile/${username}`} >Profile</Nav.Link>
+                    <Nav.Link href={username !== undefined ? `/profile/${username}` : '/'} >Profile</Nav.Link>
                 </Nav>
                 </Container>
             </Navbar>   
