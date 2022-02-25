@@ -43,14 +43,6 @@ export default class LoginForm extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
 
-        store.dispatch(UpdateForm(("password"), this.state.password));
-        store.dispatch(UpdateForm(("username"), this.state.username));
-
-        // TODO: check if valid
-        
-        // Redirect the user to initial quiz
-        
-
         const userInfo = {
             username: this.state.username,
             password: this.state.password
@@ -69,18 +61,17 @@ export default class LoginForm extends React.Component {
             axios
                 .post('http://localhost:3001/api/signinuser', { data: userInfo })
                 .then((res) => {
-                    return res.redirect('/');
+                    store.dispatch(UpdateForm(("password"), this.state.password));
+                    store.dispatch(UpdateForm(("username"), this.state.username));
+                    const { history } = this.props;
+                    if (history) {
+                        history.push(`/profile/${this.state.username}`);
+                        window.location.reload();
+                    }
                 })
-                .catch(err => {
+                .catch((err) => {
                     this.setState({ message: "Your password or username is incorrect" })
                 });
-
-            
-            const { history } = this.props;
-            if (history) {
-                history.push(`/profile/${this.state.username}`);
-            window.location.reload();
-            }
         }
     }
 

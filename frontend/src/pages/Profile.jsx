@@ -7,7 +7,7 @@
 
  import { Row, Card, Col, Button} from "react-bootstrap";
  import { Tabs, Tab } from "react-bootstrap-tabs";
- import { RecommendedFood, MealPlanList, RecommendedDiningCourts } from "../components";
+ import { RecommendationList, MealPlanList, RecommendedDiningCourts } from "../components";
  import { PageNotFound } from "./";
 
  import { useParams } from 'react-router-dom';
@@ -67,9 +67,9 @@
                     <Card className="my-3" bg="light" >
                         <Card.Body>
                         <Tabs className="mx-3">
-                            <Tab label="Meal History" >Tab 1 content</Tab>
-                            <Tab label="Meal Plans"><MealPlanList displayPrivate={true} /></Tab>
-                            <Tab label="My Dietary Info">Tab 3 content</Tab>
+                            <Tab label="Meal History" >Meal History Not Loading...</Tab>
+                            <Tab label="Meal Plans"><MealPlanList filterValue={id}/></Tab>
+                            <Tab label="My Dietary Info">Dietary Info Not Loading...</Tab>
                         </Tabs>
                         </Card.Body>
                     </Card>
@@ -100,9 +100,7 @@
                             <Row>
                                 <Col>
                                     <Card.Text>Food Items:</Card.Text>
-                                    <RecommendedFood title={"Chicken Stir Fry"} nutrition={"200g Protein"}/>
-                                    <RecommendedFood title={"Cheeseburger"} nutrition={"150g Protein"}/>
-                                    <RecommendedFood title={"Chicken Stir Fry"} nutrition={"200g Protein"}/>
+                                    <RecommendationList />
                                 </Col>
                                 <Col>
                                     <Card.Text>Dining Courts:</Card.Text>
