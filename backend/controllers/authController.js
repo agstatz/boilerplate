@@ -78,7 +78,6 @@ exports.signinUser = (req, res) => {
   User.findOne({
     username: req.body.data.username
   })
-    //.populate("privilege_classes", "-__v")
     .exec((err, user) => {
       if (err) {
         res.status(500).send({ message: err });
@@ -106,6 +105,7 @@ exports.signinUser = (req, res) => {
         email: user.email,
         accessToken: token
       });
+      console.log(err);
     });
 };
 
@@ -128,10 +128,10 @@ exports.editUser = (req, res) => {
         return;
       }
       if (!user) {
-        return res.status(404).send({ message: "User Not found." });
+        return res.status(404).send({ message: "User Not found" });
       }
       res.status(200).send({
-        message: "User information was updated successfully!"
+        message: "User information updated successfully"
       });
     });
 };

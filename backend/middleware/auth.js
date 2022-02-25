@@ -6,11 +6,11 @@ const PrivilegeClass = dbm.privilege_classes;
 verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
   if (!token) {
-    return res.status(403).send({ message: "No token provided!" });
+    return res.status(403).send({ message: "No token provided" });
   }
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
-      return res.status(401).send({ message: "Unauthorized!" });
+      return res.status(401).send({ message: "Not authorized" });
     }
     req.userId = decoded.id;
     next();
@@ -39,7 +39,7 @@ isAdmin = (req, res, next) => {
             return;
           }
         }
-        res.status(403).send({ message: "Requires admin privileges!" });
+        res.status(403).send({ message: "Requires admin privileges" });
         return;
       }
     );
@@ -68,7 +68,7 @@ isDiningStaff = (req, res, next) => {
             return;
           }
         }
-        res.status(403).send({ message: "Requires dining staff privileges!" });
+        res.status(403).send({ message: "Requires dining staff privileges" });
         return;
       }
     );
@@ -97,7 +97,7 @@ isModerator = (req, res, next) => {
             return;
           }
         }
-        res.status(403).send({ message: "Requires moderator privileges!" });
+        res.status(403).send({ message: "Requires moderator privileges" });
         return;
       }
     );
