@@ -152,6 +152,7 @@ function App() {
                 <Nav className="ml-auto">
                     <Nav.Link href="/" >Home</Nav.Link>
                     <Nav.Link href="/schedule" >Schedule a Meal</Nav.Link>
+                    <Nav.Link href="/meal-plans" >View Meal Plans</Nav.Link>
                     <Nav.Link href="/popular">Popular</Nav.Link>
                     <Nav.Link href="/map" >Map</Nav.Link>
                     <Nav.Link href="/search" >Search</Nav.Link>
