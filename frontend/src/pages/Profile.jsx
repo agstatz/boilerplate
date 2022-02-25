@@ -5,22 +5,29 @@
  * @author Ashton Statz, Gaurav Manglani
  */
 
- import { Row, Card, Col, Button} from "react-bootstrap";
+ import { Row, Card, Col, Button, Stack} from "react-bootstrap";
  import { Tabs, Tab } from "react-bootstrap-tabs";
  import { RecommendationList, MealPlanList, RecommendedDiningCourts } from "../components";
  import { PageNotFound } from "./";
 
- import { store } from "../store/store";
+ import { store, ClearForm } from "../store/store";
 
- import { useParams } from 'react-router-dom';
+ import { useParams, useHistory } from 'react-router-dom';
  import { useEffect, useState } from 'react';
 
  function Profile(props) {
 
     const [user, setUser] = useState([{}]);
 
+    const history = useHistory();
+
     const { id } = useParams();
     const username = store.getState().app.username;
+
+    const handleLogout = () => {
+        store.dispatch(ClearForm());
+        history.push('/');
+    }
 
     useEffect(() => {
         const getProfile = async() => {
@@ -48,7 +55,8 @@
                             <h5><strong>
                                 {id ? id : "username"}
                             </strong></h5>
-                            {username === id ? <Button href={`/edit/${id}`} className="btn-sm" variant="outline-primary">Edit Account</Button> : <></>}
+                            {username === id ? <Stack gap="3"><Button href={`/edit/${id}`} className="btn-sm" variant="outline-primary">Edit Account</Button>
+                                                <Button onClick={handleLogout} className="btn-sm" variant="outline-primary">Sign Out</Button></Stack>  : <></>}
                             <Row className="mt-3">
                                 <Col className="text-center">
                                     <strong>40</strong>
@@ -60,7 +68,6 @@
                                 </Col>
                             </Row>
                             <Card.Text>
-                                {props.bio ? props.bio : "user bio"}
                             </Card.Text>
                         </div>
                         </Card.Body>
