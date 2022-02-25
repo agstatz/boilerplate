@@ -23,6 +23,7 @@ require('./api/authRoutes')(app);
 
 // internal config
  const url = "mongodb+srv://boilerplate:boilerPlate407!!@cluster0.ggera.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"; // Change url as needed, this is default if hosting locally
+ //const url = "mongodb://localhost:27017"
  const tableUrl = "mongodb://localhost:27017/boilerplate"; // likewise to above
  const requireDatabase = true; // If false, disables startup of database
  const importJSONs = false; // If false, will restrict the importing of JSON files into the database
@@ -42,6 +43,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Food route
 app.use('/api/foods', require('./routes/foods'));
+app.use('/api/meal-plans', require('./routes/mealplans'));
 
 // allows requests from host
 app.use(function(req, res, next) {

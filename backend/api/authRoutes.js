@@ -1,5 +1,7 @@
 const { verifySignup } = require("../middleware");
+const { checkTagNotExists } = require("../middleware/tagChecking");
 const controller = require("../controllers/authController");
+const foodController = require("../controllers/foodController");
 const bodyParser = require("body-parser");
 
 module.exports = function(app) {
@@ -14,6 +16,7 @@ module.exports = function(app) {
     ],
     controller.registerUser
   );
+  app.post("/api/addUserTag", bodyParser.json(), foodController.addUserCreatedTag);
   app.post("/api/signinuser", bodyParser.json(), controller.signinUser);
   app.post("/api/editUser", bodyParser.json(), controller.editUser);
 };

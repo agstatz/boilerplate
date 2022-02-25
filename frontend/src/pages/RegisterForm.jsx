@@ -107,7 +107,8 @@ class RegisterForm extends React.Component {
                     }
                 })
                 .catch(err => {
-                    this.setState({ message: "Error sending data" })
+                    console.log(err)
+                    this.setState({ message: "Username or email arleady in use" })
                 })
         }
 

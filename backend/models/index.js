@@ -3,9 +3,12 @@ mongoose.Promise = global.Promise;
 const dbm = {};
 dbm.mongoose = mongoose;
 dbm.privilege_classes = require("./privilegeClassModel");
-// const PrivilegeClass = require("./privilegeClassModel");
+const PrivilegeClass = require("./privilegeClassModel");
 dbm.users = require("./userModel");
+dbm.food_tag_types = require("./foodTagTypeModel")
+const Food_Tag_Type = require("./foodTagTypeModel");
 dbm.PRIVILEGE_CLASSES = ["user", "admin", "moderator", "dining staff"];
+dbm.FOOD_TAG_TYPES = ["user-created", "allergen", "diet", "cuisine"];
 
 //connect Mongoose to MongoDB
 dbm.mongoose
@@ -15,24 +18,38 @@ dbm.mongoose
   })
   .then(() => {
     console.log("Mongoose successfully connect to MongoDB.")
+    initializeFoodTagTypes();
     initializePrivilegeClasses();
   })
   .catch(err => console.error("Mongoose connection error", err));
 
-
-function initializeUsers() {
-  dbm.users.estimatedDocumentCount((err, count) => {
+// initialize the food tag type table
+function initializeFoodTagTypes() {
+  dbm.food_tag_types.estimatedDocumentCount((err, count) => {
     if (!err && count === 0) {
-      new User({
-        username: "template",
-        firstName: "template",
-        lastName: "template",
-        email: "template@template.template",
-        password: "template",
-        privilegeClasses:
-          [
-            "user"
-          ]
+      new Food_Tag_Type({
+          name: "user-created"
+        }).save(err => {
+        if (err) {
+          console.log("error", err);
+        }
+      });
+      new Food_Tag_Type({
+          name: "allergen"
+        }).save(err => {
+        if (err) {
+          console.log("error", err);
+        }
+      });
+      new Food_Tag_Type({
+          name: "diet"
+        }).save(err => {
+        if (err) {
+          console.log("error", err);
+        }
+      });
+      new Food_Tag_Type({
+          name: "cuisine"
         }).save(err => {
         if (err) {
           console.log("error", err);
@@ -41,6 +58,7 @@ function initializeUsers() {
     }
   });
 }
+
 // initialize the privilege classes table to define privileges for users
 function initializePrivilegeClasses() {
   dbm.privilege_classes.estimatedDocumentCount((err, count) => {

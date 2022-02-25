@@ -1,12 +1,16 @@
 const mongoose = require("mongoose");
+var Schema = mongoose.Schema;
+var ObjectIdSchema = Schema.ObjectId;
+var ObjectId = mongoose.Types.ObjectId;
+
 const Meal_Plan = mongoose.model(
   "meal_plans",
   new mongoose.Schema({
-    _id: String,
+    _id: {type:ObjectIdSchema, default: function () { return new ObjectId()} },
     name: String,
     private: Boolean,
-    owner_id: String,
-    likes: Integer,
+    owner: String,
+    likes: Number,
     meals: [
           {
             type: mongoose.Schema.Types.ObjectId,
@@ -15,4 +19,4 @@ const Meal_Plan = mongoose.model(
         ]
   })
 );
-module.exports = MealPlan;
+module.exports = Meal_Plan;
