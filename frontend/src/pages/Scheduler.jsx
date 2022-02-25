@@ -22,18 +22,17 @@ function Scheduler(props) {
       );
       setFoods(response);
       setMealPlan({owner: store.getState().app.username, likes: 0, private: false, name: "My Meal Plan"});
-
-      
     } catch (err) {
       console.error(err);
     } 
   }, []);
 
-  function submit_plan(e){
+  function submit_plan(){
+    console.log('why')
     axios
       .post("http://localhost:3001/api/meal-plans", { data: mealPlan })
       .then((res) => {
-        console.log(res);
+        console.log('plan submitted');
       })
       .catch((err) => {
         console.error(err);
@@ -99,7 +98,7 @@ function Scheduler(props) {
               setMealPlan({...mealPlan, private: e.target.checked})
             }}
           />
-          <Button variant="primary" type="submit" onSubmit={submit_plan}>Submit Schedule</Button>
+          <Button variant="primary" type='Button' onClick={submit_plan}>Submit Schedule</Button>
           </Form>
         </div>
       </div>
