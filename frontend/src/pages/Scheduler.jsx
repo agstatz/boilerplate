@@ -21,16 +21,31 @@ function Scheduler(props) {
         "http://localhost:3001/api/foods"
       );
       setFoods(response);
-      setMealPlan({owner: store.getState().app.username, likes: 0, private: false, name: "My Meal Plan"});
+      setMealPlan({owner: store.getState().app.username, likes: 0, private: false, name: "My Meal Plan", meals: []});
     } catch (err) {
       console.error(err);
     } 
   }, []);
 
   function submit_plan(){
-    console.log('why')
+    let plan = {};
+    for (const [key, value] of Object.entries(mealPlan)) {
+      if (key != 'schedule') {
+        plan[key] = mealPlan[key];
+      }
+      let foods = []
+      for (const [day, food] of Object.entries(mealPlan.schedule)) {
+        foods.push({food: food, day: day, });
+      }
+
+      plan['meals'] = foods;
+    }
+
+    console.log(plan)
+  
+
     axios
-      .post("http://localhost:3001/api/meal-plans", { data: mealPlan })
+      .post("http://localhost:3001/api/meal-plans", plan)
       .then((res) => {
         console.log('plan submitted');
       })
