@@ -19,20 +19,29 @@ import axios from "axios";
     const [mealPlanData, setMealPlanData] = useState([{}]);
 
     const togglePrivate = () => {
-        setMealPlanData({
+
+        var newValue = !mealPlanData.private;
+
+        axios.put(`http://localhost:3001/api/meal-plans/${id}`,{
             _id: mealPlanData._id,
             name: mealPlanData.name,
             owner: mealPlanData.owner,
             likes: mealPlanData.likes,
-            private: !mealPlanData.private
-        });
-
-        axios.post(`http://localhost:3001/api/meal-plans/${id}`, mealPlanData)
+            private: newValue
+        })
         .then (function (response) {
             console.log(response);
         })
         .catch(function (error) {
             console.log(error);
+        });
+
+        setMealPlanData({
+            _id: mealPlanData._id,
+            name: mealPlanData.name,
+            owner: mealPlanData.owner,
+            likes: mealPlanData.likes,
+            private: newValue
         });
     }
 
