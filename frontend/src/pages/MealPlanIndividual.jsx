@@ -5,20 +5,25 @@
  * @author Ashton Statz
  */
 
- import { Container, Stack, Button } from 'react-bootstrap';
-
- import { useEffect, useState } from 'react';
- 
+import { Container, Stack, Button } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { store } from '../store/store';
 import axios from "axios";
 
  function MealPlanIndividual() {
 
     const { id } = useParams();
 
+    const username = store.getState().app.username;
+
     const [mealPlanData, setMealPlanData] = useState([{}]);
 
     const togglePrivate = () => {
+
+        if (username !== mealPlanData.owner) {
+            return;
+        }
 
         var newValue = !mealPlanData.private;
 
