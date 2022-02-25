@@ -37,13 +37,15 @@ router.get('/:id', async (req, res) => {
 // @desc    set a new meal-plan
 // @access  Public
 router.post('/', async (req, res) => {
+    console.log('got:\n')
+    console.log(req.body)
     try {
         const meal_plan = new Meal_Plan({
             name: req.body.name,
             private: req.body.private,
             owner: req.body.owner,
             likes: req.body.likes,
-            meals: []
+            meals: req.body.meals
         })
         meal_plan.save((err, user) => {
             if (err) {
@@ -51,6 +53,7 @@ router.post('/', async (req, res) => {
                 res.status(500).send({ message: err});
             }
             res.send({ message: "Updated successfully."});
+            console.log('saved')
         });
     } catch (err) {
         console.error(err.message);

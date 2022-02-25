@@ -19,11 +19,10 @@ import axios from "axios";
 
     const [mealPlanData, setMealPlanData] = useState([{}]);
 
-    const togglePrivate = () => {
 
-        if (username !== mealPlanData.owner) {
-            return;
-        }
+    let meals = [];
+
+    const togglePrivate = () => {
 
         var newValue = !mealPlanData.private;
 
@@ -54,10 +53,20 @@ import axios from "axios";
         try {
             const {data:response} = await axios.get(`http://localhost:3001/api/meal-plans/${id}`);
             setMealPlanData(response);
+            
+            for (const [index, value] of Object.entries(response.meals)) {
+                meals.push(<li key={index}>{value}</li>);
+            }
         } catch (err) {
             console.error(err);
         }
     }, [])
+
+    // function planData(){
+    //     return <p>{JSON.stringify(meal)}</p>
+    //     meals.map((meal, i) => {
+    //     })
+    // }
 
     return (
         <Container style={{ paddingTop: '15vh', paddingBottom: '15vh'}} >
@@ -67,6 +76,7 @@ import axios from "axios";
                     <div>Owner: {mealPlanData.owner}</div>
                     <div>Private: {mealPlanData.private ? "yes" : "no"}</div>
                     <div>Likes: {mealPlanData.likes}</div>
+                    <div>{JSON.stringify(mealPlanData.meals)}</div>
                     <Button className="mx-auto" onClick={togglePrivate}>Toggle Private</Button>
                 </Stack>
             </div>
