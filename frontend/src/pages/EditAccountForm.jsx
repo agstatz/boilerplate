@@ -73,7 +73,7 @@ class EditAccountForm extends React.Component {
                 return res.redirect('/');
             })
             .catch(err => {
-                this.setState({ message: "err" })
+                this.setState({ message: err })
             });
         
         store.dispatch(UpdateForm(("password"), this.state.password));
