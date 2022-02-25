@@ -119,6 +119,7 @@ exports.editUser = (req, res) => {
       firstName: req.body.data.firstName,
       lastName: req.body.data.lastName,
       email: req.body.data.email,
+      lightMode: req.body.data.light,
       password: bcrypt.hashSync(req.body.data.password, 8)
     }
   )
