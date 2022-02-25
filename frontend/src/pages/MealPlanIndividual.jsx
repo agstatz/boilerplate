@@ -2,7 +2,7 @@
  *  MealPlanIndividual.jsx
  *  Page that displays public meal plans
  * 
- * @author Ashton Statz
+ * @author Ashton Statz, Arjan Mobin
  */
 
 import { Container, Stack, Button } from 'react-bootstrap';

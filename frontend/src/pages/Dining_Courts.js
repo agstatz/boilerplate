@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
+import { Container } from 'react-bootstrap';
+
 const ColoredLine = ({ color }) => (
     <hr
         style={{
@@ -91,6 +93,18 @@ export default class Dining_Courts extends React.Component {
             return (
                 <div className="App">
                     <header className="App-header">
+                        {/* below is dummy data feel free to remove */}
+                        <Container style={{ paddingBottom: '40vh'}}>
+                            <div className="p-3 my-4 mx-4 bg-light border rounded">
+                                <h1>Dining Locations</h1>
+                                <div><Link to="/dining-courts/Earhart">Earhart Dining Hall</Link></div>
+                                <div><Link to="/dining-courts/Ford">Ford Dining Hall</Link></div>                                
+                                <div><Link to="/dining-courts/Hillenbrand">Hillenbrand Dining </Link></div>
+                                <div><Link to="/dining-courts/Wiley">Wiley Dining Hall</Link></div>
+                                <div><Link to="/dining-courts/Windsor">Windsor Dining Hall</Link></div>
+                            </div>
+
+                        </Container>
                     </header>
                 </div>
             )

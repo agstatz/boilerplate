@@ -93,7 +93,7 @@ export default class Dining_Court extends React.Component {
     render() {
         if (this.state.queries.name == null) {
             return (
-                <Redirect to="/Dining_Courts" push />
+                <Redirect to="/dining-courts" push />
             )
         }
 
@@ -101,7 +101,7 @@ export default class Dining_Court extends React.Component {
             return (
                 <div className="App">
                     <header className="App-header">
-                        <h1 className="App-title"></h1>
+                        <h1 className="App-title">hello</h1>
                     </header>
                 </div>
             )
