@@ -26,6 +26,7 @@ function App() {
 
     const username = store.getState().app.username;
     const defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
     const [theme, setTheme] = useState(defaultDark ? 'dark' : 'light');
     const [showLoggedInWarning, setShowLoggedInWarning] = useState(false);
 
@@ -136,12 +137,6 @@ function App() {
     const handleSignInButton = () => {
         if (username) {
             setShowLoggedInWarning(true);
-        } else {
-            const { history } = this.props;
-            if (history) {
-                history.push('/login');
-                window.location.reload();
-            }
         }
     }
 

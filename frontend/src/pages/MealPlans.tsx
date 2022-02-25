@@ -13,7 +13,7 @@
        <Container style={{ paddingTop: '15vh', paddingBottom: '15vh'}} >
         <div className="p-3 my-4 mx-4 bg-light border rounded" >
             <h1>Public Meal Plans</h1>
-            <MealPlanList filterValue="private"/>
+            <MealPlanList filterValue="private" editable={true}/>
         </div>
         
         </Container>

@@ -6,8 +6,14 @@
  */
 
  import { Container, Stack, Button, Col, Row, Form } from "react-bootstrap";
+ import { withRouter, useHistory } from 'react-router-dom';
+
+ import { store } from '../store/store'
 
  function Footer(props: any) {
+
+    const username = store.getState().app.username;
+    const history = useHistory();
 
    return (
        <Container fluid className="p-5 position-absolute bg-light border justify-content-center">
@@ -30,8 +36,7 @@
                     <Col className="p-2" xs={6} md={3} > 
                         <Stack>
                             <h4 className="fw-bold mx-auto">Get Started</h4>
-                            <Button className="mx-auto btn btn-primary btn-sm" onClick={props.handleSignIn} >Register/Sign in</Button>
-                            <br />
+                            <Button className="mx-auto btn btn-primary btn-sm" href="/login" disabled={username} >Register/Sign in</Button>                            <br />
                             <Form.Check
                                 className="mx-auto"
                                 type="switch"

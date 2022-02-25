@@ -91,9 +91,16 @@ function MealPlanList(props) {
 
     // formats the row private into checkboxes
     function privateFormatter(cell, row) {
-        return (
-            <Form.Check checked={ cell } readOnly/>
-        );
+        if (!props.editable) {
+            return (
+                <Form.Check checked={ cell } readonly/>
+            );
+        } else {
+            return (
+                <Form.Check checked={ cell } readonly/>
+            );
+        }
+        
     }
 
     // formats the form name to be a link
