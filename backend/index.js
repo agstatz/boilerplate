@@ -31,6 +31,7 @@ require('./api/authRoutes')(app);
 
 //connectDB();
 
+
 // Create an Express application
  const corsOptions ={
     origin: "*",
@@ -62,6 +63,281 @@ console.log(PORT);
 app.listen(PORT, () => { });
 
 
+app.get('/Foods', (req, res) => {
+  let search = req.query.search
+  let tags = req.query.tags
+  let include = req.query.include
+  let exclude = req.query.exclude
+
+  if (search == null || search === "undefined") {
+    search = "";
+  }
+  if (tags == null || tags === "undefined" || tags === "") {
+    tags = [];
+    console.log("null")
+  } else {
+    tags = tags.split(",")
+    console.log(tags)
+  }
+
+  if (include == null || include === "undefined" || include === "") {
+    include = [];
+  }
+  if (exclude == null || exclude === "undefined" || include === "") {
+    exclude = []
+  }
+
+  console.log(include);
+
+  MongoClient.connect(url, function(err, dbt) {
+    if (err) throw err;
+    let db = dbt.db("boilerplate");
+    db.collection("foods").find({}).toArray(function(err, result) {
+      if (err) throw err;
+      result2 = result.map(s => [
+          s.name, //0
+          s.totalfat, //1
+          s.saturatedFat, //2
+          s.cholesterol, //3
+          s.sodium, //4
+          s.totalCarbohydrate, //5
+          s.sugar, //6
+          s.addedSugar, //7
+          s.dietaryFiber, //8
+          s.protein, //9
+          s.calcium, //10
+          s.iron, //11
+          s.dietaryTags //12
+      ])
+      result = result.map(a => a.name); //filters only the names of foods
+      result = result.filter(s => s.toLowerCase().includes(search.toLowerCase())); //filters foods accordingly to search
+
+      for (let i = 0; i < result2.length; i++) {
+        let food = result2[i]
+
+        if (include.includes("Total Fat")) {
+          if (food[1] == null || food[1] == "0g") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (exclude.includes("Total Fat")) {
+          if (food[1] != null && food[1] != "0g") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (include.includes("Saturated Fat")) {
+          if (food[2] == null || food[2] == "0g") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (exclude.includes("Saturated Fat")) {
+          if (food[2] != null && food[2] != "0g") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (include.includes("Cholesterol")) {
+          if (food[3] == null || food[3] == "0mg") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (exclude.includes("Cholesterol")) {
+          if (food[3] != null && food[3] != "0mg") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (include.includes("Sodium")) {
+          if (food[4] == null || food[4] == "0mg") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (exclude.includes("Sodium")) {
+          if (food[4] != null && food[4] != "0mg") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (include.includes("Carbohydrate")) {
+          if (food[5] == null || food[5] == "0g") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (exclude.includes("Carbohydrate")) {
+          if (food[5] != null && food[5] != "0g") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+
+        if (include.includes("Sugar")) {
+          if (food[6] == null || food[6] == "0g") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (exclude.includes("Sugar")) {
+          if (food[6] != null && food[6] != "0g") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (include.includes("Added Sugar")) {
+          if (food[7] == null || food[7] == "0g") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (exclude.includes("Added Sugar")) {
+          if (food[7] != null && food[7] != "0g") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (include.includes("Dietary Fiber")) {
+          if (food[8] == null || food[8] == "0g") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (exclude.includes("Dietary Fiber")) {
+          if (food[8] != null && food[8] != "0g") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (include.includes("Protein")) {
+          if (food[9] == null || food[9] == "0g") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (exclude.includes("Protein")) {
+          if (food[9] != null && food[9] != "0g") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (include.includes("Calcium")) {
+          if (food[10] == null || food[10] == "0g") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (exclude.includes("Calcium")) {
+          if (food[10] != null && food[10] != "0g") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (include.includes("Iron")) {
+          if (food[11] == null || food[11] == "0g") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (exclude.includes("Iron")) {
+          if (food[11] != null && food[11] != "0g") {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        for (let j = 0; j < tags.length; j++) {
+          if (!food[12].includes(tags[j])) {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+      }
+      result = result.sort((a, b) => a.localeCompare(b)); //sorts tags alphabetically
+      console.log(result)
+      res.send(result);
+    });
+  });
+  console.log('/foods sent');
+})
+app.get('/Food', (req, res) => {
+  let queryName = req.query.name
+
+  MongoClient.connect(url, function(err, dbt) {
+    if (err) throw err;
+    let db = dbt.db("boilerplate");
+    db.collection("foods").find({ name : queryName }).toArray(function(err, result) {
+      console.log(result)
+      if (err) throw err;
+      res.send(result);
+    });
+  });
+  console.log('/food sent');
+})
+
+
+app.get('/Nutrition', (req, res) => {
+
+  MongoClient.connect(url, function(err, dbt) {
+    if (err) throw err;
+    let db = dbt.db("boilerplate");
+    db.collection("misc").find({ name:"nutrition" }).toArray(function(err, result) {
+      if (err) throw err;
+      result = result.map(a => a.list); //filters only the names of foods
+      result = result[0]
+      result = result.sort((a, b) => a.localeCompare(b)); //sorts names alphabetically
+      console.log(result);
+      res.send(result);
+    });
+  });
+  console.log('/nutrition sent');
+})
+
+app.get('/Tags', (req, res) => {
+
+  MongoClient.connect(url, function(err, dbt) {
+    if (err) throw err;
+    let db = dbt.db("boilerplate");
+    db.collection("tags").find({}).toArray(function(err, result) {
+      if (err) throw err;
+      result = result.map(a => a.name); //filters only the names of tags
+      result = result.sort((a, b) => a.localeCompare(b)); //sorts tags alphabetically
+      console.log(result);
+      console.log('done');
+      res.send(result);
+    });
+  });
+  console.log('/tags sent');
+})
+
+//Send list of all dining courts
+app.get('/Dining_Courts', (req, res) => {
+  MongoClient.connect(url, function(err, dbt) {
+    if (err) throw err;
+    let db = dbt.db("boilerplate");
+
+    db.collection("locations").find({}).toArray(function(err, result) {
+      if (err) throw err;
+      console.log(result);
+      console.log('done');
+      res.send(result)
+    });
+  });
+  console.log('/Dining_Courts sent');
+})
+
+app.get('/Dining_Court', (req, res) => {
+
+  let name = req.query.name
+  let date = req.query.date
+  let meal = req.query.meal
+
+  MongoClient.connect(url, function(err, dbt) {
+    if (err) throw err;
+    let db = dbt.db("boilerplate");
+    db.listCollections({name: name + "_Schedule"})
+        .next(function(err, collinfo) {
+          if (collinfo) {//Dining court exists
+            console.log(date + "_" + meal);
+            db.collection(name + "_Schedule").find({ name:date + "_" + meal}).toArray(function(err, result) {
+              if (err) throw err;
+              if (result.length === 0) {//schedule does not exist
+                res.status(404).send("Schedule does not exist")
+              } else {
+                res.send(result)
+              }
+            });
+          } else {//Dining court does not exist
+            res.status(404).send("Dining court " + name + "does not exist")
+          }
+        });
+  });
+  console.log('/Dining_Courts sent');
+})
+
+app.get('/Picture', (req, res) => {
+  res.sendFile("F:\\Downloads\\boilerplate-main\\data\\Pictures\\" + req.query.picturename + ".jpg")
+  console.log('/Picture sent');
+})
 
 // Ensure database exists
 try {
@@ -82,6 +358,8 @@ try {
       db.createCollection("course_schedules", function(err, res) {});
       db.createCollection("comments", function(err, res) {});
       db.createCollection("comment_reports", function(err, res) {});
+      db.createCollection("tags", function(err, res) {});
+      db.createCollection("misc", function(err, res) {});
       db.createCollection("replies", function(err, res) {});
       db.createCollection("reply_reports", function(err, res) {dbt.close();});
     });
@@ -96,6 +374,7 @@ function exportTables() {
   if (exportJSONs) {
     MongoClient.connect(url, function(err, dbt) {
       if (err) throw err;
+      console.log("exporting")
       var db = dbt.db("boilerplate");
       db.collection("users").find({}).toArray(function(err, res) {fs.writeFileSync('./data/users.json', JSON.stringify(res));});
       db.collection("comment_reports").find({}).toArray(function(err, res) {fs.writeFileSync('./data/comment_reports.json', JSON.stringify(res));});
@@ -107,6 +386,8 @@ function exportTables() {
       db.collection("locations").find({}).toArray(function(err, res) {fs.writeFileSync('./data/locations.json', JSON.stringify(res));});
       db.collection("meal_plans").find({}).toArray(function(err, res) {fs.writeFileSync('./data/meal_plans.json', JSON.stringify(res));});
       db.collection("replies").find({}).toArray(function(err, res) {fs.writeFileSync('./data/replies.json', JSON.stringify(res));});
+      db.collection("misc").find({}).toArray(function(err, res) {fs.writeFileSync('./data/misc.json', JSON.stringify(res));});
+      db.collection("tags").find({}).toArray(function(err, res) {fs.writeFileSync('./data/tags.json', JSON.stringify(res));});
       db.collection("reply_reports").find({}).toArray(function(err, res) {fs.writeFileSync('./data/reply_reports.json', JSON.stringify(res));});
       db.collection("universities").find({}).toArray(function(err, res) {fs.writeFileSync('./data/universities.json', JSON.stringify(res));});
       db.collection("visits").find({}).toArray(function(err, res) {fs.writeFileSync('./data/visits.json', JSON.stringify(res)); dbt.close();});
@@ -117,8 +398,8 @@ function exportTables() {
 // This function will import all files in ../data to each respective table
 function importTables() {
   if (importJSONs) {
+    console.log("importing")
     MongoClient.connect(url, function(err, dbt) {
-      if (err) throw err;
       var db = dbt.db("boilerplate");
       var data = JSON.parse(fs.readFileSync('./data/users.json').toString());
       db.collection("users").insertMany(data ,function(err, res) {});
@@ -144,9 +425,16 @@ function importTables() {
       db.collection("reply_reports").insertMany(data ,function(err, res) {});
       data = JSON.parse(fs.readFileSync('./data/universities.json').toString());
       db.collection("universities").insertMany(data ,function(err, res) {});
+      data = JSON.parse(fs.readFileSync('./data/misc.json').toString());
+      db.collection("misc").insertMany(data ,function(err, res) {});
+      data = JSON.parse(fs.readFileSync('./data/tags.json').toString());
+      db.collection("tags").insertMany(data ,function(err, res) {});
       data = JSON.parse(fs.readFileSync('./data/visits.json').toString());
       db.collection("visits").insertMany(data ,function(err, res) {dbt.close();});
+      console.log("import done")
     });
+  } else {
+    console.log("not importing")
   }
 }
 
@@ -186,6 +474,12 @@ function overrideTables() {
       data = JSON.parse(fs.readFileSync('./data/replies.json').toString());
       db.collection("replies").deleteMany({}, function(err, res) {});
       db.collection("replies").insertMany(data ,function(err, res) {});
+      data = JSON.parse(fs.readFileSync('./data/tags.json').toString());
+      db.collection("tags").deleteMany({}, function(err, res) {});
+      db.collection("tags").insertMany(data ,function(err, res) {});
+      data = JSON.parse(fs.readFileSync('./data/misc.json').toString());
+      db.collection("misc").deleteMany({}, function(err, res) {});
+      db.collection("misc").insertMany(data ,function(err, res) {});
       data = JSON.parse(fs.readFileSync('./data/reply_reports.json').toString());
       db.collection("reply_reports").deleteMany({}, function(err, res) {});
       db.collection("reply_reports").insertMany(data ,function(err, res) {});

@@ -30,6 +30,21 @@ function getToday() {
     }
     return today
 }
+function getMeal() {
+    let date = new Date();
+    let hour = date.getHours()
+    let meal = ""
+    if (hour < 10) {
+        meal = "Breakfast"
+    } else if (hour >= 10 && hour < 14) {
+        meal = "Lunch"
+    } else if (hour >= 14 && hour < 17) {
+        meal = "LateLunch"
+    } else {
+        meal = "Dinner"
+    }
+    return meal;
+}
 
 const axios = require('axios')
 const queryString = require('query-string');
@@ -44,6 +59,7 @@ export default class Dining_Court extends React.Component {
             html: [],
             loading: true,
             queries: [],
+            error: false,
         };
         this.callAPI = this.callAPI.bind(this);
         this.state.queries = queryString.parse(window.location.search);
@@ -51,6 +67,10 @@ export default class Dining_Court extends React.Component {
             this.state.queries.date = getToday();
         }
         //TODO: input check for date
+
+        if (this.state.queries.meal == null) {
+            this.state.queries.meal = getMeal();
+        }
     }
     updateDimensions = () => {
         this.setState({ width: window.innerWidth, height: window.innerHeight });
@@ -68,26 +88,34 @@ export default class Dining_Court extends React.Component {
         this.state.loading = true;
         let response
         try {
-            response = await axios.get(url + `Dining_Court?name=` + this.state.queries.name + "&date=" + this.state.queries.date);
+            response = await axios.get(url + `Dining_Court?name=` + this.state.queries.name + "&date=" + this.state.queries.date + "&meal=" + this.state.queries.meal);
         } catch (error) {
             console.log("error")
+            this.setState({ error:true })
         } finally {
-            for (let i = 0; i < response.data.length; i++) {
-                let key = "link" + i;
-                let keyLine = "link" + i;
-                let name = response.data[i].name;
-                this.state.html.push(<ColoredLine id={keyLine} color="grey"/>);
-                this.state.html.push(<NavLink to={"/Dining_Court?name=" + name.split(' ').join('_')}>
-                    <img
-                        id={name} alt={name} src={url + "Picture?picturename=" + name.split(' ').join('_')} //height={"200"} width={"200"}
-                    />
-                </NavLink>);
-                this.state.html.push(<Link id={key} to={"/" + name.split(' ').join('_')}>{name}</Link>)
+            console.log(response)
+            console.log(this.state.error)
+            if (this.state.error) {
+                this.state.html.push(<h1>Error: Page not found</h1>);
+            } else {
+                console.log("a")
+                this.state.html.push(<h1>{this.state.queries.name}</h1>);
+                let list = response.data[0]
+                console.log(list)
+                let k = 0;
+                for (let i = 0; i < list.length; i++) {
+                    console.log("a")
+                    this.state.html.push(<h3>{list[i][0]}</h3>);
+                    for (let j = 1; j < list[i].length; j++) {
+                        this.state.html.push(<Link id={"food" + k++} to={"/food?name=" + list[i][j]}>{list[i][j]}<br></br></Link>);
+                    }
+                    this.state.html.push(<a><br></br></a>)
+                }
+                // this.state.html.push(<a>{response.data[0][0]}</a>)
             }
             this.state.loading = false;
             this.forceUpdate();
         }
-
     }
 
     render() {
@@ -117,9 +145,7 @@ export default class Dining_Court extends React.Component {
             >{d.props.children}</d.type>);
         return (
             <div className="App">
-
                 <header className="App-header">
-                    <h1 className="App-title" /*style={{textAlignVertical: "center",textAlign: "center",}}*/>Dining Courts</h1>
                     {listItems}
                 </header>
             </div>

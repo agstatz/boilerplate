@@ -31,6 +31,22 @@ function getToday() {
     return today
 }
 
+function getMeal() {
+    let date = new Date();
+    let hour = date.getHours()
+    let meal = ""
+    if (hour < 10) {
+        meal = "Breakfast"
+    } else if (hour >= 10 && hour < 14) {
+        meal = "Lunch"
+    } else if (hour >= 14 && hour < 17) {
+        meal = "LateLunch"
+    } else {
+        meal = "Dinner"
+    }
+    return meal;
+}
+
 export default class Dining_Courts extends React.Component {
 
     constructor() {
@@ -52,8 +68,8 @@ export default class Dining_Courts extends React.Component {
             if (element == null) {
                 break;
             }
-            element.width = this.state.width*0.8
-            element.height = this.state.width*0.8*0.5625
+            element.width = this.state.width*0.5
+            element.height = this.state.width*0.5*0.5625
         }
     };
 
@@ -70,15 +86,17 @@ export default class Dining_Courts extends React.Component {
         } catch (error) {
             console.log("error")
         } finally {
+            let date = getToday();
+            let meal = getMeal();
             for (let i = 0; i < response.data.length; i++) {
                 let name = response.data[i].name;
                 this.state.html.push(<ColoredLine  id={"line" + i} color="grey"/>);
-                this.state.html.push(<NavLink id={"pictureLink" + i}to={"/Dining_Court?name=" + name.split(' ').join('_') + "&date=" + getToday()}>
+                this.state.html.push(<NavLink id={"pictureLink" + i}to={"/Dining_Court?name=" + name.split(' ').join('_') + "&date=" + date + "&meal=" + meal}>
                     <img
-                        id={"picture" + i} alt={name} src={url + "Picture?picturename=" + name.split(' ').join('_')} width={this.state.width*0.8} height={this.state.width*0.8*0.5625} //height={"200"} width={"200"}
+                        id={"picture" + i} alt={name} src={url + "Picture?picturename=" + name.split(' ').join('_')} width={this.state.width*0.5} height={this.state.width*0.5*0.5625} //height={"200"} width={"200"}
                     />
                 </NavLink>);
-                this.state.html.push(<Link id={"link" + i} to={"/Dining_Court?name=" + name.split(' ').join('_') + "&date=" + getToday()}>{name}</Link>)
+                this.state.html.push(<Link id={"link" + i} to={"/Dining_Court?name=" + name.split(' ').join('_') + "&date=" + date + "&meal=" + meal}>{name}</Link>)
             }
             this.setState({loading :  false})
             this.forceUpdate();
