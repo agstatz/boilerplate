@@ -1,5 +1,4 @@
 const express = require('express')
-const { db } = require('../models/mealPlanModel')
 const router = express.Router()
 
 const Meal_Plan = require('../models/mealPlanModel')
@@ -9,9 +8,7 @@ const Meal_Plan = require('../models/mealPlanModel')
 // @access  Public
 router.get('/', async (req, res) => {
     try {
-        console.log(db.collection("meal_plans").find({}));
         const mealplans = await Meal_Plan.find(); // Get all foods
-        console.log(mealplans);
         res.json(mealplans);
     } catch (err) {
         console.error(err.message);
@@ -43,22 +40,5 @@ router.post('/', async (req, res) => {
         res.status(500).send('Server error');
     }
 })
-
-// @route   GET api/foods/:id
-// @desc    Get single food item from collection.
-// @access  Public
-/*router.get('/:id', async (req, res) => {
-    try {
-        const food = await Food.findById(req.params.id);
-
-        if (!food) return res.status(400).json({ msg: 'Food item does not exist'});
-
-        res.json(food);
-
-    } catch(err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
-    }
-})*/
 
 module.exports = router
