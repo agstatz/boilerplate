@@ -133,6 +133,12 @@ async function get_nutrition_facts(browser, item_name, item_link) {
       ingredients: ingredients,
     });
 
+    foodItem.set({
+        foodTags: []
+    });
+
+    await foodItem.save();
+
     // console.log("Food item: " + foodItem)
 
     // console.log('Ingredients: ', ingredients)

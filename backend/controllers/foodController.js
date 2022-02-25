@@ -1,53 +1,52 @@
 const dbm = require("../models");
 const FoodTag = require("../models/foodTagsModel");
+const Food = require("../models/Food");
 
-exports.addUserTag = (req, res) => {
-  const foodTag = new FoodTag({
-      name: req.body.data.name,
-      tagType: "user-created",
-      foods: []
-    });
-    user.save((err, user) => {
+exports.addUserCreatedTag = (req, res) => {
+    FoodTag.findOne({
+      name: req.body.data.name
+    }).exec((err, tag) => {
       if (err) {
         res.status(500).send({ message: err });
         return;
       }
-    });
-};
-
-exports.searchTags = (req, res) => {
-  console.log(req.body)
-  FoodTag.find({
-    name: req.body.data.name
-  })
-    .exec((err, tag) => {
-      if (err) {
-        res.status(500).send({ message: err });
+      if (!tag) { // Tag doesn't exist, need to instantiate it
+        var targetFood = Food.findOne({ name: req.body.data.foodName });
+        const foodTag = new FoodTag({
+          name: req.body.data.name,
+          tagType: "user-created",
+          foods: [ {food: targetFood, rating: 1} ]
+        });
+        foodTag.save((err, tag) => {
+          if (err) {
+            res.status(500).send({ message: err });
+            return;
+          }
+        });
+        targetFood.foodTags.push(foodTag);
         return;
       }
-      if (!user) {
-        return res.status(404).send({ message: "Tag Not found." });
-      }
-      console.log(tag)
-      res.json(tag.data)
-    });
-};
-
-exports.searchUserTag = (req, res) => {
-  console.log(req.body)
-  User.findOne({
-    tagType: req.body.data.tagType,
-    name: req.body.data.name
-  })
-    .exec((err, user) => {
-      if (err) {
-        res.status(500).send({ message: err });
+      else { // The tag already exists
+        var foodTag = FoodTag.findOne({ name: req.body.data.name, tagType: "user-created" })
+        var targetFood = Food.findOne({ name: req.body.data.foodName, foodTags: foodTag });
+        if (targetFood) { // Food already has a tag, need to increment rating
+          FoodTag.findOneAndUpdate({ name: req.body.data.name, tagType: "user-created"
+                , 'foods.food': targetFood}, {$inc: {'foods.rating': 1}} );
+          return;
+        } // Food does not have the tag, but the tag already exists for other food
+        foodTag.foods.push({ food: targetFood, rating: 1})
+        foodTag.save((err, tag) => {
+          if (err) {
+            res.status(500).send({ message: err });
+            return;
+          }
+        });
+        targetFood.foodTags.push(foodTag);
         return;
       }
-      if (!user) {
-        return res.status(404).send({ message: "User Not found." });
-      }
-      console.log(tag)
-      res.json(tag.data)
     });
+    if (err) {
+      res.status(500).send({ message: err });
+      return;
+    }
 };

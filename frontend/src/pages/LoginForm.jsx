@@ -61,6 +61,7 @@ export default class LoginForm extends React.Component {
             axios
                 .post('http://localhost:3001/api/signinuser', { data: userInfo })
                 .then((res) => {
+                    alert("Hello");
                     store.dispatch(UpdateForm(("password"), this.state.password));
                     store.dispatch(UpdateForm(("username"), this.state.username));
                     const { history } = this.props;

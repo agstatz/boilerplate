@@ -23,7 +23,7 @@ router.get('/:id', async (req, res) => {
     try {
         const mealplan = await Meal_Plan.findById(req.params.id);
 
-        if (!mealplan) return res.status(400).json({ msg: 'Food item does not exist'});
+        if (!mealplan) return res.status(400).json({ msg: 'Meal Plan does not exist'});
 
         res.json(mealplan);
 
@@ -54,6 +54,42 @@ router.post('/', async (req, res) => {
             res.send({ message: "Updated successfully."});
             console.log('saved')
         });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+})
+
+// @route   PUT api/meal-plans/:id
+// @desc    update an existing meal plan by id
+// @access  Public
+router.put('/:id', async (req, res) => {
+    try {
+        const mealplan = await Meal_Plan.findById(req.params.id);
+        if (!mealplan) return res.status(400).json({ msg: 'Meal Plan does not exist'});
+
+        const filter = { _id: req.params.id };
+
+        const updateDoc = {
+            $set: {
+                name: req.body.name,
+                private: req.body.private,
+                owner: req.body.owner,
+                likes: req.body.likes,
+                meals: []
+            }
+        };
+        
+        const result = await Meal_Plan.updateOne(filter, updateDoc);
+
+        mealplan.save((err, user) => {
+            if (err) {
+                console.error(err.message);
+                res.status(500).send({ message: err});
+            }
+            res.send({ message: "Updated successfully."});
+        });
+
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');

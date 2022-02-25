@@ -92,7 +92,7 @@ function MealPlanList(props) {
     // formats the row private into checkboxes
     function privateFormatter(cell, row) {
         return (
-            <Form.Check checked={ cell } readOnly/>
+            <Form.Check checked={ cell } readonly/>
         );
     }
 
