@@ -58,4 +58,29 @@ router.post('/', async (req, res) => {
     }
 })
 
+// @route   POST api/meal-plans
+// @desc    set a new meal-plan
+// @access  Public
+router.post('/:id', async (req, res) => {
+    try {
+        const mealplan = await Meal_Plan.findById(req.params.id);
+
+        if (!mealplan) return res.status(400).json({ msg: 'Food item does not exist'});
+
+        console.log("hi")
+        Meal_Plan.updateOne(
+            { _id: req.params.id },
+            { $set: { name: req.body.name,
+                private: req.body.private,
+                owner: req.body.owner,
+                likes: req.body.likes,
+                meals: []} }
+        )
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+})
+
 module.exports = router

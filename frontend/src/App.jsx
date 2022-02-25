@@ -19,8 +19,10 @@ import { useState, useEffect } from 'react';
 import { Container, Navbar, Nav, Toast } from 'react-bootstrap';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Home, PageNotFound, RegisterForm, LoginForm, PreferenceQuiz, 
-         About, Profile, EditAccountForm, Popular, Map, MealPlans } from './pages';
+         About, Profile, EditAccountForm, Popular, Map, MealPlans,
+         MealPlanIndividual } from './pages';
 import { Footer } from './components';
+
 
 function App() {
 
@@ -176,6 +178,7 @@ function App() {
                         <Route path="/login" component={LoginForm} />
                         <Route path="/map" component={Map} />
                         <Route exact path="/meal-plans" component={MealPlans} />
+                        <Route path="/meal-plans/:id" component={MealPlanIndividual} />
                         <Route path="/popular" component={Popular} />
                         <Route path="/preference-quiz" component={PreferenceQuiz} />
                         <Route path="/profile/:id" component={Profile} />
