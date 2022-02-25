@@ -54,11 +54,11 @@ router.get("/getfoodtags/:name", async (req, res) => {
 // @route   GET api/foods/searchusertag/:name
 // @desc    Get food tags from the food tag collection matching the given name.
 // @access  Public
-router.get("/api/searchusertag/:name", async (req, res) => {
+router.get("/searchusertag/:name", async (req, res) => {
     try {
         const food_tag = await Food_Tag.find({ name: req.params.name });
 
-        if (!food) return res.status(400).json({ msg: 'Food item does not exist'});
+        if (!food_tag) return res.status(400).json({ msg: 'Food item does not exist'});
 
         res.json(food_tag);
 
@@ -71,11 +71,11 @@ router.get("/api/searchusertag/:name", async (req, res) => {
 // @route   GET api/foods/searchtags/:name
 // @desc    Get user-created food tags from the food tag collection matching the given name.
 // @access  Public
-router.get("/api/searchtags/:name", async (req, res) => {
+router.get("/searchtags/:name", async (req, res) => {
     try {
         const food_tag = await Food_Tag.find({ name: req.params.name, tagType: "user-created" });
 
-        if (!food) return res.status(400).json({ msg: 'Food item does not exist'});
+        if (!food_tag) return res.status(400).json({ msg: 'Food item does not exist'});
 
         res.json(food_tag);
 
