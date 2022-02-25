@@ -1,5 +1,5 @@
 /**
- * RegisterForm.jsx
+ * EditAccountForm.jsx
  * 
  * This form component handles editing of account details
  * of a user. Utilizes redux to store the information
