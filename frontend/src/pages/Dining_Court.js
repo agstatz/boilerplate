@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { Redirect } from "react-router-dom"
+import {Col} from "react-bootstrap";
 
 
 const ColoredLine = ({ color }) => (
@@ -99,12 +100,11 @@ export default class Dining_Court extends React.Component {
                 this.state.html.push(<h1>Error: Page not found</h1>);
             } else {
                 console.log("a")
-                this.state.html.push(<h1>{this.state.queries.name}</h1>);
+                this.state.html.push(<h1  style={{textAlignVertical: "center",textAlign: "center"}}>{this.state.queries.name.split('_').join(' ')}</h1>);
                 let list = response.data[0]
-                console.log(list)
                 let k = 0;
                 for (let i = 0; i < list.length; i++) {
-                    console.log("a")
+                    this.state.html.push(<ColoredLine color="grey"/>);
                     this.state.html.push(<h3>{list[i][0]}</h3>);
                     for (let j = 1; j < list[i].length; j++) {
                         this.state.html.push(<Link id={"food" + k++} to={"/food?name=" + list[i][j]}>{list[i][j]}<br></br></Link>);
@@ -129,7 +129,6 @@ export default class Dining_Court extends React.Component {
             return (
                 <div className="App">
                     <header className="App-header">
-                        <h1 className="App-title">hello</h1>
                     </header>
                 </div>
             )
@@ -145,7 +144,7 @@ export default class Dining_Court extends React.Component {
             >{d.props.children}</d.type>);
         return (
             <div className="App">
-                <header className="App-header">
+                <header className="p-3 my-4 mx-4 bg-light border rounded">
                     {listItems}
                 </header>
             </div>

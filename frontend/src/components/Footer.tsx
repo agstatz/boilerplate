@@ -27,7 +27,7 @@
                         <Stack>
                             <h4 className="fw-bold mx-auto">Quick Links</h4>
                             <div className="mx-auto"><a href="/meal-plans/">Public Meal Plans</a></div>
-                            <div className="mx-auto"><a href="/dining-courts/">Browse Dining Courts</a></div>
+                            <div className="mx-auto"><a href="/dining_courts/">Browse Dining Courts</a></div>
                             <div className="mx-auto"><a href="/updates/">Live Updates</a></div>
                         </Stack>
                     </Col>

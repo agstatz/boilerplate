@@ -71,7 +71,7 @@ export default class Foods extends React.Component {
         return (
             <div className="App">
 
-                <form action="/foods" method="get">
+                <form action="/foods" method="get" style={{textAlignVertical: "right",textAlign: "right"}}>
                     <label htmlFor="header-search">
                         <span className="visually-hidden">Search</span>
                     </label>
@@ -88,8 +88,8 @@ export default class Foods extends React.Component {
                         </button>
                     </Link>
                 </form>
-                <header className="App-header">
-                    <h1 className="App-title" /*style={{textAlignVertical: "center",textAlign: "center",}}*/>List of Food</h1>
+                <header className="p-3 my-4 mx-4 bg-light border rounded">
+                    <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}}>List of Food</h1>
                     {listItems}
                 </header>
             </div>

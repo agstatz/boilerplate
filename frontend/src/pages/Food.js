@@ -55,7 +55,6 @@ export default class Food extends React.Component {
             return (
                 <div className="App">
                     <header className="App-header">
-                        <h1 className="App-title">AAA</h1>
                     </header>
                 </div>
             )
@@ -64,9 +63,6 @@ export default class Food extends React.Component {
         return (
             <div className="App">
                 <header className="App-header">
-                    <h1 className="App-title">{this.state.res}{ress}BAB</h1>
-                    <a onClick={this.handleClick} style={{cursor: 'pointer'}}>click me!</a>
-                    <div><Link to="/home">Click here to go back to home page</Link></div>
                 </header>
             </div>
         );

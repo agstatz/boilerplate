@@ -98,7 +98,7 @@ export default class Dining_Courts extends React.Component {
                         id={"picture" + i} alt={name} src={url + "Picture?picturename=" + name.split(' ').join('_')} width={this.state.width*0.5} height={this.state.width*0.5*0.5625} //height={"200"} width={"200"}
                     />
                 </NavLink>);
-                this.state.html.push(<Link id={"link" + i} to={"/Dining_Court?name=" + name.split(' ').join('_') + "&date=" + date + "&meal=" + meal}>{name}</Link>)
+                this.state.html.push(<Link style={{fontSize:"28px"}}id={"link" + i} to={"/Dining_Court?name=" + name.split(' ').join('_') + "&date=" + date + "&meal=" + meal}><br></br>{name}</Link>)
             }
             this.setState({loading :  false})
             this.forceUpdate();
@@ -127,7 +127,7 @@ export default class Dining_Courts extends React.Component {
         return (
             <div className="App">
 
-                <header className="App-header">
+                <header className="my-5 mx-5 bg-light border rounded justify-content-center" style={{textAlignVertical: "center",textAlign: "center",}}>
                     <h1 key={"class"} className="App-title" style={{textAlignVertical: "center",textAlign: "center",}}>Dining Courts</h1>
                     {listItems}
                 </header>

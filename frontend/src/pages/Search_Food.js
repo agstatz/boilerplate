@@ -230,9 +230,10 @@ export default class Search_Food extends React.Component {
 
         return (
             <div className="App">
-                <header className="App-header">
+                <header className="p-3 my-4 mx-4 bg-light border rounded">
 
-                    <h1 className="App-title" >Advanced Search</h1>
+                    <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}} >Advanced Search</h1>
+                    <ColoredLine color="grey"></ColoredLine>
                     <div style={{
                         width: '50%',
                         margin: '0 auto',

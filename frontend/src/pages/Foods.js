@@ -89,7 +89,7 @@ export default class Foods extends React.Component {
                     </Link>
                 </form>
                 <header className="App-header">
-                    <h1 className="App-title" /*style={{textAlignVertical: "center",textAlign: "center",}}*/>List of Food</h1>
+                    <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}}>List of Food</h1>
                     {listItems}
                 </header>
             </div>
