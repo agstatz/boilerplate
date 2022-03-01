@@ -339,8 +339,10 @@ app.get('/Dining_Court', (req, res) => {
 })
 
 app.get('/Picture', (req, res) => {
-  res.sendFile("F:\\Downloads\\boilerplate-main\\data\\Pictures\\" + req.query.picturename + ".jpg")
+  console.log(__dirname + "\\data\\" + req.query.picturename + ".jpg");
+  res.sendFile(__dirname + "\\data\\Pictures\\" + req.query.picturename + ".jpg")
   console.log('/Picture sent');
+  console.log(__dirname)
 })
 
 // Ensure database exists

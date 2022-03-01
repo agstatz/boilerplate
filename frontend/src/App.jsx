@@ -191,7 +191,7 @@ function App() {
                         <Route path="/search_food" component={Search_Food}/>
                         <Route path="/foods" component={Foods}/>
                         <Route path="/food" component={Food}/>
-                        <Route exact path="/dining_courts" component={Dining_Courts}/>
+                        <Route path="/dining_courts" component={Dining_Courts}/>
                         <Route path="/dining-courts/:name" component={DiningIndividual}/>
                         <Route path="/dining_court" component={Dining_Court}/>
                         <Route path="/search" component={Search}/>
