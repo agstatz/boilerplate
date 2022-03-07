@@ -82,9 +82,8 @@ function Scheduler(props) {
 
   return (
     <Container style={{ paddingTop: "15vh", paddingBottom: "15vh" }}>
-      <h1>Schedule</h1>
       <div className="p-3 my-4 mx-4 bg-light border rounded">
-        <h2>Add Meals</h2>
+        <h1><strong>Schedule a Meal Plan</strong></h1><br />
         <div>
           <Form>
             <Form.Group
@@ -92,11 +91,11 @@ function Scheduler(props) {
               className="mb-3"
               controlId="formHorizontalEmail"
             >
-              <Form.Label column sm={3}>
+              <Form.Label column sm={6}>
                 <h3>Meal Schedule Name:</h3>
               </Form.Label>
               <Col sm={4}>
-                <Form.Control type="text" placeholder="healthy" onChange={(e) => {
+                <Form.Control type="text" placeholder="My Healthy Meal Plan" onChange={(e) => {
                   setMealPlan({...mealPlan, name: e.target.value})
                 }}/>
               </Col>
@@ -113,14 +112,19 @@ function Scheduler(props) {
               setMealPlan({...mealPlan, private: e.target.checked})
             }}
           />
-          <Button variant="primary" type='Button' onClick={submit_plan}>Submit Schedule</Button>
+          
           </Form>
+          
         </div>
+        <Row>
+        <Col md={10} sm={9} xs={8}>
+        </Col>
+        <Col md={2} sm={3} xs={4}>
+            <Button variant="primary" type='Button' className="float-right" onClick={submit_plan}>Submit <i className="bi bi-chevron-right"></i></Button>
+        </Col>
+        </Row>
+        
       </div>
-
-      <Button className="mx-auto btn btn-primary btn-sm" href="/">
-        Home
-      </Button>
     </Container>
   );
 }

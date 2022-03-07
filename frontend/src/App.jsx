@@ -16,7 +16,7 @@ import logo_light from './assets/boilerplate_logo_light_gray_1.png';
 
 // Component imports
 import { useState, useEffect } from 'react';
-import { Container, Navbar, Nav, Toast } from 'react-bootstrap';
+import { Container, Navbar, Nav, NavDropdown, Toast } from 'react-bootstrap';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Home, PageNotFound, RegisterForm, LoginForm, PreferenceQuiz, 
          About, Profile, EditAccountForm, Popular, Map, MealPlans, Food, Foods,
@@ -145,15 +145,17 @@ function App() {
 
     return (
         <div data-theme={theme} style={{position: 'relative'}}>
-            <Navbar className="px-0 bg-light border" variant="light">
+            <Navbar className="fixed-top px-0 bg-light border" variant="light">
                 <Container fluid>
                 <Navbar.Brand href="/"><img src={theme === 'light' ? logo_dark : logo_light} 
                                             className="primary-logo px-4" 
                                             alt="Boilerplate"></img></Navbar.Brand>
                 <Nav className="ml-auto">
                     <Nav.Link href="/" >Home</Nav.Link>
-                    <Nav.Link href="/schedule" >Schedule a Meal</Nav.Link>
-                    <Nav.Link href="/meal-plans" >View Meal Plans</Nav.Link>
+                    <NavDropdown title="Meal Plans">
+                        <NavDropdown.Item href="/meal-plans">View Meal Plans</NavDropdown.Item>
+                        <NavDropdown.Item href="/schedule">Schedule Meal Plans</NavDropdown.Item>
+                    </NavDropdown>
                     <Nav.Link href="/popular">Popular</Nav.Link>
                     <Nav.Link href="/map" >Map</Nav.Link>
                     <Nav.Link href="/search" >Search</Nav.Link>
@@ -161,7 +163,7 @@ function App() {
                 </Nav>
                 </Container>
             </Navbar>   
-            <Toast  onClose={() => setShowLoggedInWarning(false)}
+            <Toast onClose={() => setShowLoggedInWarning(false)}
                     className="bg-light"
                     show={showLoggedInWarning}
                     style={{position: 'fixed', top: '2em', right: '2em', zIndex: '1', color: 'black'}} 
@@ -172,7 +174,6 @@ function App() {
                 </Toast.Header>
                 <Toast.Body>You are already logged in.</Toast.Body>
             </Toast>
-            <Container>
                 <BrowserRouter>
                     <Switch>
                         <Route exact path="/" component={Home} />
@@ -198,7 +199,7 @@ function App() {
                         <Route path="*" component={PageNotFound} />
                     </Switch>
                 </BrowserRouter>
-            </Container>
+            
             <Footer toggleDark={() => toggleDarkMode()} theme={theme === 'dark' ? true : false} handleSignIn={() => handleSignInButton()}/>
         </div>
     );
