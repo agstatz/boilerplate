@@ -15,7 +15,7 @@
     const foods = []
 
     for (const [index, value] of topFoodItems.entries()) {
-        foods.push(<li key={index}>{value}</li>)
+        foods.push(<p key={index}>{value}</p>)
     }
 
    return (
@@ -23,7 +23,8 @@
             <div className="p-2 my-2 mx-2 bg-light border rounded">
                 <Stack gap={2}>
                     <h5>{name}</h5>
-                    <p>Top Food Items:<br />{foods}</p>
+                    Top Food Items:<br />
+                    <ul>{foods}</ul>
                 </Stack>
             </div>
         </Container>

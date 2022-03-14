@@ -5,7 +5,7 @@
  * @author Ashton Statz, Gaurav Manglani
  */
 
- import { Row, Card, Col, Button, Stack} from "react-bootstrap";
+ import { Row, Card, Col, Button, Stack, Container, Placeholder } from "react-bootstrap";
  import { Tabs, Tab } from "react-bootstrap-tabs";
  import { RecommendationList, MealPlanList, RecommendedDiningCourtList } from "../components";
  import { PageNotFound } from "./";
@@ -16,8 +16,6 @@
  import { useEffect, useState } from 'react';
 
  function Profile(props) {
-
-    const [user, setUser] = useState([{}]);
 
     const history = useHistory();
 
@@ -43,6 +41,7 @@
 
 
     return (
+        <Container style={{ paddingTop: '12vh'}}>
             <Row>
                 <Col xs={6} sm={5} md={4} lg={3} xl={3}>
                     <Card className="my-3" bg="light" style={{maxWidth: "200px", minWidth: "200px"}}>
@@ -80,9 +79,31 @@
                     <Card className="my-3" bg="light" >
                         <Card.Body>
                         <Tabs className="mx-3">
-                            <Tab label="Meal History" >Meal History Not Loading...</Tab>
-                            <Tab label="Meal Plans"><MealPlanList filterValue={id}/></Tab>
-                            <Tab label="My Dietary Info">Dietary Info Not Loading...</Tab>
+                            <Tab label="Meal History" >
+                                <Placeholder animation="glow" size="lg">
+                                    <Placeholder xs={12} />
+                                    <Placeholder xs={12} />
+                                    <Placeholder xs={12} />
+                                    <Placeholder xs={12} />
+                                </Placeholder>
+                            </Tab>
+                            <Tab label="My Meal Plans"><MealPlanList filterValue={id}/></Tab>
+                            <Tab label="My Dietary Info">
+                                <Placeholder animation="glow" size="lg">
+                                    <Placeholder xs={12} />
+                                    <Placeholder xs={12} />
+                                    <Placeholder xs={12} />
+                                    <Placeholder xs={12} />
+                                </Placeholder>
+                            </Tab>
+                            <Tab label="My Preferences">
+                                <Placeholder animation="glow" size="lg">
+                                    <Placeholder xs={12} />
+                                    <Placeholder xs={12} />
+                                    <Placeholder xs={12} />
+                                    <Placeholder xs={12} />
+                                </Placeholder>
+                            </Tab>
                         </Tabs>
                         </Card.Body>
                     </Card>
@@ -125,7 +146,7 @@
                 </Col>
                 
             </Row>
-
+        </Container>
     );
  }
  

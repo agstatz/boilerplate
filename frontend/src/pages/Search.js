@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import queryString from "query-string";
 
+import { Container, Placeholder, Button, Form } from "react-bootstrap";
+
 const axios = require('axios')
 const url = "http://localhost:3001/"
 const ColoredLine = ({ color }) => (
@@ -60,8 +62,38 @@ export default class Foods extends React.Component {
         if (this.state.loading) {
             return (
                 <div className="App">
-                    <header className="App-header">
-                    </header>
+                    <Container style={{ paddingTop: '18vh', paddingBottom: '18vh'}} >
+                        <Form action="/foods" method="get" style={{textAlignVertical: "right",textAlign: "right", paddingRight: "40px"}}>
+                            <label htmlFor="header-search">
+                                <span className="visually-hidden">Search</span>
+                            </label>
+                            <input
+                                type="text"
+                                id="header-search"
+                                placeholder="Search"
+                                name="search"
+                                size="xl"
+                            />{' '}
+                            <Button type="submit">Submit</Button>
+                            {' '}
+                            <Link to="/Search_Food">
+                                <Button type="button">
+                                    Advanced Search
+                                </Button>
+                            </Link>
+                        </Form>
+                        <header className="p-3 my-4 mx-4 bg-light border rounded">
+                            <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}}>List of Foods</h1>
+                            <Placeholder animation="glow" size="lg">
+                                <Placeholder xs={12} />
+                                <Placeholder xs={12} />
+                                <Placeholder xs={12} />
+                                <Placeholder xs={12} />
+                                <Placeholder xs={12} />
+                                <Placeholder xs={12} />
+                            </Placeholder>
+                        </header>
+                    </Container>
                 </div>
             )
         }
@@ -70,28 +102,30 @@ export default class Foods extends React.Component {
             <d.type key={"list" + i++} to={d.props.to} id={d.key} style={d.props.style} color={d.props.color}>{d.props.children}</d.type>);
         return (
             <div className="App">
-
-                <form action="/foods" method="get" style={{textAlignVertical: "right",textAlign: "right"}}>
-                    <label htmlFor="header-search">
-                        <span className="visually-hidden">Search</span>
-                    </label>
-                    <input
-                        type="text"
-                        id="header-search"
-                        placeholder="Search"
-                        name="search"
-                    />
-                    <button type="submit">Submit</button>
-                    <Link to="/Search_Food">
-                        <button type="button">
-                            Advanced Search
-                        </button>
-                    </Link>
-                </form>
-                <header className="p-3 my-4 mx-4 bg-light border rounded">
-                    <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}}>List of Food</h1>
-                    {listItems}
-                </header>
+                <Container style={{ paddingTop: '18vh', paddingBottom: '18vh'}} >
+                    <Form action="/foods" method="get" style={{textAlignVertical: "right",textAlign: "right", paddingRight: "40px"}}>
+                        <Form.Label htmlFor="header-search">
+                            <span className="visually-hidden">Search</span>
+                        </Form.Label>
+                        <input
+                            type="text"
+                            id="header-search"
+                            placeholder="Search"
+                            name="search"
+                            size="xl"
+                        />{' '}
+                        <Button type="submit">Submit</Button>{' '}
+                        <Link to="/Search_Food">
+                            <Button type="button">
+                                Advanced Search
+                            </Button>
+                        </Link>
+                    </Form>
+                    <header className="p-3 my-4 mx-4 bg-light border rounded">
+                        <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}}>List of Foods</h1>
+                        {listItems}
+                    </header>
+                </Container>
             </div>
         );
     }

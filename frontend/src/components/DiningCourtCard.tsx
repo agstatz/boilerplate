@@ -22,7 +22,8 @@
             <div className="p-2 my-2 mx-2 bg-light border rounded">
                 <Stack gap={2}>
                 <a href={"/dining-courts/" + name}><h5>{name}</h5></a>
-                    <p>Top Food Items:<br />{foods}</p>
+                    Top Food Items:<br />
+                    <ul>{foods}</ul>
                 </Stack>
             </div>
         </Container>

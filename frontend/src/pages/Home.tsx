@@ -29,7 +29,7 @@ function Home() {
                 <h1><strong>Our Inspiration</strong></h1>
                 <i>Boilermakers dedicated to great food</i>
                 <p>Purdue University is widely known as the cradle of astronauts, but it has also been dubbed the cradle of 
-                    great university dining options. However, despite the great food and options, as students we found that
+                    great university dining options. Despite the great food and options, as students we found that
                     great leaps have to be taken to take full advantage of what Purdue has to offer. As a result, we created
                     Boilerplate, a web application that augments the on-campus dining experience in a multitude of ways.
                 </p>

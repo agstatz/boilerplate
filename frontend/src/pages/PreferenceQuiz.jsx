@@ -49,15 +49,17 @@ function PreferenceQuiz() {
             case 0:
                 return (
                     // Opening Display
-                    <div className="p-3 my-4 mx-4 bg-light border rounded">
-                        <Stack gap={2}>
-                            <h1>Let's find out your preferences</h1>
-                            <p>The following quiz will ask you questions about your food preferences and restrictions.
-                                It is solely used to provide better recommendations for you.
-                            </p>
-                            <Button onClick={incrementQuestion}>Let's start <i className="bi bi-chevron-right"></i></Button>
-                        </Stack>
-                    </div>
+                    <Container style={{ paddingTop: '12vh'}}>
+                        <div className="p-3 my-4 mx-4 bg-light border rounded">
+                            <Stack gap={2}>
+                                <h1>Let's find out your preferences</h1>
+                                <p>The following quiz will ask you questions about your food preferences and restrictions.
+                                    It is solely used to provide better recommendations for you.
+                                </p>
+                                <Button onClick={incrementQuestion}>Let's start <i className="bi bi-chevron-right"></i></Button>
+                            </Stack>
+                        </div>
+                    </Container>
                 );
             case 1:
                 return (

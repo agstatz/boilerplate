@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import queryString from "query-string";
 
+import { Container, Placeholder, Button } from "react-bootstrap";
+
 const axios = require('axios')
 const url = "http://localhost:3001/"
 const ColoredLine = ({ color }) => (
@@ -60,18 +62,8 @@ export default class Foods extends React.Component {
         if (this.state.loading) {
             return (
                 <div className="App">
-                    <header className="App-header">
-                    </header>
-                </div>
-            )
-        }
-        let i = 0;
-        const listItems = this.state.html.map((d) =>
-            <d.type key={"list" + i++} to={d.props.to} id={d.key} style={d.props.style} color={d.props.color}>{d.props.children}</d.type>);
-        return (
-            <div className="App">
-
-                <form action="/foods" method="get">
+                <Container style={{ paddingTop: '18vh', paddingBottom: '18vh'}} >
+                <form action="/foods" method="get" style={{textAlignVertical: "right",textAlign: "right", paddingRight: "40px"}}>
                     <label htmlFor="header-search">
                         <span className="visually-hidden">Search</span>
                     </label>
@@ -80,18 +72,58 @@ export default class Foods extends React.Component {
                         id="header-search"
                         placeholder="Search"
                         name="search"
-                    />
-                    <button type="submit">Submit</button>
+                    />{' '}
+                    <Button type="submit">Submit</Button>{' '}
                     <Link to="/Search_Food">
-                        <button type="button">
+                        <Button type="button">
                             Advanced Search
-                        </button>
+                        </Button>
                     </Link>
                 </form>
-                <header className="App-header">
-                    <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}}>List of Food</h1>
+                <header className="App-header p-3 my-4 mx-4 bg-light border rounded">
+                    <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}}>List of Foods</h1>
+                    <Placeholder animation="glow" size="lg">
+                            <Placeholder xs={12} />
+                            <Placeholder xs={12} />
+                            <Placeholder xs={12} />
+                            <Placeholder xs={12} />
+                            <Placeholder xs={12} />
+                            <Placeholder xs={12} />
+                        </Placeholder>
+                </header>
+                </Container>
+            </div>
+            )
+        }
+        let i = 0;
+        const listItems = this.state.html.map((d) =>
+            <d.type key={"list" + i++} to={d.props.to} id={d.key} style={d.props.style} color={d.props.color}>{d.props.children}</d.type>);
+        return (
+            <div className="App">
+                <Container style={{ paddingTop: '18vh', paddingBottom: '18vh'}} >
+                <form action="/foods" method="get" style={{textAlignVertical: "right",textAlign: "right", paddingRight: "40px"}}>
+                    <label htmlFor="header-search">
+                        <span className="visually-hidden">Search</span>
+                    </label>
+                    <input
+                        type="text"
+                        id="header-search"
+                        placeholder="Search"
+                        name="search"
+                        size="xl"
+                    />{' '}
+                    <Button type="submit">Submit</Button>{' '}
+                    <Link to="/Search_Food">
+                        <Button type="button">
+                            Advanced Search
+                        </Button>
+                    </Link>
+                </form>
+                <header className="App-header p-3 my-4 mx-4 bg-light border rounded">
+                    <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}}>List of Foods</h1>
                     {listItems}
                 </header>
+                </Container>
             </div>
         );
     }
