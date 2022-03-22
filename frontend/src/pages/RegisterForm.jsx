@@ -3,7 +3,6 @@
  * 
  * This form component handles the registration
  * of a user. Utilizes redux to store the information
- * TODO: add corresponding database calls
  * 
  * @author Dawson Smith, Ashton Statz
  */

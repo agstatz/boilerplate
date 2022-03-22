@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-
 const Food = require('../models/Food')
 const Food_Tag = require('../models/foodTagsModel')
 
@@ -39,11 +38,12 @@ router.get('/:id', async (req, res) => {
 // @access  Public
 router.get("/getfoodtags/:name", async (req, res) => {
     try {
+
         const food = await Food.findOne({ name: req.params.name });
 
         if (!food) return res.status(400).json({ msg: 'Food item does not exist'});
-
-        res.json(food.foodTags);
+        console.log(food);
+        return res.json(food.foodTags);
 
     } catch(err) {
         console.error(err.message);

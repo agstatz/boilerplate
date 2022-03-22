@@ -104,6 +104,35 @@ isModerator = (req, res, next) => {
   });
 };
 
+// checks  if the user is a guest
+isGuest = (req, res, next) => {
+  User.findById(req.userId).exec((err, user) => {
+    if (err) {
+      res.status(500).send({ message: err });
+      return;
+    }
+    PrivilegeClass.find(
+      {
+        _id: { $in: user.privilegeClasses }
+      },
+      (err, privilege_classes) => {
+        if (err) {
+          res.status(500).send({ message: err });
+          return;
+        }
+        for (let i = 0; i < privilege_classes.length; i++) {
+          if (privilege_classes[i].name === "guest") {
+            next();
+            return;
+          }
+        }
+        res.status(403).send({ message: "User is not a guest" });
+        return;
+      }
+    );
+  });
+};
+
 
 const authJwt = {
   verifyToken,

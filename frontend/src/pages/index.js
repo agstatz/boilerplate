@@ -17,3 +17,4 @@ export { default as Search_Food } from "./Search_Food";
 export { default as Search } from "./Search";
 export { default as MealPlanIndividual } from "./MealPlanIndividual";
 export { default as DiningIndividual } from "./DiningIndividual";
+export { default as EditLocation } from "./EditLocation";
