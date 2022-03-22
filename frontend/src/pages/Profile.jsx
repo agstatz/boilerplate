@@ -15,6 +15,9 @@
  import { useParams, useHistory } from 'react-router-dom';
  import { useEffect, useState } from 'react';
 
+ import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+
  function Profile(props) {
 
     const history = useHistory();
@@ -25,6 +28,28 @@
     const handleLogout = () => {
         store.dispatch(ClearForm());
         history.push('/');
+    }
+
+    function resetAccount() {
+        confirmAlert({
+            title: 'Confirm to submit',
+            message: 'Are you sure to do this. This will reset all your account preferences.',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => {
+                        alert('yes')
+                    }
+                },
+                {
+                    label: 'No',
+                    onClick: () => {
+                    
+                    }
+                }
+            ]
+        })
+        
     }
 
     useEffect(() => {
@@ -55,7 +80,8 @@
                                 {id ? id : "username"}
                             </strong></h5>
                             {username === id ? <Stack gap="3"><Button href={`/edit/${id}`} className="btn-sm" variant="outline-primary">Edit Account</Button>
-                                                <Button onClick={handleLogout} className="btn-sm" variant="outline-primary">Sign Out</Button></Stack>  : <></>}
+                                                <Button onClick={handleLogout} className="btn-sm" variant="outline-primary">Sign Out</Button>
+                                                <Button onClick={resetAccount} className="btn-sm" variant="outline-primary">Reset Account</Button></Stack>  : <></>}
                             <Row className="mt-3">
                                 <Col className="text-center">
                                     <strong>40</strong>
