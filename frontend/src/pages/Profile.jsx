@@ -17,7 +17,7 @@
 
  import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
-
+import axios from "axios";
  function Profile(props) {
 
     const history = useHistory();
@@ -38,7 +38,9 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
                 {
                     label: 'Yes',
                     onClick: () => {
-                        alert('yes')
+                        axios.post('http://localhost:3001/api/resetUser', {data: {
+                            username: username
+                        }})
                     }
                 },
                 {

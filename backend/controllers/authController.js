@@ -138,8 +138,9 @@ exports.editUser = (req, res) => {
 };
 
 exports.resetUser = (req, res) => {
+  console.log('RESET')
   User.updateOne(
-    {username: req.body.data.oldUsername},
+    {username: req.body.data.username},
     {
       lightMode: 1,
       carbOpt: 0,
@@ -159,12 +160,16 @@ exports.resetUser = (req, res) => {
   )
     .exec((err, user) => {
       if (err) {
+        console.log(err)
         res.status(500).send({ message: err });
         return;
       }
       if (!user) {
+        console.log(2)
         return res.status(404).send({ message: "User Not found" });
       }
+      console.log('good')
+
       res.status(200).send({
         message: "User information updated successfully"
       });
