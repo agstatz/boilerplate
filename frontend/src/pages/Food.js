@@ -25,7 +25,8 @@ export default class Food extends React.Component {
         super();
         this.state = {
             res: "",
-            loading: true
+            loading: true,
+            html: [],
         };
         this.callAPI = this.callAPI.bind(this);
         this.state.queries = queryString.parse(window.location.search);
@@ -42,8 +43,12 @@ export default class Food extends React.Component {
         } catch (error) {
             console.log("error")
         } finally {
-            const ress = response.data[0].name;
+            const ress = response;
             this.state.res = ress;
+            console.log(this.state.res);
+            if (this.state.res.data.length === 0) {
+            }
+
             this.state.loading = false;
             this.forceUpdate()
         }

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-const coursesSchema = new Schema({
+const coursesSchema = Schema({
     date: String,
     courseName: String,
     foods: [

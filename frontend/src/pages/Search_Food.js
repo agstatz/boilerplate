@@ -58,6 +58,9 @@ export default class Search_Food extends React.Component {
             html: [],
             html2: [],
             html3: [],
+            html4: [],
+            html5: [],
+            html6: [],
             onList: [],
             include: [],
             exclude: [],
@@ -66,6 +69,12 @@ export default class Search_Food extends React.Component {
             tags: [],
             nutrition: [],
             nutritionSelected: "",
+            cuisine: [],
+            cuisineSelected: "",
+            group: [],
+            groupSelected: "",
+            diet: [],
+            dietSelected: "",
         };
         this.callAPI = this.callAPI.bind(this);
     }
@@ -178,6 +187,57 @@ export default class Search_Food extends React.Component {
                 }
                 this.state.html2.push(clonedToPush)
             }
+            try {
+                response = await axios.get(url + `Diet`);
+            } catch (error) {
+                console.log("error")
+            } finally {
+                this.setState({diet : response})
+                this.setState({dietSelected : this.state.diet.data[0]})
+                let toPush = <select id="drop2" onChange={this.handleDrop3}></select>;
+                let clonedToPush = React.cloneElement(
+                    toPush,
+                    { children: [] }
+                );
+                for (let i = 0; i < this.state.diet.data.length; i++) {
+                    clonedToPush.props.children.push(<option value={this.state.diet.data[i]}>{this.state.diet.data[i]}</option>)
+                }
+                this.state.html4.push(clonedToPush)
+            }
+            try {
+                response = await axios.get(url + `Group`);
+            } catch (error) {
+                console.log("error")
+            } finally {
+                this.setState({group : response})
+                this.setState({groupSelected : this.state.group.data[0]})
+                let toPush = <select id="drop3" onChange={this.handleDrop4}></select>;
+                let clonedToPush = React.cloneElement(
+                    toPush,
+                    { children: [] }
+                );
+                for (let i = 0; i < this.state.group.data.length; i++) {
+                    clonedToPush.props.children.push(<option value={this.state.group.data[i]}>{this.state.group.data[i]}</option>)
+                }
+                this.state.html5.push(clonedToPush)
+            }
+            try {
+                response = await axios.get(url + `Cuisine`);
+            } catch (error) {
+                console.log("error")
+            } finally {
+                this.setState({cuisine : response})
+                this.setState({cuisineSelected : this.state.cuisine.data[0]})
+                let toPush = <select id="drop4" onChange={this.handleDrop5}></select>;
+                let clonedToPush = React.cloneElement(
+                    toPush,
+                    { children: [] }
+                );
+                for (let i = 0; i < this.state.cuisine.data.length; i++) {
+                    clonedToPush.props.children.push(<option value={this.state.cuisine.data[i]}>{this.state.cuisine.data[i]}</option>)
+                }
+                this.state.html6.push(clonedToPush)
+            }
             this.setState({loading : false})
             this.forceUpdate();
         }
@@ -227,12 +287,45 @@ export default class Search_Food extends React.Component {
                 value={d.props.value} checked={d.props.checked}
                 onChange={d.props.onChange}
             >{d.props.children}</d.type>);
+        const listItems4 = this.state.html4.map((d) =>
+            <d.type
+                key={"list" + i++}
+                src={d.props.src} alt={d.props.name}
+                to={d.props.to} id={d.key} style={d.props.style}
+                color={d.props.color}
+                height={d.props.height} width={d.props.height}
+                type={d.props.type} name={d.props.name}
+                value={d.props.value} checked={d.props.checked}
+                onChange={d.props.onChange}
+            >{d.props.children}</d.type>);
+        const listItems5 = this.state.html5.map((d) =>
+            <d.type
+                key={"list" + i++}
+                src={d.props.src} alt={d.props.name}
+                to={d.props.to} id={d.key} style={d.props.style}
+                color={d.props.color}
+                height={d.props.height} width={d.props.height}
+                type={d.props.type} name={d.props.name}
+                value={d.props.value} checked={d.props.checked}
+                onChange={d.props.onChange}
+            >{d.props.children}</d.type>);
+        const listItems6 = this.state.html6.map((d) =>
+            <d.type
+                key={"list" + i++}
+                src={d.props.src} alt={d.props.name}
+                to={d.props.to} id={d.key} style={d.props.style}
+                color={d.props.color}
+                height={d.props.height} width={d.props.height}
+                type={d.props.type} name={d.props.name}
+                value={d.props.value} checked={d.props.checked}
+                onChange={d.props.onChange}
+            >{d.props.children}</d.type>);
 
         return (
             <div className="App">
                 <header className="p-3 my-4 mx-4 bg-light border rounded">
 
-                    <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}} >Advanced Search</h1>
+                    <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}} ><br></br>Advanced Search</h1>
                     <ColoredLine color="grey"></ColoredLine>
                     <div style={{
                         width: '50%',
@@ -256,6 +349,42 @@ export default class Search_Food extends React.Component {
                         margin: '0 auto',
                         alignItems: 'center'}}>
                         {listItems}
+                    </div>
+                    <div style={{
+                        textAlign: 'center',
+                        fontWeight: 'bold'
+                    }}>
+                        <a><br></br>Diet</a>
+                    </div>
+                    <div style={{
+                        width: '50%',
+                        margin: '0 auto',
+                        alignItems: 'center'}}>
+                        {listItems4}
+                    </div>
+                    <div style={{
+                        textAlign: 'center',
+                        fontWeight: 'bold'
+                    }}>
+                        <a><br></br>Group</a>
+                    </div>
+                    <div style={{
+                        width: '50%',
+                        margin: '0 auto',
+                        alignItems: 'center'}}>
+                        {listItems5}
+                    </div>
+                    <div style={{
+                        textAlign: 'center',
+                        fontWeight: 'bold'
+                    }}>
+                        <a><br></br>Cuisine</a>
+                    </div>
+                    <div style={{
+                        width: '50%',
+                        margin: '0 auto',
+                        alignItems: 'center'}}>
+                        {listItems6}
                     </div>
                     <div style={{
                         textAlign: 'center',
@@ -302,6 +431,16 @@ export default class Search_Food extends React.Component {
         }
     }
 
+    handleDrop3 = (event) => {
+        this.setState({ dietSelected : event.target.value })
+    }
+    handleDrop4 = (event) => {
+        this.setState({ groupSelected : event.target.value })
+    }
+    handleDrop5 = (event) => {
+        this.setState({ cuisineSelected : event.target.value })
+    }
+
     addButton = (event) => {
         if (this.state.onList.indexOf(this.state.nutritionSelected) == -1) {
             this.state.onList.push(this.state.nutritionSelected);
@@ -345,7 +484,10 @@ export default class Search_Food extends React.Component {
             document.getElementById("search").value +
             "&tags=" + this.state.tags +
             "&include=" + this.state.include +
-            "&exclude=" + this.state.exclude;
+            "&exclude=" + this.state.exclude +
+            "&diet=" + this.state.dietSelected +
+            "&group=" + this.state.groupSelected +
+            "&cuisine=" + this.state.cuisineSelected;
         console.log(string)
         this.state.html.push(<Redirect to={string}/>)
         this.forceUpdate()
