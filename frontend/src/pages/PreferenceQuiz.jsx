@@ -11,7 +11,7 @@ import { Stack, Container, Button, Form } from "react-bootstrap";
 import { useState } from "react";
 import RangeSlider from 'react-bootstrap-range-slider';
 
-import { store } from "../store/store.js"
+import { store, UpdateForm } from "../store/store.js"
 
 /**
  * QuizQuestion.tsx
@@ -73,6 +73,8 @@ function PreferenceQuiz() {
             .catch(err => {
                 console.log(err);
             });
+
+            store.dispatch(UpdateForm(("mealSwipes"), mealSwipes));
 
         const newNum = questionNumber + 1;
         setQuestionNumber(newNum);
