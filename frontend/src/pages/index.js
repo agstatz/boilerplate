@@ -18,3 +18,6 @@ export { default as Search } from "./Search";
 export { default as MealPlanIndividual } from "./MealPlanIndividual";
 export { default as DiningIndividual } from "./DiningIndividual";
 export { default as EditLocation } from "./EditLocation";
+export { default as AddLocation } from "./AddLocation";
+export { default as AdminPanel } from "./AdminPanel";
+export { default as DiningLocationsSelection } from "./DiningLocationsSelection";

@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const mongoose = require('mongoose');
 
 const Dining_Location = require('../models/DiningLocation')
 
@@ -21,10 +22,9 @@ router.get('/', async (req, res) => {
 // @access  Public
 router.get('/:name', async (req, res) => {
     try {
-        const dining_location = await Dining_Location.findOne({ name: req.params.name});
+        const dining_location = await Dining_Location.findOne({ name: req.params.name });
 
         if (!dining_location) return res.status(400).json({ msg: 'Dining Location does not exist'});
-
         res.json(dining_location);
 
     } catch(err) {
@@ -37,15 +37,16 @@ router.get('/:name', async (req, res) => {
 // @desc    set a new dining location
 // @access  Public
 router.post('/', async (req, res) => {
-    console.log('got:\n')
-    console.log(req.body)
     try {
         const dining_location = new Dining_Location({
-            name: req.body.name,
-            xLocation: req.body.xLocation,
-            yLocation: req.body.yLocation,
-            courseSchedule: req.body.courseSchedule,
-            courses: req.body.courses
+            name: req.body.data.locationName,
+            xLocation: req.body.data.xPos,
+            yLocation: req.body.data.yPos,
+            courseScheduleId: mongoose.Types.ObjectId(req.body.data.courseScheduleId),
+            courses: [],
+            comments: [],
+            hidden: req.body.data.hidden,
+            occupancy: 0
         })
         dining_location.save((err, user) => {
             if (err) {
@@ -53,7 +54,6 @@ router.post('/', async (req, res) => {
                 res.status(500).send({ message: err});
             }
             res.send({ message: "Updated successfully."});
-            console.log('saved')
         });
     } catch (err) {
         console.error(err.message);
@@ -73,11 +73,12 @@ router.put('/:name', async (req, res) => {
 
         const updateDoc = {
             $set: {
-                name: req.body.name,
-                xLocation: req.body.xLocation,
-                yLocation: req.body.yLocation,
-                courseSchedule: req.body.courseSchedule,
-                courses: req.body.courses
+                name: req.body.data.locationName,
+                xLocation: req.body.data.xPos,
+                yLocation: req.body.data.yPos,
+                hidden: req.body.data.hidden,
+                courseScheduleId: mongoose.Types.ObjectId(req.body.data.courseScheduleId),
+                //courses: req.body.courses
             }
         };
 
@@ -92,6 +93,21 @@ router.put('/:name', async (req, res) => {
         });
 
     } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+})
+
+// @route   DELETE /api/dining-locations/:name
+// @desc    Delete a specific dining location via name
+// @access  Public
+router.delete('/:name', async (req, res) => {
+    try {
+        const dining_location = await Dining_Location.deleteOne({ name: req.params.name });
+        console.log("here");
+        if (!dining_location) return res.status(400).json({ msg: 'delete successful'});
+        res.send({ message: "Deleted successfully."});
+    } catch(err) {
         console.error(err.message);
         res.status(500).send('Server error');
     }

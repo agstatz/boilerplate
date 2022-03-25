@@ -21,7 +21,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Home, PageNotFound, RegisterForm, LoginForm, PreferenceQuiz, 
          About, Profile, EditAccountForm, Popular, Map, MealPlans, Food, Foods,
          Search_Food, Dining_Court, Dining_Courts, Search, MealPlanIndividual,
-         DiningIndividual, EditLocation } from './pages';
+         DiningIndividual, EditLocation, AdminPanel, DiningLocationsSelection, AddLocation } from './pages';
 import { Footer } from './components';
 import Scheduler from './pages/Scheduler';
 
@@ -195,7 +195,10 @@ function App() {
                         <Route path="/dining_courts" component={Dining_Courts}/>
                         <Route path="/dining-courts/:name" component={DiningIndividual}/>
                         <Route path="/dining_court" component={Dining_Court}/>
-                        <Route path="/edit-location/:name" component={EditLocation}/>
+                        <Route path="/dining-location-selection" component={DiningLocationsSelection}/>
+                        <Route path="/edit-location" component={EditLocation}/>
+                        <Route path="/add-location" component={AddLocation}/>
+                        <Route path="/admin-panel" component={AdminPanel} />
                         <Route path="/search" component={Search}/>
                         <Route path="*" component={PageNotFound} />
                     </Switch>
