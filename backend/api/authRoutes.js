@@ -19,4 +19,5 @@ module.exports = function(app) {
   app.post("/api/addUserTag", bodyParser.json(), foodController.addUserCreatedTag);
   app.post("/api/signinuser", bodyParser.json(), controller.signinUser);
   app.post("/api/editUser", bodyParser.json(), controller.editUser);
+  app.post("/api/editUserPreferences", bodyParser.json(), controller.editUserPreferences);
 };
