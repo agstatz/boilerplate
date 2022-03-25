@@ -143,7 +143,7 @@ exports.editUserPreferences = (req, res) => {
     {username: req.body.data.username},
     {
       mealSwipes: req.body.data.mealSwipes,
-      $push: { allergies: req.body.data.allergies  }
+      allergies: req.body.data.allergies
     }
   )
     .exec((err, user) => {
