@@ -1,8 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { NavLink } from "react-router-dom";
-import { Redirect } from "react-router-dom"
-import {Col} from "react-bootstrap";
+import { Link, Redirect } from "react-router-dom"
+import { Container } from "react-bootstrap";
 
 
 const ColoredLine = ({ color }) => (
@@ -128,8 +126,10 @@ export default class Dining_Court extends React.Component {
         if (this.state.loading) {
             return (
                 <div className="App">
-                    <header className="App-header">
-                    </header>
+                    <Container style={{ paddingTop: '18vh', paddingBottom: '18vh'}} >
+                        <header className="p-3 my-4 mx-4 bg-light border rounded">
+                        </header>
+                    </Container>
                 </div>
             )
         }
@@ -144,9 +144,11 @@ export default class Dining_Court extends React.Component {
             >{d.props.children}</d.type>);
         return (
             <div className="App">
-                <header className="p-3 my-4 mx-4 bg-light border rounded">
-                    {listItems}
-                </header>
+                <Container style={{ paddingTop: '18vh', paddingBottom: '18vh'}} >
+                    <header className="p-3 my-4 mx-4 bg-light border rounded">
+                        {listItems}
+                    </header>
+                </Container>
             </div>
         );
     }

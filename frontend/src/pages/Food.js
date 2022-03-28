@@ -1,7 +1,6 @@
 import React from "react";
-import { Stack, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { Grid } from '@mui/material';
+import { Stack, Button, Container } from "react-bootstrap";
+import { Link, useParams } from "react-router-dom";
 import queryString from "query-string";
 
 const url = 'http://localhost:3001/'
@@ -28,7 +27,7 @@ export default class Food extends React.Component {
             loading: true
         };
         this.callAPI = this.callAPI.bind(this);
-        this.state.queries = queryString.parse(window.location.search);
+        this.state.name = window.location.search.substring(1).split('_').join(' ');
     }
 
     componentDidMount() {
@@ -54,17 +53,23 @@ export default class Food extends React.Component {
         if (this.state.loading) {
             return (
                 <div className="App">
-                    <header className="App-header">
-                    </header>
+                    <Container style={{ paddingTop: '18vh', paddingBottom: '18vh'}} >
+                        <header className="p-3 my-4 mx-4 bg-light border rounded">
+                            <h2><strong>{this.state.name}</strong></h2>
+                        </header>
+                    </Container>
                 </div>
             )
         }
 
         return (
             <div className="App">
-                <header className="App-header">
-                </header>
-            </div>
+                    <Container style={{ paddingTop: '18vh', paddingBottom: '18vh'}} >
+                        <header className="p-3 my-4 mx-4 bg-light border rounded">
+                            <h2><strong>{this.state.name}</strong></h2>
+                        </header>
+                    </Container>
+                </div>
         );
         var App = React.createClass({
             render: function() {
