@@ -1,7 +1,8 @@
 import React from "react";
 import { Stack, Button, Container } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import queryString from "query-string";
+import { StarRating } from '../components/';
 
 const url = 'http://localhost:3001/'
 
@@ -56,6 +57,11 @@ export default class Food extends React.Component {
                     <Container style={{ paddingTop: '18vh', paddingBottom: '18vh'}} >
                         <header className="p-3 my-4 mx-4 bg-light border rounded">
                             <h2><strong>{this.state.name}</strong></h2>
+                            <StarRating
+                                defaultValue={5}
+                                min={0}
+                                max={10}
+                                step={0.5} />
                         </header>
                     </Container>
                 </div>

@@ -38,3 +38,7 @@
     color: black;
     border-color: black;
 }
+
+.rating-stars {
+    font-size: 20px;
+}
