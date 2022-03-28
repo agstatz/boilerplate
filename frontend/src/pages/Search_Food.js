@@ -1,5 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
+import { Container, Button } from "react-bootstrap";
 
 
 const ColoredLine = ({ color }) => (
@@ -17,7 +18,7 @@ const Border = ({color}) => (
         style={
         {
             border: '3px rgb(86, 10, 10) solid',
-            padding: '9px',
+            ping: '9px',
         }
     }
     </div>
@@ -187,9 +188,14 @@ export default class Search_Food extends React.Component {
         if (this.state.loading) {
             return (
                 <div className="App">
-                    <header className="App-header">
+                <Container style={{ paddingTop: '18vh', paddingBottom: '18vh'}} >
+                    <header className="p-3 my-4 mx-4 bg-light border rounded">
+                        <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}} ><strong>Advanced Search</strong></h1>
+                        <ColoredLine color="grey"></ColoredLine>
+                        
                     </header>
-                </div>
+                </Container>
+            </div>
             )
         }
         let i = 0;
@@ -230,59 +236,60 @@ export default class Search_Food extends React.Component {
 
         return (
             <div className="App">
-                <header className="p-3 my-4 mx-4 bg-light border rounded">
-
-                    <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}} >Advanced Search</h1>
-                    <ColoredLine color="grey"></ColoredLine>
-                    <div style={{
-                        width: '50%',
-                        margin: '0 auto',
-                        alignItems: 'center'}}>
-                        <input
-                            type="text"
-                            id="search"
-                            placeholder="Food Name"
-                            name="search"
-                        />
-                    </div>
-                    <div style={{
+                <Container style={{ paddingTop: '18vh', paddingBottom: '18vh'}} >
+                    <header className="p-3 my-4 mx-4 bg-light border rounded">
+                        <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}} ><strong>Advanced Search</strong></h1>
+                        <ColoredLine color="grey"></ColoredLine>
+                        <div style={{
+                            width: '50%',
+                            margin: '0 auto',
+                            alignItems: 'center'}}>
+                            <input
+                                type="text"
+                                id="search"
+                                placeholder="Food Name"
+                                name="search"
+                            />
+                        </div>
+                        <div style={{
+                                textAlign: 'center',
+                                fontWeight: 'bold'
+                            }}>
+                            <a><br></br>Tags</a>
+                        </div>
+                        <div style={{
+                            width: '50%',
+                            margin: '0 auto',
+                            alignItems: 'center'}}>
+                            {listItems}
+                        </div>
+                        <div style={{
                             textAlign: 'center',
                             fontWeight: 'bold'
                         }}>
-                        <a><br></br>Tags</a>
-                    </div>
-                    <div style={{
-                        width: '50%',
-                        margin: '0 auto',
-                        alignItems: 'center'}}>
-                        {listItems}
-                    </div>
-                    <div style={{
-                        textAlign: 'center',
-                        fontWeight: 'bold'
-                    }}>
-                        <a><br></br>Nutrition</a>
-                    </div>
-                    <div style={{
-                        width: '50%',
-                        margin: '0 auto',
-                        alignItems: 'center'}}>
-                        {listItems2}
-                        <button onClick={this.addButton}>
-                            Add
-                        </button>
-                        {listItems3}
-                    </div>
-                    <div style={{
-                        textAlign: 'center',
-                        fontWeight: 'bold'
-                    }}>
-                        <a>
-                            <br></br>
-                            <button onClick={this.submitButton}>Submit</button>
-                        </a>
-                    </div>
-                </header>
+                            <a><br></br>Nutrition</a>
+                        </div>
+                        <div style={{
+                            width: '50%',
+                            margin: '0 auto',
+                            alignItems: 'center'}}>
+                            {listItems2}{' '}
+                            <Button onClick={this.addButton} size="sm">
+                                Add
+                            </Button>
+                            {listItems3}
+                        </div>
+                        <div style={{
+                            textAlign: 'center',
+                            fontWeight: 'bold'
+                        }}>
+                            <a>
+                                <br></br>
+                                <Button onClick={this.submitButton}>Submit</Button>
+                            </a>
+                        </div>
+                    </header>
+                </Container>
             </div>
         );
     }
@@ -317,12 +324,12 @@ export default class Search_Food extends React.Component {
                 </select>
             );
             clonedToPush.props.children.push(" " + this.state.nutritionSelected + " ");
-            clonedToPush.props.children.push(<button style={{
+            clonedToPush.props.children.push(<Button style={{
                 borderLeft: '2px solid grey',
                 borderRight: '2px solid grey',
                 borderTop: '2px solid grey',
                 textAlign: 'right'
-            }} value={this.state.index} onClick={this.removeButton}>Remove</button>);
+            }} value={this.state.index} onClick={this.removeButton}>Remove</Button>);
             this.state.include.push(this.state.nutritionSelected);
             this.state.html3.push(clonedToPush);
             this.state.index++;

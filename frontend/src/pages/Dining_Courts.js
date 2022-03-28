@@ -113,12 +113,14 @@ export default class Dining_Courts extends React.Component {
                     <Container style={{ paddingTop: '18vh', paddingBottom: '18vh'}} >
                         <header className="my-5 mx-5 bg-light border rounded justify-content-center" style={{textAlignVertical: "center",textAlign: "center",}}>
                             <h1 key={"class"} className="App-title" style={{textAlignVertical: "center",textAlign: "center",}}><strong>Dining Courts</strong></h1>
-                            <Placeholder xs={12} />
-                            <Placeholder xs={12} />
-                            <Placeholder xs={12} />
-                            <Placeholder xs={12} />
-                            <Placeholder xs={12} />
-                            <Placeholder xs={12} />
+                            <Container className="p-2">
+                                <Placeholder xs={12} />
+                                <Placeholder xs={12} />
+                                <Placeholder xs={12} />
+                                <Placeholder xs={12} />
+                                <Placeholder xs={12} />
+                                <Placeholder xs={12} />
+                            </Container>
                         </header>
                     </Container>
                 </div>
