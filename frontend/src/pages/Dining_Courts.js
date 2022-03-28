@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
-import { Container } from 'react-bootstrap';
+import { Container, Placeholder } from 'react-bootstrap';
 
 const ColoredLine = ({ color }) => (
     <hr
@@ -109,9 +109,18 @@ export default class Dining_Courts extends React.Component {
     render() {
         if (this.state.loading) {
             return (
-                <div className="App">
-                    <header className="App-header">
-                    </header>
+                <div className="App" >
+                    <Container style={{ paddingTop: '18vh', paddingBottom: '18vh'}} >
+                        <header className="my-5 mx-5 bg-light border rounded justify-content-center" style={{textAlignVertical: "center",textAlign: "center",}}>
+                            <h1 key={"class"} className="App-title" style={{textAlignVertical: "center",textAlign: "center",}}><strong>Dining Courts</strong></h1>
+                            <Placeholder xs={12} />
+                            <Placeholder xs={12} />
+                            <Placeholder xs={12} />
+                            <Placeholder xs={12} />
+                            <Placeholder xs={12} />
+                            <Placeholder xs={12} />
+                        </header>
+                    </Container>
                 </div>
             )
         }
@@ -125,12 +134,13 @@ export default class Dining_Courts extends React.Component {
                 height={d.props.height} width={d.props.height}
             >{d.props.children}</d.type>);
         return (
-            <div className="App">
-
-                <header className="my-5 mx-5 bg-light border rounded justify-content-center" style={{textAlignVertical: "center",textAlign: "center",}}>
-                    <h1 key={"class"} className="App-title" style={{textAlignVertical: "center",textAlign: "center",}}>Dining Courts</h1>
-                    {listItems}
-                </header>
+            <div className="App" >
+                <Container style={{ paddingTop: '18vh', paddingBottom: '18vh'}} >
+                    <header className="my-5 mx-5 bg-light border rounded justify-content-center" style={{textAlignVertical: "center",textAlign: "center",}}>
+                        <h1 key={"class"} className="App-title" style={{textAlignVertical: "center",textAlign: "center",}}><strong>Dining Courts</strong></h1>
+                        {listItems}
+                    </header>
+                </Container>
             </div>
         );
     }
