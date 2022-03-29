@@ -2,7 +2,6 @@ import React from "react";
 import {Link, Redirect} from "react-router-dom";
 
 import { Container, Placeholder, Button, Form } from "react-bootstrap";
-import { Redirect } from "react-router-dom";
 
 const ColoredLine = ({ color }) => (
     <hr
