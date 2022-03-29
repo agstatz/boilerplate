@@ -79,26 +79,12 @@ export default class Search_Food extends React.Component {
         };
         this.callAPI = this.callAPI.bind(this);
     }
-    updateDimensions = () => {
-        // this.setState({width : window.innerWidth})
-        // let i = 0;
-        // while (true) {
-        //     let element = document.getElementById("picture" + i)
-        //     i++;
-        //     if (element == null) {
-        //         break;
-        //     }
-        //     element.width = this.state.width*0.8
-        //     element.height = this.state.width*0.8*0.5625
-        // }
-    };
-
     componentDidMount() {
         this.callAPI();
-        window.addEventListener('resize', this.updateDimensions);
     }
 
     handleOnChange = (position) => {
+        console.log("handleonchange")
         if (position.target.checked) {//add to list
             this.state.tags.push(position.target.name)
         } else {//remove from list

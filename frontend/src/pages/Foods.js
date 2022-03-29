@@ -117,6 +117,11 @@ export default class Foods extends React.Component {
                         <Button type="button">
                             Advanced Search
                         </Button>
+                    </Link>{' '}
+                    <Link to="/Search" style={{textAlign : "left"}}>
+                        <Button type="button">
+                            Reset Search Settings
+                        </Button>
                     </Link>
                 </form>
                 <header className="App-header p-3 my-4 mx-4 bg-light border rounded">

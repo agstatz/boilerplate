@@ -420,6 +420,83 @@ app.get('/Picture', (req, res) => {
   console.log(__dirname)
 })
 
+app.get('/Cuisine', (req, res) => {
+
+  MongoClient.connect(url, function(err, dbt) {
+    if (err) throw err;
+    let db = dbt.db("boilerplate");
+    db.collection("filters").find({ name:"cuisines" }).toArray(function(err, result) {
+      if (err) throw err;
+      result = result.map(a => a.list); //filters only the names of foods
+      result = result[0];
+      //result = result.sort((a, b) => a.localeCompare(b)); //sorts names alphabetically
+      result.unshift("Any");
+      console.log(result);
+      res.send(result);
+    });
+  });
+  console.log('/Cuisine sent');
+})
+
+app.get('/Cuisine_Edit', (req, res) => {
+
+  MongoClient.connect(url, function(err, dbt) {
+    if (err) throw err;
+    let db = dbt.db("boilerplate");
+    db.collection("filters").find({ name:"cuisines_edit" }).toArray(function(err, result) {
+      if (err) throw err;
+      result = result.map(a => a.list); //filters only the names of foods
+      result = result[0];
+      //result = result.sort((a, b) => a.localeCompare(b)); //sorts names alphabetically
+      result.unshift("Any");
+      console.log(result);
+      res.send(result);
+    });
+  });
+  console.log('/Cuisine_Edit sent');
+})
+
+app.post('/Update_Food', (req, res) => {
+  MongoClient.connect(url, function(err, dbt) {
+    console.log("updating food")
+    console.log(req.query)
+    let db = dbt.db("boilerplate");
+    db.collection("foods").find({name: req.query.name}).toArray(function(err, result) {
+      if (err) throw err;
+      if (result.length === 0) {
+        console.log("empty")
+        res.send("Food does not exist");
+        return;
+      }
+      console.log(req.query.servingSize);
+      const updateDoc = {
+        $set: {
+          name: req.query.newName,
+          servingSize: req.query.servingSize,
+          calories: req.query.calories,
+          totalFat: req.query.totalFat,
+          saturatedFat: req.query.saturatedFat,
+          cholesterol: req.query.cholesterol,
+          sodium: req.query.sodium,
+          totalCarbohydrate: req.query.totalCarbohydrate,
+          dietaryFiber: req.query.dietaryFiber,
+          sugar: req.query.sugar,
+          addedSugar: req.query.addedSugar,
+          protein: req.query.protein,
+          calcium: req.query.calcium,
+          iron: req.query.iron,
+          diet: req.query.diet,
+          cuisine: req.query.cuisine,
+          ingredients: req.query.ingredients,
+          dietaryTags: req.query.tags,
+          groups: req.query.groups,
+        },
+      };
+      let ret = db.collection("foods").updateOne( { name : req.query.name } , updateDoc)
+    });
+  });
+})
+
 // Ensure database exists
 try {
   if (requireDatabase) {
