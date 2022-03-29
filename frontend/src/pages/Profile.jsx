@@ -5,15 +5,16 @@
  * @author Ashton Statz, Gaurav Manglani
  */
 
+ import axios from 'axios';
  import { Row, Card, Col, Button, Stack, Container, Placeholder } from "react-bootstrap";
  import { Tabs, Tab } from "react-bootstrap-tabs";
  import { RecommendationList, MealPlanList, RecommendedDiningCourtList } from "../components";
  import { PageNotFound } from "./";
 
- import { store, ClearForm } from "../store/store";
+ import { store, ClearForm, UpdateForm } from "../store/store";
 
  import { useParams, useHistory } from 'react-router-dom';
- import { useEffect, useState } from 'react';
+ import { useEffect } from 'react';
 
  function Profile(props) {
 
@@ -21,10 +22,30 @@
 
     const { id } = useParams();
     const username = store.getState().app.username;
+    const mealSwipes = store.getState().app.mealSwipes;
 
     const handleLogout = () => {
         store.dispatch(ClearForm());
         history.push('/');
+    }
+
+    const handleMealSwipeReset = () => {
+        const userInfo = {
+            username: username,
+            mealSwipes: 20
+        }
+
+        axios
+            .post('http://localhost:3001/api/resetUserMealSwipes', { data: userInfo })
+            .then((res) => {
+                console.log(res);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+
+        store.dispatch(UpdateForm(("mealSwipes"), 20));
+        window.location.reload();
     }
 
     useEffect(() => {
@@ -105,6 +126,15 @@
                                 </Placeholder>
                             </Tab>
                         </Tabs>
+                        <Row className="mt-3">
+                            <Col className="text-center">
+                                <strong>{mealSwipes}</strong>
+                                <p>Meal Swipes Left</p>
+                            </Col>
+                            <Col className="text-center">
+                                <Button onClick={handleMealSwipeReset} className="btn-sm" variant="outline-primary">Reset Week</Button>
+                            </Col>
+                        </Row>
                         </Card.Body>
                     </Card>
                 </Col>

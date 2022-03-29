@@ -54,7 +54,7 @@ const User = mongoose.model(
     ],
     allergies: [
         {
-            type: mongoose.Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.String,
             ref: "food_categories"
         }
     ],

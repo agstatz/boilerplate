@@ -68,7 +68,7 @@ class RegisterForm extends React.Component {
         this.setState({ message: "" })
         var noErr = true
         if (noErr && !/^([a-zA-Z]{4,})$/.test(this.state.username)) {
-            this.setState({ message: "Username must be at least 4 characters long" })
+            this.setState({ message: "Username must be at least 4 characters long and cannot contain numbers or symbols" })
             noErr = false
         }
         if (noErr && !/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(this.state.email)) {
@@ -76,14 +76,14 @@ class RegisterForm extends React.Component {
             noErr = false
         }
         if (noErr && !/^([a-zA-Z]{2,})$/.test(this.state.firstName)) {
-            this.setState({ message: "Invalid first name length" })
+            this.setState({ message: "Invalid first name" })
             noErr = false
         }
         if (noErr && !/^([a-zA-Z]{2,})$/.test(this.state.lastName)) {
-            this.setState({ message: "Invalid last name length" })
+            this.setState({ message: "Invalid last name" })
             noErr = false
         }
-        if (noErr && !/^([a-zA-Z0-9]{8,})$/.test(this.state.password)) {
+        if (noErr && !/^([\S]{8,})$/.test(this.state.password)) {
             this.setState({ message: "Password must be at least 8 characters" })
             noErr = false
         }
@@ -160,7 +160,7 @@ class RegisterForm extends React.Component {
                     </Form.Group>
                     <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='lastName'>
                         <Form.Label>Last Name</Form.Label>
-                        <Form.Control type="lirstName" placeholder="Enter your last name" onChange={this.handleChange}/>
+                        <Form.Control type="lastName" placeholder="Enter your last name" onChange={this.handleChange}/>
                     </Form.Group>
                     <Form.Group className="mb-3" style={{width: '16.5em'}} controlId="password" >
                         <Form.Label>Password</Form.Label>

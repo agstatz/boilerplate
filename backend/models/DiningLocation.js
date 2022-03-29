@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-var Schema = mongoose.Schema;
 
-const coursesSchema = Schema({
+const coursesSchema = new mongoose.Schema({
     date: String,
     courseName: String,
     foods: [
@@ -21,13 +20,14 @@ const DiningLocationSchema = mongoose.Schema({
     xLocation: Number,
     yLocation: Number,
     occupancy: Number,
+    hidden: Boolean,
     comments: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "comments"
         }
     ],
-    courseSchedule: {
+    courseScheduleId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "course_schedules"
     },

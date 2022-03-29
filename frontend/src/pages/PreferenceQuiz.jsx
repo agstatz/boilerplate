@@ -3,14 +3,15 @@
  * Upon signing up, a user must take a quiz that will
  * assess their food preferences.
  * 
- * @author Ashton Statz
+ * @author Ashton Statz, Gaurav Manglani
  */
 
+import axios from 'axios';
 import { Stack, Container, Button, Form } from "react-bootstrap";
 import { useState } from "react";
 import RangeSlider from 'react-bootstrap-range-slider';
 
-import { store } from "../store/store.js"
+import { store, UpdateForm } from "../store/store.js"
 
 /**
  * QuizQuestion.tsx
@@ -18,17 +19,16 @@ import { store } from "../store/store.js"
  * assess their food preferences. This holds the framework
  * for an individual question component
  * 
- * @author Ashton Statz
+ * @author Ashton Statz, Gaurav Manglani
  */
 
 function PreferenceQuiz() {
-
     const [meatScore, setMeatScore] = useState(0);                  // meat dietary restrictions
-    const [dairyScore, setDairyScore] = useState(0);                // dairy dietary restrictions
-    const [glutenScore, setGlutenScore] = useState(0);              // gluten dietary restrictions
-    const [nutScore, setNutScore] = useState(0);                    // nut dietary restrictions
+    const [dairyScore, setDairyScore] = useState(false);            // dairy dietary restrictions
+    const [glutenScore, setGlutenScore] = useState(false);          // gluten dietary restrictions
+    const [nutScore, setNutScore] = useState(false);                // nut dietary restrictions
     const [nutritionScore, setNutritionScore] = useState(0);        // nutrition dietary score
-
+    const [mealSwipes, setMealSwipes] = useState(7);                // weekly meel swipes
 
     const [questionNumber, setQuestionNumber] = useState(0);        // stores the q number user is on
 
@@ -42,6 +42,42 @@ function PreferenceQuiz() {
     const decrementQuestion = () => {
         const newNum = questionNumber - 1;
         setQuestionNumber(newNum < 0 ? 0 : newNum);
+    }
+
+    const submitForm = (event) => {
+        // prevent page from reloading
+        event.preventDefault();
+
+        var allergies = []
+        if (dairyScore) {
+            allergies.push("dairy")
+        }
+        if (glutenScore) {
+            allergies.push("gluten")
+        }
+        if (nutScore) {
+            allergies.push("nuts")
+        }
+
+        const userInfo = {
+            username: username,
+            mealSwipes: mealSwipes,
+            allergies: allergies
+        }
+
+        axios
+            .post('http://localhost:3001/api/editUserPreferences', { data: userInfo })
+            .then((res) => {
+                console.log(res);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+
+            store.dispatch(UpdateForm(("mealSwipes"), mealSwipes));
+
+        const newNum = questionNumber + 1;
+        setQuestionNumber(newNum);
     }
 
     const getQuizContent = () => {
@@ -108,11 +144,15 @@ function PreferenceQuiz() {
                                 type='radio'
                                 label='Yes'
                                 name="dairy_allergy"
+                                checked={dairyScore}
+                                onChange={() => setDairyScore(true)}
                             />
                             <Form.Check 
                                 type='radio'
                                 label='No'
                                 name="dairy_allergy"
+                                checked={!dairyScore}
+                                onChange={() => setDairyScore(false)}
                             />
                         </Stack>
                         <Container className="d-flex justify-content-center">
@@ -133,11 +173,15 @@ function PreferenceQuiz() {
                                 type='radio'
                                 label='Yes'
                                 name="gluten_allergy"
+                                checked={glutenScore}
+                                onChange={() => setGlutenScore(true)}
                             />
                             <Form.Check 
                                 type='radio'
                                 label='No'
                                 name="gluten_allergy"
+                                checked={!glutenScore}
+                                onChange={() => setGlutenScore(false)}
                             />
                         </Stack>
                         <Container className="d-flex justify-content-center">
@@ -158,11 +202,15 @@ function PreferenceQuiz() {
                                 type='radio'
                                 label='Yes'
                                 name="nut_allergy"
+                                checked={nutScore}
+                                onChange={() => setNutScore(true)}
                             />
                             <Form.Check 
                                 type='radio'
                                 label='No'
                                 name="nut_allergy"
+                                checked={!nutScore}
+                                onChange={() => setNutScore(false)}
                             />
                         </Stack>
                         <Container className="d-flex justify-content-center">
@@ -221,11 +269,33 @@ function PreferenceQuiz() {
                         </Stack>
                         <Container className="d-flex justify-content-center">
                             <Button className="mx-2" onClick={decrementQuestion}><i className="bi bi-chevron-left"></i> Back</Button>
-                            <Button className="mx-2" onClick={incrementQuestion}>Submit Preferences <i className="bi bi-chevron-right"></i></Button>
+                            <Button className="mx-2" onClick={incrementQuestion}>Next <i className="bi bi-chevron-right"></i></Button>
                         </Container>
                     </div>
                 );
             case 7:
+                return (
+                    <div className="p-3 my-4 mx-4 bg-light border rounded">
+                        <Stack gap={2}>
+                            <h1>Question 7 </h1>
+                            <p>How many meal swipes do you have available per week?</p>
+                            <Container className="p-1 d-flex justify-content-center">
+                            <RangeSlider
+                                value={mealSwipes}
+                                onChange={changeEvent => setMealSwipes(changeEvent.target.value)}
+                                min={7}
+                                max={30}
+                                />
+                            </Container>
+                            <br />
+                        </Stack>
+                        <Container className="d-flex justify-content-center">
+                            <Button className="mx-2" onClick={decrementQuestion}><i className="bi bi-chevron-left"></i> Back</Button>
+                            <Button className="mx-2" onClick={submitForm}>Submit Preferences <i className="bi bi-chevron-right"></i></Button>
+                        </Container>
+                    </div>
+                );
+            case 8:
                 return (
                     <div className="p-3 my-4 mx-4 bg-light border rounded">
                         <Stack gap={2}>
