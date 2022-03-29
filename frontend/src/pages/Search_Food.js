@@ -1,5 +1,7 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
+
+import { Container, Placeholder, Button, Form } from "react-bootstrap";
 
 
 const ColoredLine = ({ color }) => (
@@ -177,7 +179,7 @@ export default class Search_Food extends React.Component {
             } finally {
                 this.setState({nutrition: response})
                 this.setState({nutritionSelected: this.state.nutrition.data[0]})
-                let toPush = <select id="drop" onChange={this.handleDrop}></select>;
+                let toPush = <select class="form-select" style={{width:'auto'}} id="drop" onChange={this.handleDrop}></select>;
                 let clonedToPush = React.cloneElement(
                     toPush,
                     { children: [] }
@@ -194,7 +196,7 @@ export default class Search_Food extends React.Component {
             } finally {
                 this.setState({diet : response})
                 this.setState({dietSelected : this.state.diet.data[0]})
-                let toPush = <select id="drop2" onChange={this.handleDrop3}></select>;
+                let toPush = <select class="form-select" id="drop2" onChange={this.handleDrop3}></select>;
                 let clonedToPush = React.cloneElement(
                     toPush,
                     { children: [] }
@@ -211,7 +213,7 @@ export default class Search_Food extends React.Component {
             } finally {
                 this.setState({group : response})
                 this.setState({groupSelected : this.state.group.data[0]})
-                let toPush = <select id="drop3" onChange={this.handleDrop4}></select>;
+                let toPush = <select class="form-select" id="drop3" onChange={this.handleDrop4}></select>;
                 let clonedToPush = React.cloneElement(
                     toPush,
                     { children: [] }
@@ -228,7 +230,7 @@ export default class Search_Food extends React.Component {
             } finally {
                 this.setState({cuisine : response})
                 this.setState({cuisineSelected : this.state.cuisine.data[0]})
-                let toPush = <select id="drop4" onChange={this.handleDrop5}></select>;
+                let toPush = <select class="form-select" id="drop4" onChange={this.handleDrop5}></select>;
                 let clonedToPush = React.cloneElement(
                     toPush,
                     { children: [] }
@@ -262,7 +264,7 @@ export default class Search_Food extends React.Component {
                 height={d.props.height} width={d.props.height}
                 type={d.props.type} name={d.props.name}
                 value={d.props.value} checked={d.props.checked}
-                onChange={d.props.onChange}
+                onChange={d.props.onChange} class={d.props.class}
             >{d.props.children}</d.type>);
 
         const listItems2 = this.state.html2.map((d) =>
@@ -274,7 +276,7 @@ export default class Search_Food extends React.Component {
                 height={d.props.height} width={d.props.height}
                 type={d.props.type} name={d.props.name}
                 value={d.props.value} checked={d.props.checked}
-                onChange={d.props.onChange}
+                onChange={d.props.onChange} class={d.props.class}
             >{d.props.children}</d.type>);
         const listItems3 = this.state.html3.map((d) =>
             <d.type
@@ -285,7 +287,7 @@ export default class Search_Food extends React.Component {
                 height={d.props.height} width={d.props.height}
                 type={d.props.type} name={d.props.name}
                 value={d.props.value} checked={d.props.checked}
-                onChange={d.props.onChange}
+                onChange={d.props.onChange} class={d.props.class}
             >{d.props.children}</d.type>);
         const listItems4 = this.state.html4.map((d) =>
             <d.type
@@ -296,7 +298,7 @@ export default class Search_Food extends React.Component {
                 height={d.props.height} width={d.props.height}
                 type={d.props.type} name={d.props.name}
                 value={d.props.value} checked={d.props.checked}
-                onChange={d.props.onChange}
+                onChange={d.props.onChange} class={d.props.class}
             >{d.props.children}</d.type>);
         const listItems5 = this.state.html5.map((d) =>
             <d.type
@@ -307,7 +309,7 @@ export default class Search_Food extends React.Component {
                 height={d.props.height} width={d.props.height}
                 type={d.props.type} name={d.props.name}
                 value={d.props.value} checked={d.props.checked}
-                onChange={d.props.onChange}
+                onChange={d.props.onChange} class={d.props.class}
             >{d.props.children}</d.type>);
         const listItems6 = this.state.html6.map((d) =>
             <d.type
@@ -318,14 +320,15 @@ export default class Search_Food extends React.Component {
                 height={d.props.height} width={d.props.height}
                 type={d.props.type} name={d.props.name}
                 value={d.props.value} checked={d.props.checked}
-                onChange={d.props.onChange}
+                onChange={d.props.onChange} class={d.props.class}
             >{d.props.children}</d.type>);
 
         return (
             <div className="App">
+                <Container style={{ paddingTop: '18vh', paddingBottom: '18vh'}} >
                 <header className="p-3 my-4 mx-4 bg-light border rounded">
 
-                    <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}} ><br></br>Advanced Search</h1>
+                    <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}} >Advanced Search</h1>
                     <ColoredLine color="grey"></ColoredLine>
                     <div style={{
                         width: '50%',
@@ -396,11 +399,15 @@ export default class Search_Food extends React.Component {
                         width: '50%',
                         margin: '0 auto',
                         alignItems: 'center'}}>
-                        {listItems2}
-                        <button onClick={this.addButton}>
-                            Add
-                        </button>
+                        <div class={"input-group"}>
+                            {listItems2}
+                            <Button onClick={this.addButton}>
+                                Add
+                            </Button>
+                        </div>
+                        <div class={"input-group"}>
                         {listItems3}
+                        </div>
                     </div>
                     <div style={{
                         textAlign: 'center',
@@ -408,10 +415,11 @@ export default class Search_Food extends React.Component {
                     }}>
                         <a>
                             <br></br>
-                            <button onClick={this.submitButton}>Submit</button>
+                            <Button onClick={this.submitButton}>Submit</Button>
                         </a>
                     </div>
                 </header>
+                </Container>
             </div>
         );
     }
@@ -444,24 +452,20 @@ export default class Search_Food extends React.Component {
     addButton = (event) => {
         if (this.state.onList.indexOf(this.state.nutritionSelected) == -1) {
             this.state.onList.push(this.state.nutritionSelected);
-            let toPush = <div id={"nutrition" + this.state.index}></div>;
+            let toPush = <div class={"input-group"} id={"nutrition" + this.state.index}></div>;
             let clonedToPush = React.cloneElement(
                 toPush,
                 { children: [] }
             );
             clonedToPush.props.children.push(
-                <select id={"drop"+ this.state.index} onChange={this.handleDrop2} >
+                <select class="form-select w-25" id={"drop"+ this.state.index} onChange={this.handleDrop2} >
                     <option value="include">Include</option>
                     <option value="exclude">Exclude</option>
                 </select>
             );
-            clonedToPush.props.children.push(" " + this.state.nutritionSelected + " ");
-            clonedToPush.props.children.push(<button style={{
-                borderLeft: '2px solid grey',
-                borderRight: '2px solid grey',
-                borderTop: '2px solid grey',
-                textAlign: 'right'
-            }} value={this.state.index} onClick={this.removeButton}>Remove</button>);
+            clonedToPush.props.children.push(<a class="btn btn-static w-50 text-left">{this.state.nutritionSelected}</a>);
+            clonedToPush.props.children.push(<Button
+                value={this.state.index} onClick={this.removeButton}>Remove</Button>);
             this.state.include.push(this.state.nutritionSelected);
             this.state.html3.push(clonedToPush);
             this.state.index++;
@@ -470,12 +474,15 @@ export default class Search_Food extends React.Component {
     }
 
     removeButton = (event) => {
-        let string = this.state.html3.pop({id : "drop" + event.target.value}).props.children[1]
+        console.log("removebutton")
+        let string = this.state.html3.pop({id : "drop" + event.target.value}).props.children[1].props.children
+        console.log(string)
         string = string.substring(1, string.length - 1);
         this.state.onList.pop(string);
         this.state.include.pop(string);
         this.state.exclude.pop(string);
-        this.forceUpdate()
+        console.log("updating");
+        this.forceUpdate();
     }
 
     submitButton = (event) => {

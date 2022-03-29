@@ -12,7 +12,7 @@ const axios = require('axios')
 
 
 
-export default class Food extends React.Component {
+export default class EditFood extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -35,6 +35,12 @@ export default class Food extends React.Component {
         this.state.loading = true;
         let loggedIn = true;
         let admin = true;
+        if (!admin) {
+            this.state.html.push(<h2>You do not have access to this page.</h2>)
+            this.state.loading = false;
+            this.forceUpdate();
+            return;
+        }
 
         try {
             var response = await axios.get(url + `food?name=` + this.state.queries.name);
@@ -46,14 +52,6 @@ export default class Food extends React.Component {
                 this.state.html.push(<a>This food ({this.state.queries.name}) does not exist.</a>)
                 console.log("NA")
             } else {
-                if (admin) {
-                    this.state.adminhtml.push(
-                        <Link to={"edit_food?name=" + this.state.queries.name}>
-                            <Button type="button">
-                                Edit Food
-                            </Button>
-                        </Link>)
-                }
                 this.setState({data: response.data[0]})
                 console.log(this.state.data)
                 this.state.html.push(<h1>{this.state.data.name}</h1>)
@@ -96,9 +94,6 @@ export default class Food extends React.Component {
                 this.state.html.push(<hr class="class-2"></hr>)
                 this.state.html.push(<a>Ingredients: {this.state.data.ingredients}</a>)
             }
-
-
-
             this.state.loading = false;
             this.forceUpdate();
         }

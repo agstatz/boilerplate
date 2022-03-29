@@ -262,6 +262,7 @@ app.get('/Foods', (req, res) => {
 })
 app.get('/Food', (req, res) => {
   let queryName = req.query.name
+  queryName = queryName.split('_').join(' ');
   console.log(queryName);
 
   MongoClient.connect(url, function(err, dbt) {
