@@ -239,13 +239,13 @@ exports.editUserPreferences = (req, res) => {
                 if (err) {
                   return res.status(500).send({ message: err });
                 }
+                res.status(200).send({
+                  message: "User preferences updated successfully"
+                });
               })
             }
           })
         )
-        res.status(200).send({
-          message: "User preferences updated successfully"
-        });
       }
       else {
         user.mealSwipes = req.body.data.mealSwipes
