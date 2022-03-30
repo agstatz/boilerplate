@@ -146,7 +146,7 @@ exports.resetUser = (req, res) => {
       carbOpt: 0,
       starNotifs: 0,
       newMenuNotifs: 0,
-      mealSwipes: 11,
+      mealSwipes: 0,
       friends: [],
       diets: [],
       allergies: [],
