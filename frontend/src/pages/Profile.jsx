@@ -57,8 +57,7 @@
     const handleMealSwipeReset = () => {
         const userInfo = {
             username: username,
-            mealSwipes: 20,
-            allergies: []
+            mealSwipes: 20
         }
 
         axios
