@@ -71,22 +71,35 @@ const buildDiningCourt = async (browser, url) => {
   const datePattern = /\/[0-9]{4}\/[0-9]{1,2}\/[0-9]{1,2}/g;
   const court_url = url.substring(0, datePattern.exec(url).index);
 
+  // Wonky way to see if the court serves late lunch
+  let servesLateLunch = false;
+  if ($("div:contains('Late Lunch')").text() !== "") servesLateLunch = true;
+
   // Get today's menu
   diningCourt.menu = await buildMenuForDate(
     browser,
     court_url,
     day,
     month,
-    year
+    year,
+    servesLateLunch
   );
   console.log(diningCourt);
 };
 
-const buildMenuForDate = async (browser, url, day, month, year) => {
+const buildMenuForDate = async (
+  browser,
+  url,
+  day,
+  month,
+  year,
+  servesLateLunch
+) => {
   const menu = {
     date: "",
     breakfast: {},
     lunch: {},
+    lateLunch: {},
     dinner: {},
   };
 
@@ -108,6 +121,16 @@ const buildMenuForDate = async (browser, url, day, month, year) => {
   console.log("Getting lunch menu");
   const lunchURL = BASE_URL + "/Lunch";
   menu.lunch = await buildMealMenu(browser, lunchURL);
+
+  // Wonky way to see if the court serves late lunch
+  if (servesLateLunch) {
+    // Get late lunch menu
+    console.log("Getting late lunch menu");
+    const lateLunchURL = BASE_URL + "/Late%20Lunch";
+    menu.lateLunch = await buildMealMenu(browser, lateLunchURL);
+  } else {
+    console.log("This location does not serve late lunch");
+  }
 
   // Get dinner menu
   console.log("Getting dinner menu");
