@@ -19,6 +19,7 @@ module.exports = function(app) {
   app.post("/api/addUserTag", bodyParser.json(), foodController.addUserCreatedTag);
   app.post("/api/signinuser", bodyParser.json(), controller.signinUser);
   app.post("/api/editUser", bodyParser.json(), controller.editUser);
+  app.post("/api/resetUser", bodyParser.json(), controller.resetUser);
   app.post("/api/editUserPreferences", bodyParser.json(), controller.editUserPreferences);
   app.post("/api/resetUserMealSwipes", bodyParser.json(), controller.resetUserMealSwipes);
 };

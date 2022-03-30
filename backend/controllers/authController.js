@@ -137,6 +137,40 @@ exports.editUser = (req, res) => {
     });
 };
 
+exports.resetUser = (req, res) => {
+  console.log('RESET1')
+  User.updateOne(
+    {username: req.body.data.username},
+    {
+      lightMode: false,
+      carbOpt: 0,
+      starNotifs: 0,
+      newMenuNotifs: 0,
+      mealSwipes: 0,
+      friends: [],
+      diets: [],
+      allergies: [],
+      locationStars: [],
+      foodStars: [],
+      foodBlacklist: [],
+      intakePlans: [],
+      mealPlans: [],
+      locationsVisited: []
+    }
+  ).exec((err, user) => {
+    if (err) {
+      res.status(500).send({ message: err });
+      return;
+    }
+    if (!user) {
+      return res.status(404).send({ message: "User Not found" });
+    }
+    res.status(200).send({
+      message: "User preferences updated successfully"
+    });
+  });
+
+}
 // edit user preferences from preference quiz
 exports.editUserPreferences = (req, res) => {
   User.updateOne(
