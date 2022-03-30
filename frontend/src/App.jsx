@@ -21,9 +21,8 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Home, PageNotFound, RegisterForm, LoginForm, PreferenceQuiz, 
          About, Profile, EditAccountForm, Popular, Map, MealPlans, Food, Foods,
          Search_Food, Dining_Court, Dining_Courts, Search, MealPlanIndividual,
-         DiningIndividual, EditLocation, AdminPanel, DiningLocationsSelection, AddLocation, EditFood } from './pages';
+         DiningIndividual, Scheduler, DietaryInfo, EditLocation, AdminPanel, DiningLocationsSelection, AddLocation, EditFood } from './pages';
 import { Footer } from './components';
-import Scheduler from './pages/Scheduler';
 
 function App() {
 
@@ -193,6 +192,7 @@ function App() {
                         <Route path="/foods" component={Foods}/>
                         <Route path="/food" component={Food}/>
                         <Route path="/dining_courts" component={Dining_Courts}/>
+                        <Route path="/dietary_info" component={DietaryInfo}/>
                         <Route path="/edit_food" component={EditFood}/>
                         <Route path="/dining-courts/:name" component={DiningIndividual}/>
                         <Route path="/dining_court" component={Dining_Court}/>
