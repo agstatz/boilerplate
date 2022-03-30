@@ -188,10 +188,9 @@ exports.editUserPreferences = (req, res) => {
       }
 
       // populating user allergies array
-      if(req.body.data.allergies)
-      {
-        var numItems = req.body.data.allergies.length
-        var itemsProcessed = 0
+      if(req.body.data.allergies && req.body.data.allergies.length > 0) {
+        var numAllergens = req.body.data.allergies.length
+        var allergensProcessed = 0
         req.body.data.allergies.forEach((allergen, i) => 
           Food_Tag.findOne(
             {name: allergen}
@@ -201,13 +200,13 @@ exports.editUserPreferences = (req, res) => {
               return res.status(500).send({message: err});
             }
             if (!food) {
-              // return res.status(404).send({ message: "Food type not found" });
+              // if the food type is not found, create a new one
               Food_Tag_Type.findOne({name: "allergen"})
                 .exec((err, tag) => {
                   if (err) {
                     return res.status(500).send({ message: err });
                   }
-                  if (!user) {
+                  if (!tag) {
                     return res.status(404).send({ message: "Allergen tag not found" });
                   }
 
@@ -232,8 +231,133 @@ exports.editUserPreferences = (req, res) => {
               user.allergies.push(food._id)
             }
 
-            itemsProcessed++;
-            if (itemsProcessed == numItems) {
+            allergensProcessed++;
+
+            if (allergensProcessed == numAllergens) {
+              if(req.body.data.diets && req.body.data.diets.length > 0) {
+                // populating user diets array
+                var numDiets = req.body.data.diets.length
+                var dietsProcessed = 0
+
+                req.body.data.diets.forEach((diet, i) => {
+                  Food_Tag.findOne(
+                    {name: diet}
+                  )
+                  .exec((err, food) => {
+                    if (err) {
+                      return res.status(500).send({message: err});
+                    }
+                    if (!food) {
+                      // if the food type is not found, create a new one
+                      Food_Tag_Type.findOne({name: "diet"})
+                        .exec((err, tag) => {
+                          if (err) {
+                            return res.status(500).send({ message: err });
+                          }
+                          if (!tag) {
+                            return res.status(404).send({ message: "Diet tag not found" });
+                          }
+        
+                          const food = new Food_Tag({
+                            name: diet,
+                            tagType: tag,
+                            foods: []
+                          });
+        
+                          food.save((err, food) => {
+                            if (err) {
+                              return res.status(500).send({ message: err });
+                            }
+                            if (!food) {
+                              return res.status(404).send({ message: "Error while saving food type" });
+                            }
+                            user.diets.push(food._id)
+                          })
+                        })
+                    }
+                    else {
+                      user.diets.push(food._id)
+                    }
+        
+                    dietsProcessed++;
+
+                    if (dietsProcessed == numDiets) {
+                      user.mealSwipes = req.body.data.mealSwipes
+                      user.save(err => {
+                        if (err) {
+                          return res.status(500).send({ message: err });
+                        }
+                        res.status(200).send({
+                          message: "User preferences updated successfully"
+                        });
+                      })
+                    }
+                  })
+                })
+              }
+              else {
+                user.mealSwipes = req.body.data.mealSwipes
+                user.save(err => {
+                  if (err) {
+                    return res.status(500).send({ message: err });
+                  }
+                  res.status(200).send({
+                    message: "User preferences updated successfully"
+                  });
+                })
+              }
+            }
+          })
+        )
+      }
+      else if(req.body.data.diets && req.body.data.diets.length > 0) {
+        // populating user diets array
+        var numDiets = req.body.data.diets.length
+        var dietsProcessed = 0
+
+        req.body.data.diets.forEach((diet, i) => {
+          Food_Tag.findOne(
+            {name: diet}
+          )
+          .exec((err, food) => {
+            if (err) {
+              return res.status(500).send({message: err});
+            }
+            if (!food) {
+              // if the food type is not found, create a new one
+              Food_Tag_Type.findOne({name: "diet"})
+                .exec((err, tag) => {
+                  if (err) {
+                    return res.status(500).send({ message: err });
+                  }
+                  if (!tag) {
+                    return res.status(404).send({ message: "Diet tag not found" });
+                  }
+
+                  const food = new Food_Tag({
+                    name: diet,
+                    tagType: tag,
+                    foods: []
+                  });
+
+                  food.save((err, food) => {
+                    if (err) {
+                      return res.status(500).send({ message: err });
+                    }
+                    if (!food) {
+                      return res.status(404).send({ message: "Error while saving food type" });
+                    }
+                    user.diets.push(food._id)
+                  })
+                })
+            }
+            else {
+              user.diets.push(food._id)
+            }
+
+            dietsProcessed++;
+
+            if (dietsProcessed == numDiets) {
               user.mealSwipes = req.body.data.mealSwipes
               user.save(err => {
                 if (err) {
@@ -245,7 +369,7 @@ exports.editUserPreferences = (req, res) => {
               })
             }
           })
-        )
+        })
       }
       else {
         user.mealSwipes = req.body.data.mealSwipes
