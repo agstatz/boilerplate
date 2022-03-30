@@ -28,6 +28,9 @@ export default class EditFood extends React.Component {
             loggedInhtml: [],
             tags: [],
             data: [],
+            diets: [],
+            groups: [],
+            isChecked: false,
         };
         this.callAPI = this.callAPI.bind(this);
         this.state.queries = queryString.parse(window.location.search);
@@ -38,13 +41,27 @@ export default class EditFood extends React.Component {
     }
 
     handleOnChange = (position) => {
-        console.log("handleonchange")
         if (position.target.checked) {//add to list
             this.state.tags.push(position.target.name)
         } else {//remove from list
             this.state.tags.splice(this.state.tags.indexOf(position.target.name),1);
         }
     };
+    handleOnChange2 = (position) => {
+        if (position.target.checked) {//add to list
+            this.state.diets.push(position.target.name)
+        } else {//remove from list
+            this.state.diets.splice(this.state.diets.indexOf(position.target.name),1);
+        }
+    };
+    handleOnChange3 = (position) => {
+        if (position.target.checked) {//add to list
+            this.state.groups.push(position.target.name)
+        } else {//remove from list
+            this.state.groups.splice(this.state.groups.indexOf(position.target.name),1);
+        }
+    };
+
 
     async callAPI() {
         this.state.loading = true;
@@ -56,22 +73,18 @@ export default class EditFood extends React.Component {
             this.forceUpdate();
             return;
         }
-
         try {
             var response = await axios.get(url + `food?name=` + this.state.queries.name);
         } catch (error) {
             console.log("error")
         } finally {
-            console.log(response)
             if (response.data[0] == null) {
                 this.state.html.push(<a>This food ({this.state.queries.name}) does not exist.</a>)
                 this.state.loading = false;
                 this.forceUpdate();
                 return;
-                console.log("NA")
             } else {
                 this.setState({data: response.data[0]})
-                console.log(this.state.data)
                 this.state.html.push(<a>Food Name:</a>)
                 this.state.html.push(<input class={"form-control"} defaultValue={this.state.data.name} id={"name"}></input>)
                 this.state.html.push(<h3><br></br>Nutrition Facts</h3>)
@@ -134,6 +147,13 @@ export default class EditFood extends React.Component {
                 console.log("error")
             } finally {
                 for (let i = 0; i < response.data.length; i++) {
+                    this.setState({isChecked: false})
+                    for (let j = 0; j < this.state.data.dietaryTags.length; j++) {
+                        if (response.data[i] === this.state.data.dietaryTags[j]) {
+                            this.setState({isChecked: true})
+                            this.state.tags.push(response.data[i])
+                        }
+                    }
                     this.state.html3.push(
                         <div className={response.data[i]}
                              onChange={this.handleOnChange}>
@@ -142,45 +162,74 @@ export default class EditFood extends React.Component {
                                 id={"box" + i}
                                 name={response.data[i]}
                                 value={response.data[i]}
-                                checked={this.state.isChecked}
+                                defaultChecked={this.state.isChecked}
+                                onChange={this.toggleChange}
                             />
                             {" " + response.data[i]}
-                        </div>)
+                        </div>
+                    )
+
                 }
             }
             try {
-                response = await axios.get(url + `Diet`);
+                response = await axios.get(url + `Diets`);
             } catch (error) {
                 console.log("error")
             } finally {
-                this.setState({diet : response})
-                this.setState({dietSelected : this.state.diet.data[0]})
-                let toPush = <select class="form-select" id="diet" onChange={this.handleDrop3}></select>;
-                let clonedToPush = React.cloneElement(
-                    toPush,
-                    { children: [] }
-                );
-                for (let i = 1; i < this.state.diet.data.length; i++) {
-                    clonedToPush.props.children.push(<option value={this.state.diet.data[i]}>{this.state.diet.data[i]}</option>)
+                for (let i = 0; i < response.data.length; i++) {
+                    this.setState({isChecked: false})
+                    for (let j = 0; j < this.state.data.diets.length; j++) {
+                        if (response.data[i] === this.state.data.diets[j]) {
+                            this.setState({isChecked: true})
+                            this.state.diets.push(response.data[i])
+                        }
+                    }
+                    this.state.html4.push(
+                        <div className={response.data[i]}
+                             onChange={this.handleOnChange2}>
+                            <input
+                                type={"checkbox"}
+                                id={"box" + i}
+                                name={response.data[i]}
+                                value={response.data[i]}
+                                defaultChecked={this.state.isChecked}
+                                onChange={this.toggleChange}
+                            />
+                            {" " + response.data[i]}
+                        </div>
+                    )
+
                 }
-                this.state.html4.push(clonedToPush)
             }
             try {
-                response = await axios.get(url + `Group`);
+                response = await axios.get(url + `Groups`);
             } catch (error) {
                 console.log("error")
             } finally {
-                this.setState({group : response})
-                this.setState({groupSelected : this.state.group.data[0]})
-                let toPush = <select class="form-select" id="group" onChange={this.handleDrop4}></select>;
-                let clonedToPush = React.cloneElement(
-                    toPush,
-                    { children: [] }
-                );
-                for (let i = 0; i < this.state.group.data.length; i++) {
-                    clonedToPush.props.children.push(<option value={this.state.group.data[i]}>{this.state.group.data[i]}</option>)
+                for (let i = 0; i < response.data.length; i++) {
+                    this.setState({isChecked: false})
+                    for (let j = 0; j < this.state.data.groups.length; j++) {
+                        if (response.data[i] === this.state.data.groups[j]) {
+                            this.setState({isChecked: true})
+                            this.state.groups.push(response.data[i])
+                        }
+                    }
+                    this.state.html5.push(
+                        <div className={response.data[i]}
+                             onChange={this.handleOnChange3}>
+                            <input
+                                type={"checkbox"}
+                                id={"box" + i}
+                                name={response.data[i]}
+                                value={response.data[i]}
+                                defaultChecked={this.state.isChecked}
+                                onChange={this.toggleChange}
+                            />
+                            {" " + response.data[i]}
+                        </div>
+                    )
+
                 }
-                this.state.html5.push(clonedToPush)
             }
             try {
                 response = await axios.get(url + `Cuisine_Edit`);
@@ -224,42 +273,42 @@ export default class EditFood extends React.Component {
                 key={"list" + i++}
                 to={d.props.to} id={d.props.id} style={d.props.style}
                 class={d.props.class} defaultValue={d.props.defaultValue}
-                onChange={d.props.onChange}
+                onChange={d.props.onChange} defaultChecked={d.props.defaultChecked}
             >{d.props.children}</d.type>);
         const listItems2 = this.state.html2.map((d) =>
             <d.type
                 key={"list" + i++}
                 to={d.props.to} id={d.props.id} style={d.props.style}
                 class={d.props.class} defaultValue={d.props.defaultValue}
-                onChange={d.props.onChange}
+                onChange={d.props.onChange} defaultChecked={d.props.defaultChecked}
             >{d.props.children}</d.type>);
         const listItems3 = this.state.html3.map((d) =>
             <d.type
                 key={"list" + i++}
                 to={d.props.to} id={d.props.id} style={d.props.style}
                 class={d.props.class} defaultValue={d.props.defaultValue}
-                onChange={d.props.onChange}
+                onChange={d.props.onChange} defaultChecked={d.props.defaultChecked}
             >{d.props.children}</d.type>);
         const listItems4 = this.state.html4.map((d) =>
             <d.type
                 key={"list" + i++}
                 to={d.props.to} id={d.props.id} style={d.props.style}
                 class={d.props.class} defaultValue={d.props.defaultValue}
-                onChange={d.props.onChange}
+                onChange={d.props.onChange} defaultChecked={d.props.defaultChecked}
             >{d.props.children}</d.type>);
         const listItems5 = this.state.html5.map((d) =>
             <d.type
                 key={"list" + i++}
                 to={d.props.to} id={d.props.id} style={d.props.style}
                 class={d.props.class} defaultValue={d.props.defaultValue}
-                onChange={d.props.onChange}
+                onChange={d.props.onChange} defaultChecked={d.props.defaultChecked}
             >{d.props.children}</d.type>);
         const listItems6 = this.state.html6.map((d) =>
             <d.type
                 key={"list" + i++}
                 to={d.props.to} id={d.props.id} style={d.props.style}
                 class={d.props.class} defaultValue={d.props.defaultValue}
-                onChange={d.props.onChange}
+                onChange={d.props.onChange} defaultChecked={d.props.defaultChecked}
             >{d.props.children}</d.type>);
 
 
@@ -284,7 +333,6 @@ export default class EditFood extends React.Component {
         string.push(document.getElementById("name").value)
         string.push(document.getElementById("servingSize").value)
         let response;
-        console.log(this.state.tags)
         try {
             response = axios.post(url + `Update_Food?` +
                 "name=" + this.state.data.name +
@@ -302,10 +350,11 @@ export default class EditFood extends React.Component {
                 "&protein=" + document.getElementById("protein").value +
                 "&calcium=" + document.getElementById("calcium").value +
                 "&iron=" + document.getElementById("iron").value +
-                "&diet=" + document.getElementById("diet").value +
+                "&diets=" + this.state.diets +
                 "&cuisine=" + document.getElementById("cuisine").value +
                 "&ingredients=" + document.getElementById("ingredients").value +
                 "&tags=" + this.state.tags +
+                "&groups=" + this.state.groups +
                 ""
             );
         } catch (error) {

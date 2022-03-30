@@ -16,7 +16,7 @@ const ColoredLine = ({ color }) => (
     />
 );
 
-export default class Foods extends React.Component {
+export default class PostFoodUpdate extends React.Component {
 
     constructor() {
         super();
@@ -102,28 +102,7 @@ export default class Foods extends React.Component {
         return (
             <div className="App">
                 <Container style={{ paddingTop: '18vh', paddingBottom: '18vh'}} >
-                    <Form action="/foods" method="get" style={{textAlignVertical: "right",textAlign: "right", paddingRight: "40px"}}>
-                        <Form.Label htmlFor="header-search">
-                            <span className="visually-hidden">Search</span>
-                        </Form.Label>
-                        <input
-                            type="text"
-                            id="header-search"
-                            placeholder="Search"
-                            name="search"
-                            size="xl"
-                        />{' '}
-                        <Button type="submit">Submit</Button>{' '}
-                        <Link to="/Search_Food">
-                            <Button type="button">
-                                Advanced Search
-                            </Button>
-                        </Link>
-                    </Form>
-                    <header className="p-3 my-4 mx-4 bg-light border rounded">
-                        <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}}><strong>List of Foods</strong></h1>
-                        {listItems}
-                    </header>
+
                 </Container>
             </div>
         );

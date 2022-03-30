@@ -295,7 +295,7 @@ app.get('/Nutrition', (req, res) => {
   console.log('/nutrition sent');
 })
 
-app.get('/Diet', (req, res) => {
+app.get('/Diets', (req, res) => {
 
   MongoClient.connect(url, function(err, dbt) {
     if (err) throw err;
@@ -304,16 +304,16 @@ app.get('/Diet', (req, res) => {
       if (err) throw err;
       result = result.map(a => a.list); //filters only the names of foods
       result = result[0];
-      result = result.sort((a, b) => a.localeCompare(b)); //sorts names alphabetically
-      result.unshift("Any");
+      //result = result.sort((a, b) => a.localeCompare(b)); //sorts names alphabetically
+      //result.unshift("Any");
       console.log(result);
       res.send(result);
     });
   });
-  console.log('/Diet sent');
+  console.log('/Diets sent');
 })
 
-app.get('/Group', (req, res) => {
+app.get('/Groups', (req, res) => {
 
   MongoClient.connect(url, function(err, dbt) {
     if (err) throw err;
@@ -323,12 +323,12 @@ app.get('/Group', (req, res) => {
       result = result.map(a => a.list); //filters only the names of foods
       result = result[0];
       result = result.sort((a, b) => a.localeCompare(b)); //sorts names alphabetically
-      result.unshift("Any");
+      //result.unshift("Any");
       console.log(result);
       res.send(result);
     });
   });
-  console.log('/Group sent');
+  console.log('/Groups sent');
 })
 
 app.get('/Cuisine', (req, res) => {
@@ -357,10 +357,8 @@ app.get('/Tags', (req, res) => {
     db.collection("filters").find({ name:"tags" }).toArray(function(err, result) {
       if (err) throw err;
       result = result.map(a => a.list); //filters only the names of tags
-      console.log(result);
       result = result[0];
       result = result.sort((a, b) => a.localeCompare(b)); //sorts tags alphabetically
-      console.log(result);
       console.log('done');
       res.send(result);
     });
@@ -485,11 +483,11 @@ app.post('/Update_Food', (req, res) => {
           protein: req.query.protein,
           calcium: req.query.calcium,
           iron: req.query.iron,
-          diet: req.query.diet,
+          diets: req.query.diets.split(','),
           cuisine: req.query.cuisine,
           ingredients: req.query.ingredients,
-          dietaryTags: req.query.tags,
-          groups: req.query.groups,
+          dietaryTags: req.query.tags.split(','),
+          groups: req.query.groups.split(','),
         },
       };
       let ret = db.collection("foods").updateOne( { name : req.query.name } , updateDoc)
