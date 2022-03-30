@@ -17,8 +17,7 @@
  import { useEffect } from 'react';
 
  import { confirmAlert } from 'react-confirm-alert'; // Import
-import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
-import axios from "axios";
+ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
  function Profile(props) {
 
     const history = useHistory();
