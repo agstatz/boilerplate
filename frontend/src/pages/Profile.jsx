@@ -32,11 +32,12 @@
     const handleMealSwipeReset = () => {
         const userInfo = {
             username: username,
-            mealSwipes: 20
+            mealSwipes: 20,
+            allergies: []
         }
 
         axios
-            .post('http://localhost:3001/api/resetUserMealSwipes', { data: userInfo })
+            .post('http://localhost:3001/api/editUserPreferences', { data: userInfo })
             .then((res) => {
                 console.log(res);
             })

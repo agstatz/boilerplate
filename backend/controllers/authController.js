@@ -1,5 +1,7 @@
 const dbm = require("../models");
 const User = require("../models/userModel");
+const Food_Tag = require("../models/foodTagsModel")
+const Food_Tag_Type = require("../models/foodTagTypeModel")
 const config = require("../config/authConfig.js");
 const PrivilegeClass = dbm.privilege_classes;
 var jwt = require("jsonwebtoken");
@@ -139,13 +141,9 @@ exports.editUser = (req, res) => {
 
 // edit user preferences from preference quiz
 exports.editUserPreferences = (req, res) => {
-  User.updateOne(
-    {username: req.body.data.username},
-    {
-      mealSwipes: req.body.data.mealSwipes,
-      allergies: req.body.data.allergies
-    }
-  )
+  User.findOne({ username: req.body.data.username })
+    .populate('allergies')
+    .populate('diets')
     .exec((err, user) => {
       if (err) {
         res.status(500).send({ message: err });
@@ -154,30 +152,70 @@ exports.editUserPreferences = (req, res) => {
       if (!user) {
         return res.status(404).send({ message: "User Not found" });
       }
+
+      // update user mealSwipes
+      user.mealSwipes = req.body.data.mealSwipes
+      user.save(err => {
+        if (err) {
+          return res.status(500).send({ message: err });
+        }
+      })
+
+      // populating user allergies array
+      if(req.body.data.allergies)
+      {
+        var numItems = req.body.data.allergies.length
+        var itemsProcessed = 0
+        req.body.data.allergies.forEach((allergen, i) => 
+          Food_Tag.findOne(
+            {name: allergen}
+          )
+          .exec((err, food) => {
+            if (err) {
+              return res.status(500).send({message: err});
+            }
+            if (!food) {
+              // return res.status(404).send({ message: "Food type not found" });
+              Food_Tag_Type.findOne({name: "allergen"})
+                .exec((err, tag) => {
+                  if (err) {
+                    return res.status(500).send({ message: err });
+                  }
+                  if (!user) {
+                    return res.status(404).send({ message: "Allergen tag not found" });
+                  }
+
+                  const food = new Food_Tag({
+                    name: allergen,
+                    tagType: tag,
+                    foods: []
+                  });
+
+                  food.save((err, food) => {
+                    if (err) {
+                      return res.status(500).send({ message: err });
+                    }
+                    if (!food) {
+                      return res.status(404).send({ message: "Error while saving food type" });
+                    }
+                    user.allergies.push(food._id)
+                  })
+                })
+            }
+            else {
+              user.allergies.push(food._id)
+            }
+
+            itemsProcessed++;
+            if (itemsProcessed == numItems) {
+              user.save()
+            }
+          })
+        )
+      }
+
       res.status(200).send({
         message: "User preferences updated successfully"
-      });
-    });
-};
-
-// set user meal swipes left
-exports.resetUserMealSwipes = (req, res) => {
-  User.updateOne(
-    {username: req.body.data.username},
-    {
-      mealSwipes: req.body.data.mealSwipes
-    }
-  )
-    .exec((err, user) => {
-      if (err) {
-        res.status(500).send({ message: err });
-        return;
-      }
-      if (!user) {
-        return res.status(404).send({ message: "User Not found" });
-      }
-      res.status(200).send({
-        message: "User mealSwipes updated successfully"
       });
     });
 };
