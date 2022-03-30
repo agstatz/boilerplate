@@ -73,22 +73,15 @@ app.get('/Foods', (req, res) => {
   let tags = req.query.tags
   let include = req.query.include
   let exclude = req.query.exclude
-  let diet = req.query.diet
-  let group = req.query.group
+  let diets = req.query.diets
+  let groups = req.query.groups
   let cuisine = req.query.cuisine
 
   if (search == null || search === "undefined") {
     search = "";
   }
 
-  if (diet == null || diet === "any" || diet === "undefined") {
-    diet = "";
-  }
-
-  if (group == null || group === "any" || group === "undefined") {
-    group = "";
-  }
-  if (cuisine == null || cuisine === "any" || cuisine === "undefined") {
+  if (cuisine == null || cuisine === "Any" || cuisine === "undefined") {
     cuisine = "";
   }
 
@@ -98,6 +91,22 @@ app.get('/Foods', (req, res) => {
   } else {
     tags = tags.split(",")
     console.log(tags)
+  }
+
+  if (groups == null || tags === "undefined" || tags === "") {
+    groups = [];
+    console.log("null")
+  } else {
+    groups = groups.split(",")
+    console.log(groups)
+  }
+
+  if (diets == null || tags === "undefined" || tags === "") {
+    diets = [];
+    console.log("null")
+  } else {
+    diets = diets.split(",")
+    console.log(diets)
   }
 
   if (include == null || include === "undefined" || include === "") {
@@ -128,122 +137,126 @@ app.get('/Foods', (req, res) => {
           s.protein, //9
           s.calcium, //10
           s.iron, //11
-          s.dietaryTags //12
+          s.dietaryTags, //12
+          s.diets, //13
+          s.groups, //14
+          s.cuisine, //15
       ])
       result = result.map(a => a.name); //filters only the names of foods
       result = result.filter(s => s.toLowerCase().includes(search.toLowerCase())); //filters foods accordingly to search
 
       for (let i = 0; i < result2.length; i++) {
         let food = result2[i]
+        console.log(food);
 
         if (include.includes("Total Fat")) {
-          if (food[1] == null || food[1] === "0g") {
+          if (food[1] == null || food[1][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Total Fat")) {
-          if (food[1] != null && food[1] !== "0g") {
+          if (food[1] != null && food[1][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (include.includes("Saturated Fat")) {
-          if (food[2] == null || food[2] === "0g") {
+          if (food[2] == null || food[2][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Saturated Fat")) {
-          if (food[2] != null && food[2] !== "0g") {
+          if (food[2] != null && food[2][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (include.includes("Cholesterol")) {
-          if (food[3] == null || food[3] === "0mg") {
+          if (food[3] == null || food[3][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Cholesterol")) {
-          if (food[3] != null && food[3] !== "0mg") {
+          if (food[3] != null && food[3][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (include.includes("Sodium")) {
-          if (food[4] == null || food[4] === "0mg") {
+          if (food[4] == null || food[4][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Sodium")) {
-          if (food[4] != null && food[4] !== "0mg") {
+          if (food[4] != null && food[4][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (include.includes("Carbohydrate")) {
-          if (food[5] == null || food[5] === "0g") {
+          if (food[5] == null || food[5][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Carbohydrate")) {
-          if (food[5] != null && food[5] !== "0g") {
+          if (food[5] != null && food[5][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
 
         if (include.includes("Sugar")) {
-          if (food[6] == null || food[6] === "0g") {
+          if (food[6] == null || food[6][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Sugar")) {
-          if (food[6] != null && food[6] !== "0g") {
+          if (food[6] != null && food[6][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (include.includes("Added Sugar")) {
-          if (food[7] == null || food[7] === "0g") {
+          if (food[7] == null || food[7][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Added Sugar")) {
-          if (food[7] != null && food[7] !== "0g") {
+          if (food[7] != null && food[7][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (include.includes("Dietary Fiber")) {
-          if (food[8] == null || food[8] === "0g") {
+          if (food[8] == null || food[8][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Dietary Fiber")) {
-          if (food[8] != null && food[8] !== "0g") {
+          if (food[8] != null && food[8][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (include.includes("Protein")) {
-          if (food[9] == null || food[9] === "0g") {
+          if (food[9] == null || food[9][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Protein")) {
-          if (food[9] != null && food[9] !== "0g") {
+          if (food[9] != null && food[9][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (include.includes("Calcium")) {
-          if (food[10] == null || food[10] === "0g") {
+          if (food[10] == null || food[10][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Calcium")) {
-          if (food[10] != null && food[10] !== "0g") {
+          if (food[10] != null && food[10][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (include.includes("Iron")) {
-          if (food[11] == null || food[11] === "0g") {
+          if (food[11] == null || food[11][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Iron")) {
-          if (food[11] != null && food[11] !== "0g") {
+          if (food[11] != null && food[11][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
@@ -251,6 +264,19 @@ app.get('/Foods', (req, res) => {
           if (!food[12].includes(tags[j])) {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
+        }
+        for (let j = 0; j < diets.length; j++) {
+          if (!food[13].includes(diets[j])) {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        for (let j = 0; j < groups.length; j++) {
+          if (!food[14].includes(groups[j])) {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (cuisine !== "") {
+          if (food[15] !== cuisine) result.splice(result.indexOf(food[0]), 1);
         }
       }
       result = result.sort((a, b) => a.localeCompare(b)); //sorts tags alphabetically

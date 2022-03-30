@@ -41,9 +41,11 @@ export default class Foods extends React.Component {
         try {
             response = await axios.get(
                 url +
-                `Foods?search=` + this.state.queries.search
-                +
+                `Foods?search=` + this.state.queries.search +
+                "&diets=" + this.state.queries.diets +
+                "&groups=" + this.state.queries.groups +
                 "&tags=" + this.state.queries.tags +
+                "&cuisine=" + this.state.queries.cuisine +
                 "&include=" + this.state.queries.include +
                 "&exclude=" + this.state.queries.exclude);
         } catch (error) {

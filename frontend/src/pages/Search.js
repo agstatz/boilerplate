@@ -50,7 +50,7 @@ export default class Foods extends React.Component {
         } finally {
             for (let i = 0; i < response.data.length; i++) {
                 this.state.html.push(<ColoredLine id={"line" + i} color="grey"/>);
-                this.state.html.push(<Link id={"link" + i} to={"/food?" + response.data[i].split(' ').join('_')}>{response.data[i]}</Link>)
+                this.state.html.push(<Link id={"link" + i} to={"/food?name=" + response.data[i].split(' ').join('_')}>{response.data[i]}</Link>)
             }
             this.setState({loading : false})
             this.forceUpdate();

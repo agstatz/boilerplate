@@ -35,7 +35,6 @@ export default class Food extends React.Component {
         this.state.loading = true;
         let loggedIn = true;
         let admin = true;
-
         try {
             var response = await axios.get(url + `food?name=` + this.state.queries.name);
         } catch (error) {
