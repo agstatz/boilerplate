@@ -21,7 +21,7 @@ function Scheduler(props) {
         "http://localhost:3001/api/foods"
       );
       setFoods(response);
-      setMealPlan({owner: store.getState().app.username, likes: 0, private: false, name: "My Meal Plan", meals: []});
+      setMealPlan({owner: store.getState().app.username, likes: 0, private: false, name: "My Meal Plan", schedule: []});
     } catch (err) {
       console.error(err);
     } 
@@ -38,7 +38,7 @@ function Scheduler(props) {
         foods.push({food: food, day: day, });
       }
 
-      plan['meals'] = foods;
+      plan['schedule'] = foods;
     }
 
     console.log(plan)

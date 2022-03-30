@@ -93,7 +93,7 @@
                     <Card className="my-3" bg="light" style={{maxWidth: "200px", minWidth: "200px"}}>
                         <img alt="Profile" 
                              height="200"
-                             src="https://www.personality-insights.com/wp-content/uploads/2017/12/default-profile-pic-e1513291410505.jpg">
+                             src="https://i.stack.imgur.com/l60Hf.png">
                         </img>
                         <Card.Body>
                         <div>
