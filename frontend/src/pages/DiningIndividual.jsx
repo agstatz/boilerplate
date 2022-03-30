@@ -14,8 +14,12 @@
   function DiningIndividual() {
  
      const { name } = useParams();
-     const route = "/edit-location/".concat(name);
- 
+     var route = "/dining-courts/".concat(name);
+     const isAdmin = store.getState().app.isAdmin;
+     if (isAdmin === true) {
+        route = "/edit-location/".concat(name);
+     }
+
      return (
          <Container style={{ paddingTop: '15vh', paddingBottom: '15vh'}} >
              <div className="p-3 my-4 mx-4 bg-light border rounded" >
@@ -38,7 +42,7 @@
                         <div>Beans Green Whole Frozen</div>
                     </div>
                     <div>
-                        <Button className="mb-2 mt-3 btn btn-primary btn-sm" href={route}>Edit Location</Button>
+                        <Button className="mb-2 mt-3 btn btn-primary btn-sm" href={route} hidden={isAdmin !== true}>Edit Location</Button>
                     </div>
                  </Stack>
              </div>

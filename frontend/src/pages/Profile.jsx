@@ -28,7 +28,9 @@
 
     const handleLogout = () => {
         store.dispatch(ClearForm());
+        window.location.reload();
         history.push('/');
+        window.location.replace("/");
     }
 
     function resetAccount() {
@@ -61,7 +63,7 @@
         }
 
         axios
-            .post('http://localhost:3001/api/resetUserMealSwipes', { data: userInfo })
+            .post('http://localhost:3001/api/editUserPreferences', { data: userInfo })
             .then((res) => {
                 console.log(res);
             })

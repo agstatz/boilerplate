@@ -24,6 +24,7 @@ import { store, UpdateForm } from "../store/store.js"
 
 function PreferenceQuiz() {
     const [meatScore, setMeatScore] = useState(0);                  // meat dietary restrictions
+    const [religionScore, setReligionScore] = useState(0);          // religious dietary restrictions
     const [dairyScore, setDairyScore] = useState(false);            // dairy dietary restrictions
     const [glutenScore, setGlutenScore] = useState(false);          // gluten dietary restrictions
     const [nutScore, setNutScore] = useState(false);                // nut dietary restrictions
@@ -59,10 +60,28 @@ function PreferenceQuiz() {
             allergies.push("nuts")
         }
 
+        var diets = []
+        if (meatScore == 1) {
+            diets.push("vegetarian")
+        }
+        else if(meatScore == 2) {
+            diets.push("vegan")
+        }
+        else if(meatScore == 3) {
+            diets.push("pescatarian")
+        }
+        if (religionScore == 1) {
+            diets.push("halal")
+        }
+        else if (religionScore == 2) {
+            diets.push("kosher")
+        }
+
         const userInfo = {
             username: username,
             mealSwipes: mealSwipes,
-            allergies: allergies
+            allergies: allergies,
+            diets: diets
         }
 
         axios
@@ -109,21 +128,29 @@ function PreferenceQuiz() {
                                 type='radio'
                                 label='Vegetarian'
                                 name="veg_status"
+                                checked={meatScore == 1}
+                                onChange={() => setMeatScore(1)}
                             />
                             <Form.Check 
                                 type='radio'
                                 label='Vegan'
                                 name="veg_status"
+                                checked={meatScore == 2}
+                                onChange={() => setMeatScore(2)}
                             />
                             <Form.Check 
                                 type='radio'
                                 label='Pescatarian'
                                 name="veg_status"
+                                checked={meatScore == 3}
+                                onChange={() => setMeatScore(3)}
                             />
                             <Form.Check 
                                 type='radio'
                                 label='None of these apply'
                                 name="veg_status"
+                                checked={meatScore == 0}
+                                onChange={() => setMeatScore(0)}
                             />
                         </Stack>
                         <Container className="d-flex justify-content-center">
@@ -230,16 +257,22 @@ function PreferenceQuiz() {
                                     type='radio'
                                     label='Halal'
                                     name="law_status"
+                                    checked={religionScore == 1}
+                                    onChange={() => setReligionScore(1)}
                                 />
                                 <Form.Check 
                                     type='radio'
                                     label='Kosher'
                                     name="law_status"
+                                    checked={religionScore == 2}
+                                    onChange={() => setReligionScore(2)}
                                 />
                                 <Form.Check 
                                     type='radio'
                                     label='None'
                                     name="law_status"
+                                    checked={religionScore == 0}
+                                    onChange={() => setReligionScore(0)}
                                 />
                             </Stack>
                             <br />

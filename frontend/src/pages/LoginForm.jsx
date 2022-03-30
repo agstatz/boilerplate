@@ -22,7 +22,11 @@ export default class LoginForm extends React.Component {
         this.state = {
             password: "",
             username: "",
-            message: ""
+            message: "",
+            isAdmin: false,
+            isGuest: false,
+            isDiningStaff: false,
+            isModerator: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -37,7 +41,10 @@ export default class LoginForm extends React.Component {
         this.setState({
             [name]: value
         });
+    }
 
+    handleGuest = (event) => {
+        store.dispatch(UpdateForm(("isNotGuest"), false));
     }
 
     handleSubmit = (event) => {
@@ -49,8 +56,8 @@ export default class LoginForm extends React.Component {
         }
         this.setState({ message: "" })
         var noErr = true
-        if (noErr && !/^([a-zA-Z]{1,})$/.test(this.state.username)) {
-            this.setState({ message: "Username field is empty" })
+        if (noErr && !/^([a-zA-Z0-9]{1,})$/.test(this.state.username)) {
+            this.setState({ message: "Username field is empty or has invalid characters" })
             noErr = false
         }
         if (noErr && !/^([a-zA-Z]{1,})$/.test(this.state.password)) {
@@ -62,8 +69,13 @@ export default class LoginForm extends React.Component {
                 .post('http://localhost:3001/api/signinuser', { data: userInfo })
                 .then((res) => {
                     alert("Hello");
+                    console.log(res.data);
                     store.dispatch(UpdateForm(("password"), this.state.password));
                     store.dispatch(UpdateForm(("username"), this.state.username));
+                    store.dispatch(UpdateForm(("isAdmin"), res.data.admin));
+                    store.dispatch(UpdateForm(("isNotGuest"), true));
+                    store.dispatch(UpdateForm(("isModerator"), res.data.moderator));
+                    store.dispatch(UpdateForm(("isDiningStaff"), res.data.diningStaff));
                     const { history } = this.props;
                     if (history) {
                         history.push(`/profile/${this.state.username}`);
@@ -78,7 +90,7 @@ export default class LoginForm extends React.Component {
 
     render() {
         return (
-        <Container className="d-flex justify-content-center" style={{ paddingBottom: '15vh', paddingTop: '5vh'}}>
+        <Container className="d-flex justify-content-center" style={{ paddingTop: '10vh', paddingBottom: '2vh', paddingLeft: '55vh', paddingRight: '55vh'}}>
             <div className="p-5 my-4 mx-5 d-flex justify-content-center bg-light border rounded">
                 <Stack>
                     <Container className="d-flex justify-content-center">
@@ -99,8 +111,9 @@ export default class LoginForm extends React.Component {
                     </Form.Group>
                     <Stack spacing={4}>
                         <p align="center">{this.state.message}</p>
-                        <Button className="mb-2 mt-3 btn btn-primary btn-sm" onClick={this.handleSubmit} type="submit">Sign In</Button>
+                        <Button className="mb-2 mt-1 btn btn-primary btn-sm" onClick={this.handleSubmit} type="submit">Sign In</Button>
                         <a href="/register" align="center">Need an account? Register here!</a>
+                        <a href="/" onClick={this.handleGuest} align="center">Continue as guest</a>
                     </Stack>
                 </Form>
                 </Stack>

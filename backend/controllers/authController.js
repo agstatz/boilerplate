@@ -1,5 +1,7 @@
 const dbm = require("../models");
 const User = require("../models/userModel");
+const Food_Tag = require("../models/foodTagsModel")
+const Food_Tag_Type = require("../models/foodTagTypeModel")
 const config = require("../config/authConfig.js");
 const PrivilegeClass = dbm.privilege_classes;
 var jwt = require("jsonwebtoken");
@@ -74,7 +76,6 @@ exports.registerUser = (req, res) => {
 
 
 exports.signinUser = (req, res) => {
-  console.log(req.body)
   User.findOne({
     username: req.body.data.username
   })
@@ -99,13 +100,40 @@ exports.signinUser = (req, res) => {
       var token = jwt.sign({ id: user.id }, config.key, {
         expiresIn: 86400 // 24 hours
       });
-      res.status(200).send({
-        id: user._id,
-        username: user.username,
-        email: user.email,
-        accessToken: token
-      });
-      console.log(err);
+      var isAdmin = false;
+      var isModerator = false;
+      var isDiningStaff = false;
+      PrivilegeClass.find(
+        {
+          _id: { $in: user.privilegeClasses }
+        },
+        (err, privilege_classes) => {
+          if (err) {
+            res.status(500).send({ message: err });
+            return;
+          }
+          for (let i = 0; i < privilege_classes.length; i++) {
+            if (privilege_classes[i].name === "admin") {
+              isAdmin = true;
+            }
+            if (privilege_classes[i].name === "moderator") {
+              isModerator = true;
+            }
+            if (privilege_classes[i].name === "dining staff") {
+              isDiningStaff = true;
+            }
+          }
+          res.status(200).send({
+            id: user._id,
+            username: user.username,
+            email: user.email,
+            accessToken: token,
+            admin: isAdmin,
+            moderator: isModerator,
+            diningStaff: isDiningStaff
+          });
+        }
+      );
     });
 };
 
@@ -173,13 +201,9 @@ exports.resetUser = (req, res) => {
 }
 // edit user preferences from preference quiz
 exports.editUserPreferences = (req, res) => {
-  User.updateOne(
-    {username: req.body.data.username},
-    {
-      mealSwipes: req.body.data.mealSwipes,
-      allergies: req.body.data.allergies
-    }
-  )
+  User.findOne({ username: req.body.data.username })
+    .populate('allergies')
+    .populate('diets')
     .exec((err, user) => {
       if (err) {
         res.status(500).send({ message: err });
@@ -188,30 +212,201 @@ exports.editUserPreferences = (req, res) => {
       if (!user) {
         return res.status(404).send({ message: "User Not found" });
       }
-      res.status(200).send({
-        message: "User preferences updated successfully"
-      });
-    });
-};
 
-// set user meal swipes left
-exports.resetUserMealSwipes = (req, res) => {
-  User.updateOne(
-    {username: req.body.data.username},
-    {
-      mealSwipes: req.body.data.mealSwipes
-    }
-  )
-    .exec((err, user) => {
-      if (err) {
-        res.status(500).send({ message: err });
-        return;
+      // populating user allergies array
+      if(req.body.data.allergies && req.body.data.allergies.length > 0) {
+        var numAllergens = req.body.data.allergies.length
+        var allergensProcessed = 0
+        req.body.data.allergies.forEach((allergen, i) => 
+          Food_Tag.findOne(
+            {name: allergen}
+          )
+          .exec((err, food) => {
+            if (err) {
+              return res.status(500).send({message: err});
+            }
+            if (!food) {
+              // if the food type is not found, create a new one
+              Food_Tag_Type.findOne({name: "allergen"})
+                .exec((err, tag) => {
+                  if (err) {
+                    return res.status(500).send({ message: err });
+                  }
+                  if (!tag) {
+                    return res.status(404).send({ message: "Allergen tag not found" });
+                  }
+
+                  const food = new Food_Tag({
+                    name: allergen,
+                    tagType: tag,
+                    foods: []
+                  });
+
+                  food.save((err, food) => {
+                    if (err) {
+                      return res.status(500).send({ message: err });
+                    }
+                    if (!food) {
+                      return res.status(404).send({ message: "Error while saving food type" });
+                    }
+                    user.allergies.push(food._id)
+                  })
+                })
+            }
+            else {
+              user.allergies.push(food._id)
+            }
+
+            allergensProcessed++;
+
+            if (allergensProcessed == numAllergens) {
+              if(req.body.data.diets && req.body.data.diets.length > 0) {
+                // populating user diets array
+                var numDiets = req.body.data.diets.length
+                var dietsProcessed = 0
+
+                req.body.data.diets.forEach((diet, i) => {
+                  Food_Tag.findOne(
+                    {name: diet}
+                  )
+                  .exec((err, food) => {
+                    if (err) {
+                      return res.status(500).send({message: err});
+                    }
+                    if (!food) {
+                      // if the food type is not found, create a new one
+                      Food_Tag_Type.findOne({name: "diet"})
+                        .exec((err, tag) => {
+                          if (err) {
+                            return res.status(500).send({ message: err });
+                          }
+                          if (!tag) {
+                            return res.status(404).send({ message: "Diet tag not found" });
+                          }
+        
+                          const food = new Food_Tag({
+                            name: diet,
+                            tagType: tag,
+                            foods: []
+                          });
+        
+                          food.save((err, food) => {
+                            if (err) {
+                              return res.status(500).send({ message: err });
+                            }
+                            if (!food) {
+                              return res.status(404).send({ message: "Error while saving food type" });
+                            }
+                            user.diets.push(food._id)
+                          })
+                        })
+                    }
+                    else {
+                      user.diets.push(food._id)
+                    }
+        
+                    dietsProcessed++;
+
+                    if (dietsProcessed == numDiets) {
+                      user.mealSwipes = req.body.data.mealSwipes
+                      user.save(err => {
+                        if (err) {
+                          return res.status(500).send({ message: err });
+                        }
+                        res.status(200).send({
+                          message: "User preferences updated successfully"
+                        });
+                      })
+                    }
+                  })
+                })
+              }
+              else {
+                user.mealSwipes = req.body.data.mealSwipes
+                user.save(err => {
+                  if (err) {
+                    return res.status(500).send({ message: err });
+                  }
+                  res.status(200).send({
+                    message: "User preferences updated successfully"
+                  });
+                })
+              }
+            }
+          })
+        )
       }
-      if (!user) {
-        return res.status(404).send({ message: "User Not found" });
+      else if(req.body.data.diets && req.body.data.diets.length > 0) {
+        // populating user diets array
+        var numDiets = req.body.data.diets.length
+        var dietsProcessed = 0
+
+        req.body.data.diets.forEach((diet, i) => {
+          Food_Tag.findOne(
+            {name: diet}
+          )
+          .exec((err, food) => {
+            if (err) {
+              return res.status(500).send({message: err});
+            }
+            if (!food) {
+              // if the food type is not found, create a new one
+              Food_Tag_Type.findOne({name: "diet"})
+                .exec((err, tag) => {
+                  if (err) {
+                    return res.status(500).send({ message: err });
+                  }
+                  if (!tag) {
+                    return res.status(404).send({ message: "Diet tag not found" });
+                  }
+
+                  const food = new Food_Tag({
+                    name: diet,
+                    tagType: tag,
+                    foods: []
+                  });
+
+                  food.save((err, food) => {
+                    if (err) {
+                      return res.status(500).send({ message: err });
+                    }
+                    if (!food) {
+                      return res.status(404).send({ message: "Error while saving food type" });
+                    }
+                    user.diets.push(food._id)
+                  })
+                })
+            }
+            else {
+              user.diets.push(food._id)
+            }
+
+            dietsProcessed++;
+
+            if (dietsProcessed == numDiets) {
+              user.mealSwipes = req.body.data.mealSwipes
+              user.save(err => {
+                if (err) {
+                  return res.status(500).send({ message: err });
+                }
+                res.status(200).send({
+                  message: "User preferences updated successfully"
+                });
+              })
+            }
+          })
+        })
       }
-      res.status(200).send({
-        message: "User mealSwipes updated successfully"
-      });
+      else {
+        user.mealSwipes = req.body.data.mealSwipes
+        user.save(err => {
+          if (err) {
+            return res.status(500).send({ message: err });
+          }
+          res.status(200).send({
+            message: "User preferences updated successfully"
+          });
+        })
+      }
     });
 };

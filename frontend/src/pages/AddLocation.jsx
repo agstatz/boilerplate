@@ -11,6 +11,7 @@ import axios from 'axios';
 import { Stack, Button, Container, Form } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 import queryString from "query-string";
+import UnauthorizedAccess from "../components/UnauthorizedAccess"
 
 // redux imports
 import { store } from "../store/store.js";
@@ -29,7 +30,8 @@ class AddLocation extends React.Component {
             yPos: "0",
             occupancy: "",
             hidden: false,
-            courseScheduleId: "623a6cbd3d6c321e10083da3"
+            courseScheduleId: "623a6cbd3d6c321e10083da3",
+            isAdmin: store.getState().app.isAdmin
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleCheck = this.handleCheck.bind(this);
@@ -90,7 +92,6 @@ class AddLocation extends React.Component {
             axios
                 .get("http://localhost:3001/api/dining-locations/".concat(this.state.locationName), { data: locationInfo })
                 .then((res) => {
-                    console.log(this.state.locationName);
                     this.setState({ message: "Location name already exists" });
                     noErr = false;
                 })
@@ -110,43 +111,48 @@ class AddLocation extends React.Component {
     }
 
     render() {
-        return (
-        <Container className="d-flex justify-content-center" >
-        <div className="p-5 my-4 mx-3  d-flex justify-content-center bg-light border rounded">
-            <Stack>
-                <Container className="d-flex justify-content-center">
-                        <h3>Add location</h3>
-                </Container>
-                <Form className="registerFormFields" onSubmit={this.handleSubmit} align="center">
-                    <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='locationName'>
-                        <Form.Label>Location Name</Form.Label>
-                        <Form.Control type="locationName" placeholder="Location Name" onChange={this.handleChange} />
-                    </Form.Group>
-                    <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='xPos'>
-                        <Form.Label>x Position</Form.Label>
-                        <Form.Control type="xPos" value={this.state.xPos} onChange={this.handleChange}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='yPos'>
-                        <Form.Label>y Position</Form.Label>
-                        <Form.Control type="yPos" value={this.state.yPos} onChange={this.handleChange}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3" style={{width: '16.5em'}} controlId="courseScheduleId" >
-                        <Form.Label>Course Schedule Id</Form.Label>
-                        <Form.Control type="courseScheduleId" value={this.state.courseScheduleId} onChange={this.handleChange} />
-                    </Form.Group>
-                    <Form.Group className="mb-3" style={{width: '16.5em'}} controlId="hidden" >
-                        <Form.Check type="switch" id="hidden" label="Hide location from public" checked={this.state.hidden} onChange={this.handleCheck}/>
-                    </Form.Group>
-                    <Stack spacing={4}>
-                        <p align="center">{this.state.message}</p>
-                        <Button className="mb-2 mt-3 btn btn-primary btn-sm" onClick={this.handleSubmit} type="submit">Add Location</Button>
-                        <a href="/dining-location-selection/" align="center">Return to dining selection page</a>
-                    </Stack>
-                </Form>
-            </Stack>
-        </div>
-        </ Container>
-        );
+        if (this.state.isAdmin === true) {
+            return (
+            <Container className="d-flex justify-content-center" style={{ paddingTop: '10vh', paddingBottom: '2vh', paddingLeft: '55vh', paddingRight: '55vh'}} >
+            <div className="p-5 my-4 mx-3  d-flex justify-content-center bg-light border rounded">
+                <Stack>
+                    <Container className="d-flex justify-content-center">
+                            <h3>Add location</h3>
+                    </Container>
+                    <Form className="registerFormFields" onSubmit={this.handleSubmit} align="center">
+                        <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='locationName'>
+                            <Form.Label>Location Name</Form.Label>
+                            <Form.Control type="locationName" placeholder="Location Name" onChange={this.handleChange} />
+                        </Form.Group>
+                        <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='xPos'>
+                            <Form.Label>x Position</Form.Label>
+                            <Form.Control type="xPos" value={this.state.xPos} onChange={this.handleChange}/>
+                        </Form.Group>
+                        <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='yPos'>
+                            <Form.Label>y Position</Form.Label>
+                            <Form.Control type="yPos" value={this.state.yPos} onChange={this.handleChange}/>
+                        </Form.Group>
+                        <Form.Group className="mb-3" style={{width: '16.5em'}} controlId="courseScheduleId" >
+                            <Form.Label>Course Schedule Id</Form.Label>
+                            <Form.Control type="courseScheduleId" value={this.state.courseScheduleId} onChange={this.handleChange} />
+                        </Form.Group>
+                        <Form.Group className="mb-3" style={{width: '16.5em'}} controlId="hidden" >
+                            <Form.Check type="switch" id="hidden" label="Hide location from public" checked={this.state.hidden} onChange={this.handleCheck}/>
+                        </Form.Group>
+                        <Stack spacing={4}>
+                            <p align="center">{this.state.message}</p>
+                            <Button className="mb-2 mt-3 btn btn-primary btn-sm" onClick={this.handleSubmit} type="submit">Add Location</Button>
+                            <a href="/dining-location-selection/" align="center">Return to dining selection page</a>
+                        </Stack>
+                    </Form>
+                </Stack>
+            </div>
+            </ Container>
+            );
+        }
+        else {
+            return (<UnauthorizedAccess />);
+        }
     }
 }
 
