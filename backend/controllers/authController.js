@@ -187,14 +187,6 @@ exports.editUserPreferences = (req, res) => {
         return res.status(404).send({ message: "User Not found" });
       }
 
-      // update user mealSwipes
-      user.mealSwipes = req.body.data.mealSwipes
-      user.save(err => {
-        if (err) {
-          return res.status(500).send({ message: err });
-        }
-      })
-
       // populating user allergies array
       if(req.body.data.allergies)
       {
@@ -242,10 +234,23 @@ exports.editUserPreferences = (req, res) => {
 
             itemsProcessed++;
             if (itemsProcessed == numItems) {
-              user.save()
+              user.mealSwipes = req.body.data.mealSwipes
+              user.save(err => {
+                if (err) {
+                  return res.status(500).send({ message: err });
+                }
+              })
             }
           })
         )
+      }
+      else {
+        user.mealSwipes = req.body.data.mealSwipes
+        user.save(err => {
+          if (err) {
+            return res.status(500).send({ message: err });
+          }
+        })
       }
 
       res.status(200).send({
