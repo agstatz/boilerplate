@@ -22,7 +22,11 @@ export default class LoginForm extends React.Component {
         this.state = {
             password: "",
             username: "",
-            message: ""
+            message: "",
+            isAdmin: false,
+            isGuest: false,
+            isDiningStaff: false,
+            isModerator: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -62,8 +66,13 @@ export default class LoginForm extends React.Component {
                 .post('http://localhost:3001/api/signinuser', { data: userInfo })
                 .then((res) => {
                     alert("Hello");
+                    console.log(res.data);
                     store.dispatch(UpdateForm(("password"), this.state.password));
                     store.dispatch(UpdateForm(("username"), this.state.username));
+                    store.dispatch(UpdateForm(("isAdmin"), res.data.admin));
+                    store.dispatch(UpdateForm(("isNotGuest"), true));
+                    store.dispatch(UpdateForm(("isModerator"), res.data.moderator));
+                    store.dispatch(UpdateForm(("isDiningStaff"), res.data.diningStaff));
                     const { history } = this.props;
                     if (history) {
                         history.push(`/profile/${this.state.username}`);

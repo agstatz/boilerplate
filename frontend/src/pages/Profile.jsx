@@ -28,7 +28,9 @@
 
     const handleLogout = () => {
         store.dispatch(ClearForm());
+        window.location.reload();
         history.push('/');
+        window.location.replace("/");
     }
 
     function resetAccount() {

@@ -26,8 +26,9 @@ import { Footer } from './components';
 import Scheduler from './pages/Scheduler';
 
 function App() {
-
     const username = store.getState().app.username;
+    const isAdmin = store.getState().app.isAdmin;
+    const isNotGuest = store.getState().app.isNotGuest;
     const defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     const [theme, setTheme] = useState(defaultDark ? 'dark' : 'light');
@@ -159,7 +160,8 @@ function App() {
                     <Nav.Link href="/popular">Popular</Nav.Link>
                     <Nav.Link href="/map" >Map</Nav.Link>
                     <Nav.Link href="/search" >Search</Nav.Link>
-                    <Nav.Link href={username !== undefined ? `/profile/${username}` : '/'} >Profile</Nav.Link>
+                    <Nav.Link href={isNotGuest === true ? `/profile/${username}` : '/'} hidden={isNotGuest !== true}>Profile</Nav.Link>
+                    <Nav.Link href={isAdmin === true ? `/admin-panel` : '/'} hidden={isAdmin !== true}>Admin Panel</Nav.Link>
                 </Nav>
                 </Container>
             </Navbar>   

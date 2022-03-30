@@ -76,7 +76,6 @@ exports.registerUser = (req, res) => {
 
 
 exports.signinUser = (req, res) => {
-  console.log(req.body)
   User.findOne({
     username: req.body.data.username
   })
@@ -101,13 +100,40 @@ exports.signinUser = (req, res) => {
       var token = jwt.sign({ id: user.id }, config.key, {
         expiresIn: 86400 // 24 hours
       });
-      res.status(200).send({
-        id: user._id,
-        username: user.username,
-        email: user.email,
-        accessToken: token
-      });
-      console.log(err);
+      var isAdmin = false;
+      var isModerator = false;
+      var isDiningStaff = false;
+      PrivilegeClass.find(
+        {
+          _id: { $in: user.privilegeClasses }
+        },
+        (err, privilege_classes) => {
+          if (err) {
+            res.status(500).send({ message: err });
+            return;
+          }
+          for (let i = 0; i < privilege_classes.length; i++) {
+            if (privilege_classes[i].name === "admin") {
+              isAdmin = true;
+            }
+            if (privilege_classes[i].name === "moderator") {
+              isModerator = true;
+            }
+            if (privilege_classes[i].name === "dining staff") {
+              isDiningStaff = true;
+            }
+          }
+          res.status(200).send({
+            id: user._id,
+            username: user.username,
+            email: user.email,
+            accessToken: token,
+            admin: isAdmin,
+            moderator: isModerator,
+            diningStaff: isDiningStaff
+          });
+        }
+      );
     });
 };
 
