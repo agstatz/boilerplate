@@ -50,9 +50,6 @@ class EditLocation extends React.Component {
     }
 
     async callAPI() {
-        console.log(store.getState().app.isAdmin);
-        console.log("hi3");
-        console.log(store.getState().app.isGuest);
         this.setState({loading : true})
         let response;
         try {

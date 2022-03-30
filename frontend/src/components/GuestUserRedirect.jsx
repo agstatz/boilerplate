@@ -1,4 +1,4 @@
-import { Container, Stack, Button, Col, Row, Form } from "react-bootstrap";
+import { Container, Stack } from "react-bootstrap";
 
 import { store } from '../store/store'
 
@@ -11,8 +11,12 @@ function GuestUserRedirect() {
                     <div>
                         <h3>Sorry!</h3>
                         <p>This site function or page is not accessible to guest users. To continue please create an account.</p>
-                        <a href="/register">Create an account here!</a>
-                        <a href="/login">... or login here!</a>
+                        <Stack>
+                            <a href="/register">Create an account here!</a>
+                        </Stack>
+                        <Stack>
+                            <a href="/login">Or login here!</a>
+                        </Stack>
                     </div>
                 </Stack>
             </div>

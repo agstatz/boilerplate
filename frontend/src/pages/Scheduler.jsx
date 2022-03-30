@@ -10,6 +10,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Select from 'react-select'
 import { store } from "../store/store.js";
+import GuestUserRedirect from "../components/GuestUserRedirect"
 
 
 function Scheduler(props) {
@@ -66,7 +67,7 @@ function Scheduler(props) {
           <h3>Food:</h3>
         </Form.Label>
         <Col sm={4}>
-          <Select 
+          <Select
             options={Object.keys(foods).map((key, i) => {
             return {value: foods[key]._id, label: foods[key].name}
             })}
@@ -78,55 +79,60 @@ function Scheduler(props) {
         </Col>
       </Form.Group>
     );
-  }
 
-  return (
-    <Container style={{ paddingTop: "15vh", paddingBottom: "15vh" }}>
-      <div className="p-3 my-4 mx-4 bg-light border rounded">
-        <h1><strong>Schedule a Meal Plan</strong></h1><br />
-        <div>
-          <Form>
-            <Form.Group
-              as={Row}
-              className="mb-3"
-              controlId="formHorizontalEmail"
-            >
-              <Form.Label column sm={6}>
-                <h3>Meal Schedule Name:</h3>
-              </Form.Label>
-              <Col sm={4}>
-                <Form.Control type="text" placeholder="My Healthy Meal Plan" onChange={(e) => {
-                  setMealPlan({...mealPlan, name: e.target.value})
-                }}/>
-              </Col>
-            </Form.Group>
-            {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"].map(
-              (day, i) => {
-                return form_column(day);
-              }
-            )}
-          <Form.Check
-            type="checkbox"
-            label="Private"
-            onChange={(e) => {
-              setMealPlan({...mealPlan, private: e.target.checked})
-            }}
-          />
-          
-          </Form>
-          
-        </div>
-        <Row>
-        <Col md={10} sm={9} xs={8}>
-        </Col>
-        <Col md={2} sm={3} xs={4}>
-            <Button variant="primary" type='Button' className="float-right" onClick={submit_plan}>Submit <i className="bi bi-chevron-right"></i></Button>
-        </Col>
-        </Row>
-        
-      </div>
-    </Container>
-  );
+  }
+    if (store.getState().app.isNotGuest !== true) {
+      return(<GuestUserRedirect />);
+    }
+    else {
+      return (
+        <Container style={{ paddingTop: "15vh", paddingBottom: "15vh" }}>
+          <div className="p-3 my-4 mx-4 bg-light border rounded">
+            <h1><strong>Schedule a Meal Plan</strong></h1><br />
+            <div>
+              <Form>
+                <Form.Group
+                  as={Row}
+                  className="mb-3"
+                  controlId="formHorizontalEmail"
+                >
+                  <Form.Label column sm={6}>
+                    <h3>Meal Schedule Name:</h3>
+                  </Form.Label>
+                  <Col sm={4}>
+                    <Form.Control type="text" placeholder="My Healthy Meal Plan" onChange={(e) => {
+                      setMealPlan({...mealPlan, name: e.target.value})
+                    }}/>
+                  </Col>
+                </Form.Group>
+                {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"].map(
+                  (day, i) => {
+                    return form_column(day);
+                  }
+                )}
+              <Form.Check
+                type="checkbox"
+                label="Private"
+                onChange={(e) => {
+                  setMealPlan({...mealPlan, private: e.target.checked})
+                }}
+              />
+
+              </Form>
+
+            </div>
+            <Row>
+            <Col md={10} sm={9} xs={8}>
+            </Col>
+            <Col md={2} sm={3} xs={4}>
+                <Button variant="primary" type='Button' className="float-right" onClick={submit_plan}>Submit <i className="bi bi-chevron-right"></i></Button>
+            </Col>
+            </Row>
+
+          </div>
+        </Container>
+      );
+  }
 }
 
 export default Scheduler;
