@@ -14,6 +14,7 @@
   function DiningIndividual() {
  
      const { name } = useParams();
+     const route = "/edit-location/".concat(name);
  
      return (
          <Container style={{ paddingTop: '15vh', paddingBottom: '15vh'}} >
@@ -35,6 +36,9 @@
                         <div>Vegetarian Shepherd Pie</div>
                         <div>Roasted Garlic Herb Fingerling Potatoes</div>
                         <div>Beans Green Whole Frozen</div>
+                    </div>
+                    <div>
+                        <Button className="mb-2 mt-3 btn btn-primary btn-sm" href={route}>Edit Location</Button>
                     </div>
                  </Stack>
              </div>

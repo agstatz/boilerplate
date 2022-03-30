@@ -1,6 +1,7 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 
+import { Container, Placeholder, Button, Form } from "react-bootstrap";
 
 const ColoredLine = ({ color }) => (
     <hr
@@ -17,7 +18,7 @@ const Border = ({color}) => (
         style={
         {
             border: '3px rgb(86, 10, 10) solid',
-            padding: '9px',
+            ping: '9px',
         }
     }
     </div>
@@ -58,6 +59,9 @@ export default class Search_Food extends React.Component {
             html: [],
             html2: [],
             html3: [],
+            html4: [],
+            html5: [],
+            html6: [],
             onList: [],
             include: [],
             exclude: [],
@@ -66,29 +70,21 @@ export default class Search_Food extends React.Component {
             tags: [],
             nutrition: [],
             nutritionSelected: "",
+            cuisine: [],
+            cuisineSelected: "",
+            group: [],
+            groupSelected: "",
+            diet: [],
+            dietSelected: "",
         };
         this.callAPI = this.callAPI.bind(this);
     }
-    updateDimensions = () => {
-        // this.setState({width : window.innerWidth})
-        // let i = 0;
-        // while (true) {
-        //     let element = document.getElementById("picture" + i)
-        //     i++;
-        //     if (element == null) {
-        //         break;
-        //     }
-        //     element.width = this.state.width*0.8
-        //     element.height = this.state.width*0.8*0.5625
-        // }
-    };
-
     componentDidMount() {
         this.callAPI();
-        window.addEventListener('resize', this.updateDimensions);
     }
 
     handleOnChange = (position) => {
+        console.log("handleonchange")
         if (position.target.checked) {//add to list
             this.state.tags.push(position.target.name)
         } else {//remove from list
@@ -178,6 +174,57 @@ export default class Search_Food extends React.Component {
                 }
                 this.state.html2.push(clonedToPush)
             }
+            try {
+                response = await axios.get(url + `Diet`);
+            } catch (error) {
+                console.log("error")
+            } finally {
+                this.setState({diet : response})
+                this.setState({dietSelected : this.state.diet.data[0]})
+                let toPush = <select class="form-select" id="drop2" onChange={this.handleDrop3}></select>;
+                let clonedToPush = React.cloneElement(
+                    toPush,
+                    { children: [] }
+                );
+                for (let i = 0; i < this.state.diet.data.length; i++) {
+                    clonedToPush.props.children.push(<option value={this.state.diet.data[i]}>{this.state.diet.data[i]}</option>)
+                }
+                this.state.html4.push(clonedToPush)
+            }
+            try {
+                response = await axios.get(url + `Group`);
+            } catch (error) {
+                console.log("error")
+            } finally {
+                this.setState({group : response})
+                this.setState({groupSelected : this.state.group.data[0]})
+                let toPush = <select class="form-select" id="drop3" onChange={this.handleDrop4}></select>;
+                let clonedToPush = React.cloneElement(
+                    toPush,
+                    { children: [] }
+                );
+                for (let i = 0; i < this.state.group.data.length; i++) {
+                    clonedToPush.props.children.push(<option value={this.state.group.data[i]}>{this.state.group.data[i]}</option>)
+                }
+                this.state.html5.push(clonedToPush)
+            }
+            try {
+                response = await axios.get(url + `Cuisine`);
+            } catch (error) {
+                console.log("error")
+            } finally {
+                this.setState({cuisine : response})
+                this.setState({cuisineSelected : this.state.cuisine.data[0]})
+                let toPush = <select class="form-select" id="drop4" onChange={this.handleDrop5}></select>;
+                let clonedToPush = React.cloneElement(
+                    toPush,
+                    { children: [] }
+                );
+                for (let i = 0; i < this.state.cuisine.data.length; i++) {
+                    clonedToPush.props.children.push(<option value={this.state.cuisine.data[i]}>{this.state.cuisine.data[i]}</option>)
+                }
+                this.state.html6.push(clonedToPush)
+            }
             this.setState({loading : false})
             this.forceUpdate();
         }
@@ -187,9 +234,14 @@ export default class Search_Food extends React.Component {
         if (this.state.loading) {
             return (
                 <div className="App">
-                    <header className="App-header">
+                <Container style={{ paddingTop: '8vh', paddingBottom: '8vh'}} >
+                    <header className="p-3 my-4 mx-4 bg-light border rounded">
+                        <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}} ><strong>Advanced Search</strong></h1>
+                        <ColoredLine color="grey"></ColoredLine>
+
                     </header>
-                </div>
+                </Container>
+            </div>
             )
         }
         let i = 0;
@@ -202,7 +254,7 @@ export default class Search_Food extends React.Component {
                 height={d.props.height} width={d.props.height}
                 type={d.props.type} name={d.props.name}
                 value={d.props.value} checked={d.props.checked}
-                onChange={d.props.onChange}
+                onChange={d.props.onChange} class={d.props.class}
             >{d.props.children}</d.type>);
 
         const listItems2 = this.state.html2.map((d) =>
@@ -214,7 +266,7 @@ export default class Search_Food extends React.Component {
                 height={d.props.height} width={d.props.height}
                 type={d.props.type} name={d.props.name}
                 value={d.props.value} checked={d.props.checked}
-                onChange={d.props.onChange}
+                onChange={d.props.onChange} class={d.props.class}
             >{d.props.children}</d.type>);
         const listItems3 = this.state.html3.map((d) =>
             <d.type
@@ -225,11 +277,45 @@ export default class Search_Food extends React.Component {
                 height={d.props.height} width={d.props.height}
                 type={d.props.type} name={d.props.name}
                 value={d.props.value} checked={d.props.checked}
-                onChange={d.props.onChange}
+                onChange={d.props.onChange} class={d.props.class}
+            >{d.props.children}</d.type>);
+        const listItems4 = this.state.html4.map((d) =>
+            <d.type
+                key={"list" + i++}
+                src={d.props.src} alt={d.props.name}
+                to={d.props.to} id={d.key} style={d.props.style}
+                color={d.props.color}
+                height={d.props.height} width={d.props.height}
+                type={d.props.type} name={d.props.name}
+                value={d.props.value} checked={d.props.checked}
+                onChange={d.props.onChange} class={d.props.class}
+            >{d.props.children}</d.type>);
+        const listItems5 = this.state.html5.map((d) =>
+            <d.type
+                key={"list" + i++}
+                src={d.props.src} alt={d.props.name}
+                to={d.props.to} id={d.key} style={d.props.style}
+                color={d.props.color}
+                height={d.props.height} width={d.props.height}
+                type={d.props.type} name={d.props.name}
+                value={d.props.value} checked={d.props.checked}
+                onChange={d.props.onChange} class={d.props.class}
+            >{d.props.children}</d.type>);
+        const listItems6 = this.state.html6.map((d) =>
+            <d.type
+                key={"list" + i++}
+                src={d.props.src} alt={d.props.name}
+                to={d.props.to} id={d.key} style={d.props.style}
+                color={d.props.color}
+                height={d.props.height} width={d.props.height}
+                type={d.props.type} name={d.props.name}
+                value={d.props.value} checked={d.props.checked}
+                onChange={d.props.onChange} class={d.props.class}
             >{d.props.children}</d.type>);
 
         return (
             <div className="App">
+                <Container style={{ paddingTop: '8vh', paddingBottom: '8vh'}} >
                 <header className="p-3 my-4 mx-4 bg-light border rounded">
 
                     <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}} >Advanced Search</h1>
@@ -261,17 +347,57 @@ export default class Search_Food extends React.Component {
                         textAlign: 'center',
                         fontWeight: 'bold'
                     }}>
+                        <a><br></br>Diet</a>
+                    </div>
+                    <div style={{
+                        width: '50%',
+                        margin: '0 auto',
+                        alignItems: 'center'}}>
+                        {listItems4}
+                    </div>
+                    <div style={{
+                        textAlign: 'center',
+                        fontWeight: 'bold'
+                    }}>
+                        <a><br></br>Group</a>
+                    </div>
+                    <div style={{
+                        width: '50%',
+                        margin: '0 auto',
+                        alignItems: 'center'}}>
+                        {listItems5}
+                    </div>
+                    <div style={{
+                        textAlign: 'center',
+                        fontWeight: 'bold'
+                    }}>
+                        <a><br></br>Cuisine</a>
+                    </div>
+                    <div style={{
+                        width: '50%',
+                        margin: '0 auto',
+                        alignItems: 'center'}}>
+                        {listItems6}
+                    </div>
+                    <div style={{
+                        textAlign: 'center',
+                        fontWeight: 'bold'
+                    }}>
                         <a><br></br>Nutrition</a>
                     </div>
                     <div style={{
                         width: '50%',
                         margin: '0 auto',
                         alignItems: 'center'}}>
-                        {listItems2}
-                        <button onClick={this.addButton}>
-                            Add
-                        </button>
+                        <div class={"input-group"}>
+                            {listItems2}
+                            <Button onClick={this.addButton}>
+                                Add
+                            </Button>
+                        </div>
+                        <div class={"input-group"}>
                         {listItems3}
+                        </div>
                     </div>
                     <div style={{
                         textAlign: 'center',
@@ -279,10 +405,11 @@ export default class Search_Food extends React.Component {
                     }}>
                         <a>
                             <br></br>
-                            <button onClick={this.submitButton}>Submit</button>
+                            <Button onClick={this.submitButton}>Submit</Button>
                         </a>
                     </div>
                 </header>
+                </Container>
             </div>
         );
     }
@@ -302,27 +429,33 @@ export default class Search_Food extends React.Component {
         }
     }
 
+    handleDrop3 = (event) => {
+        this.setState({ dietSelected : event.target.value })
+    }
+    handleDrop4 = (event) => {
+        this.setState({ groupSelected : event.target.value })
+    }
+    handleDrop5 = (event) => {
+        this.setState({ cuisineSelected : event.target.value })
+    }
+
     addButton = (event) => {
         if (this.state.onList.indexOf(this.state.nutritionSelected) == -1) {
             this.state.onList.push(this.state.nutritionSelected);
-            let toPush = <div id={"nutrition" + this.state.index}></div>;
+            let toPush = <div class={"input-group"} id={"nutrition" + this.state.index}></div>;
             let clonedToPush = React.cloneElement(
                 toPush,
                 { children: [] }
             );
             clonedToPush.props.children.push(
-                <select id={"drop"+ this.state.index} onChange={this.handleDrop2} >
+                <select class="form-select w-25" id={"drop"+ this.state.index} onChange={this.handleDrop2} >
                     <option value="include">Include</option>
                     <option value="exclude">Exclude</option>
                 </select>
             );
-            clonedToPush.props.children.push(" " + this.state.nutritionSelected + " ");
-            clonedToPush.props.children.push(<button style={{
-                borderLeft: '2px solid grey',
-                borderRight: '2px solid grey',
-                borderTop: '2px solid grey',
-                textAlign: 'right'
-            }} value={this.state.index} onClick={this.removeButton}>Remove</button>);
+            clonedToPush.props.children.push(<a class="btn btn-static w-50 text-left">{this.state.nutritionSelected}</a>);
+            clonedToPush.props.children.push(<Button
+                value={this.state.index} onClick={this.removeButton}>Remove</Button>);
             this.state.include.push(this.state.nutritionSelected);
             this.state.html3.push(clonedToPush);
             this.state.index++;
@@ -331,12 +464,15 @@ export default class Search_Food extends React.Component {
     }
 
     removeButton = (event) => {
-        let string = this.state.html3.pop({id : "drop" + event.target.value}).props.children[1]
+        console.log("removebutton")
+        let string = this.state.html3.pop({id : "drop" + event.target.value}).props.children[1].props.children
+        console.log(string)
         string = string.substring(1, string.length - 1);
         this.state.onList.pop(string);
         this.state.include.pop(string);
         this.state.exclude.pop(string);
-        this.forceUpdate()
+        console.log("updating");
+        this.forceUpdate();
     }
 
     submitButton = (event) => {
@@ -345,7 +481,10 @@ export default class Search_Food extends React.Component {
             document.getElementById("search").value +
             "&tags=" + this.state.tags +
             "&include=" + this.state.include +
-            "&exclude=" + this.state.exclude;
+            "&exclude=" + this.state.exclude +
+            "&diet=" + this.state.dietSelected +
+            "&group=" + this.state.groupSelected +
+            "&cuisine=" + this.state.cuisineSelected;
         console.log(string)
         this.state.html.push(<Redirect to={string}/>)
         this.forceUpdate()

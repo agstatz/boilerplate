@@ -7,7 +7,7 @@ const PrivilegeClass = require("./privilegeClassModel");
 dbm.users = require("./userModel");
 dbm.food_tag_types = require("./foodTagTypeModel")
 const Food_Tag_Type = require("./foodTagTypeModel");
-dbm.PRIVILEGE_CLASSES = ["user", "admin", "moderator", "dining staff"];
+dbm.PRIVILEGE_CLASSES = ["user", "admin", "moderator", "dining staff", "guest"];
 dbm.FOOD_TAG_TYPES = ["user-created", "allergen", "diet", "cuisine"];
 
 //connect Mongoose to MongoDB
@@ -86,6 +86,13 @@ function initializePrivilegeClasses() {
       });
       new PrivilegeClass({
           name: "admin"
+        }).save(err => {
+        if (err) {
+          console.log("error", err);
+        }
+      });
+      new PrivilegeClass({
+          name: "guest"
         }).save(err => {
         if (err) {
           console.log("error", err);

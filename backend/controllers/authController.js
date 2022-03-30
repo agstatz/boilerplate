@@ -157,21 +157,48 @@ exports.resetUser = (req, res) => {
       mealPlans: [],
       locationsVisited: []
     }
+  )}
+// edit user preferences from preference quiz
+exports.editUserPreferences = (req, res) => {
+  User.updateOne(
+    {username: req.body.data.username},
+    {
+      mealSwipes: req.body.data.mealSwipes,
+      allergies: req.body.data.allergies
+    }
   )
     .exec((err, user) => {
       if (err) {
-        console.log(err)
         res.status(500).send({ message: err });
         return;
       }
       if (!user) {
-        console.log(2)
         return res.status(404).send({ message: "User Not found" });
       }
-      console.log('good')
-
       res.status(200).send({
-        message: "User information updated successfully"
+        message: "User preferences updated successfully"
       });
     });
-}
+};
+
+// set user meal swipes left
+exports.resetUserMealSwipes = (req, res) => {
+  User.updateOne(
+    {username: req.body.data.username},
+    {
+      mealSwipes: req.body.data.mealSwipes
+    }
+  )
+    .exec((err, user) => {
+      if (err) {
+        res.status(500).send({ message: err });
+        return;
+      }
+      if (!user) {
+        return res.status(404).send({ message: "User Not found" });
+      }
+      res.status(200).send({
+        message: "User mealSwipes updated successfully"
+      });
+    });
+};
