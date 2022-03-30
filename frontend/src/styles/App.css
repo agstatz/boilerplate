@@ -38,3 +38,25 @@
     color: black;
     border-color: black;
 }
+.btn-static {
+    background-color: white;
+    border: 1px solid lightgrey;
+    cursor: default;
+}
+.text-left {
+    text-align: left !important;
+}
+hr.class-1 {
+    border-top: 10px solid;
+    color: #212121;
+}
+hr.class-2 {
+    border-top: 5px solid;
+    color: #212121;
+}
+
+
+
+.rating-stars {
+    font-size: 20px;
+}

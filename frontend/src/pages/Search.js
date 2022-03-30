@@ -41,8 +41,7 @@ export default class Foods extends React.Component {
         try {
             response = await axios.get(
                 url +
-                `Foods?search=` + this.state.queries.search
-                +
+                `Foods?search=` + this.state.queries.search +
                 "&tags=" + this.state.queries.tags +
                 "&include=" + this.state.queries.include +
                 "&exclude=" + this.state.queries.exclude);
@@ -83,7 +82,7 @@ export default class Foods extends React.Component {
                             </Link>
                         </Form>
                         <header className="p-3 my-4 mx-4 bg-light border rounded">
-                            <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}}>List of Foods</h1>
+                            <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}}><strong>List of Foods</strong></h1>
                             <Placeholder animation="glow" size="lg">
                                 <Placeholder xs={12} />
                                 <Placeholder xs={12} />
@@ -122,7 +121,7 @@ export default class Foods extends React.Component {
                         </Link>
                     </Form>
                     <header className="p-3 my-4 mx-4 bg-light border rounded">
-                        <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}}>List of Foods</h1>
+                        <h1 className="App-title" style={{textAlignVertical: "center",textAlign: "center"}}><strong>List of Foods</strong></h1>
                         {listItems}
                     </header>
                 </Container>
