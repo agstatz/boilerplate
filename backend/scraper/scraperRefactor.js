@@ -30,7 +30,6 @@ const DINING_HOMEPAGE = "https://dining.purdue.edu";
   // Build all dining courts
   for (const diningCourtLink of links) {
     const diningCourt = await buildDiningCourt(browser, diningCourtLink);
-    console.log(JSON.stringify(diningCourt));
   }
 
   // Close browser
@@ -134,6 +133,9 @@ const buildMealMenu = async (browser, url) => {
   // Get the time this meal is being served
   const time = $(".mealpicker-meal-times").text();
   menuObject.time = time;
+
+  // If the dining court is closed for this meal, return.
+  if (time === "Closed") return menuObject;
 
   // Find the station containers
   const htmlStations = $(".station-container");
