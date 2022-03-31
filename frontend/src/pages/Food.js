@@ -27,7 +27,7 @@ export default class Food extends React.Component {
             isNotGuest: store.getState().app.isNotGuest,
             username: store.getState().app.username,
             showModal: false,
-            newTagName: ""
+            newTagName: "",
             tried: false,
         };
 
