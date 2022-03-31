@@ -20,7 +20,13 @@ const FoodSchema = mongoose.Schema({
   calcium: String,
   iron: String,
   dietaryTags: [String],
-  ingredients: String
+  ingredients: String,
+  userTags: [
+      {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "user_tags"
+      }
+  ]
 });
 
 module.exports = mongoose.model('foods', FoodSchema);

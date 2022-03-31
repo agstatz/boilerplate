@@ -2,9 +2,10 @@ import React from "react";
 import {Link, Redirect} from "react-router-dom";
 import { Grid } from '@mui/material';
 import queryString from "query-string";
-
-import { Container, Button } from "react-bootstrap";
+import { store } from "../store/store.js";
+import { Stack, Container, Placeholder, Button, Modal, Form } from "react-bootstrap";
 import { StarRating } from "../components/";
+import UserTags from "../components/UserTags"
 
 const url = 'http://localhost:3001/'
 
@@ -23,6 +24,10 @@ export default class Food extends React.Component {
             adminhtml: [],
             loggedInhtml: [],
             data: [],
+            isNotGuest: store.getState().app.isNotGuest,
+            username: store.getState().app.username,
+            showModal: false,
+            newTagName: ""
         };
         this.callAPI = this.callAPI.bind(this);
         this.state.queries = queryString.parse(window.location.search);
@@ -42,10 +47,10 @@ export default class Food extends React.Component {
         } catch (error) {
             console.log("error")
         } finally {
-            console.log(response)
+            //console.log(response)
             if (response.data[0] == null) {
                 this.state.html.push(<a>This food ({this.state.queries.name}) does not exist.</a>)
-                console.log("NA")
+                //console.log("NA")
             } else {
                 if (admin) {
                     this.state.adminhtml.push(
@@ -56,7 +61,7 @@ export default class Food extends React.Component {
                         </Link>)
                 }
                 this.setState({data: response.data[0]})
-                console.log(this.state.data)
+                //console.log(this.state.data)
                 this.state.html.push(<h1>{this.state.data.name}</h1>)
                 this.state.html.push(<h3><br></br>Nutrition Facts</h3>)
                 this.state.html.push(<hr></hr>)
@@ -102,6 +107,55 @@ export default class Food extends React.Component {
 
             this.state.loading = false;
             this.forceUpdate();
+        }
+    }
+
+    handleClose = (event) => {
+        this.setState({
+            showModal: false
+        });
+    }
+
+    handleOpen = (event) => {
+        this.setState({
+            showModal: true
+        });
+    }
+
+    handleChange = (event) => {
+        event.preventDefault();
+        let target = event.target;
+        let value = target.type === "checkbox" ? target.checked : target.value;
+        let name = target.id;
+        this.setState({
+            [name]: value
+        });
+    }
+
+    handleSubmitTag = (event) => {
+        event.preventDefault();
+        var noErr = true
+        if (noErr && !/^([a-zA-Z \-]{3,})$/.test(this.state.newTagName)) {
+            this.setState({ message: "Must be 3 characters long only letters" })
+            noErr = false
+        }
+        if (noErr && !/^([A-Z]{1,1}[a-z \-]{2,})$/.test(this.state.newTagName)) {
+            this.setState({ message: "Must start with a capital letter and have no other capital letters" })
+            noErr = false
+        }
+        const reqInfo = {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            username: this.state.username,
+            foodName: this.state.queries.name,
+            foodTagName: this.state.newTagName
+        }
+        if (noErr) {
+            axios
+                .post('http://localhost:3001/api/addUserTag', { data: reqInfo })
+            this.state.showModal = false;
+            window.location.reload();
         }
     }
 
@@ -152,10 +206,22 @@ export default class Food extends React.Component {
 
         return (
             <div className="App">
-                <Container style={{ paddingTop: '18vh', paddingBottom: '18vh'}} >
-                    <div>
-                        {adminItems}
-                        {loggedInItems}
+                <Container style={{ paddingTop: '10vh', paddingBottom: '10vh'}}>
+                    <div >
+                        <Container style={{ paddingLeft: '2vh', paddingRight: '115vh'}}>
+                            <Stack>
+                                {adminItems}
+                            </Stack>
+                        </Container>
+                        <div className="p-3 my-4 mx-4 bg-light border rounded w-100">
+                            <UserTags />
+                            {loggedInItems}
+                        </div>
+                        <Container style={{ paddingLeft: '2vh', paddingRight: '115vh'}}>
+                            <Stack>
+                                <Button className="mb-2 mt-3 btn btn-secondary btn-sm" hidden={this.state.isNotGuest !== true} onClick={this.handleOpen}>Add food tag</Button>
+                            </Stack>
+                        </Container>
                     </div>
                     <div className="p-3 my-4 mx-4 bg-light border rounded">
                         {listItems}
@@ -165,6 +231,25 @@ export default class Food extends React.Component {
                         <StarRating inputRating={0}/>
                     </div>
                 </Container>
+                <Form onSubmit={this.handleSubmitTag}>
+                    <Modal show={this.state.showModal} onHide={this.handleClose} animation={false}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Add user tag</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>Add a user tag to {this.state.queries.name}?\n Proper format includes only lowercase
+                                    letters, spaces, and hyphens, except for the first character. The first character MUST be capital.
+                            <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='newTagName'>
+                                <Form.Label>New Tag Name</Form.Label>
+                                <Form.Control type="newTagName" value={this.state.newTagName} onChange={this.handleChange} />
+                            </Form.Group>
+                            {this.state.message}
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="primary" onClick={this.handleSubmitTag}>Add tag</Button>
+                            <Button variant="secondary" onClick={this.handleClose}>Cancel</Button>
+                        </Modal.Footer>
+                    </Modal>
+                </Form>
             </div>
         );
     }

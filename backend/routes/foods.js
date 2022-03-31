@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Food = require('../models/Food')
 const Food_Tag = require('../models/foodTagsModel')
+const User_Tag = require('../models/userTagModel')
 
 // @route   GET api/foods
 // @desc    Get all food items from collection.
@@ -54,13 +55,43 @@ router.get('/:id', async (req, res) => {
 // @access  Public
 router.get("/getfoodtags/:name", async (req, res) => {
     try {
-
         const food = await Food.findOne({ name: req.params.name });
-
         if (!food) return res.status(400).json({ msg: 'Food item does not exist'});
-        console.log(food);
+        //console.log(food);
         return res.json(food.foodTags);
+    } catch(err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+})
 
+// @route   GET api/foods/getuserfoodtags/:name
+// @desc    Get food tags from the foods collection from the food with the given name.
+// @access  Public
+router.get("/getuserfoodtags/:name",  (req, res) => {
+    try {
+        var retarr = [];
+        Food.findOne({ name: req.params.name }).exec((err1, food) => {
+            if (!food) return res.status(400).json({ msg: 'Food item does not exist'});
+            food.userTags.forEach(userTag => {
+                User_Tag.findOne({ _id: userTag }).exec((err1, temp) => {
+                    retarr.push(temp);
+                    if (retarr.length === food.userTags.length) {
+                        for (let i = 1; i < retarr.length; i++) { // sort by rating high to low
+                            let current = retarr[i];
+                            let j = i-1;
+                            while ((j > -1) && (current.rating > retarr[j].rating)) {
+                                retarr[j+1] = retarr[j];
+                                j--;
+                            }
+                            retarr[j+1] = current;
+                        }
+                        return res.json(retarr);
+                    }
+                })
+
+            });
+        });
     } catch(err) {
         console.error(err.message);
         res.status(500).send('Server error');

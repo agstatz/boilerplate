@@ -94,6 +94,12 @@ const User = mongoose.model(
             ref: "privilege_classes"
         }
     ],
+    userTags: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "user_tags"
+        }
+    ],
     locationsVisited: [locationsVisitedSchema]
   })
 );
