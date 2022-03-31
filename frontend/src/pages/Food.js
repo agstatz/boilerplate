@@ -27,14 +27,34 @@ export default class Food extends React.Component {
             isNotGuest: store.getState().app.isNotGuest,
             username: store.getState().app.username,
             showModal: false,
-            newTagName: ""
+            newTagName: "",
+            rating: 0
         };
+        this.getRatingFromAPI = this.getRatingFromAPI.bind(this);
         this.callAPI = this.callAPI.bind(this);
         this.state.queries = queryString.parse(window.location.search);
     }
 
+    async getRatingFromAPI() {
+        const userdata = {
+            ownerName: 'broski',
+            foodName: 'food',
+            rating: 2
+        }
+        
+        axios
+            .post('http://localhost:3001/api/editFoodRating', { data: userdata })
+            .then((res) => {
+                console.log(res);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
     componentDidMount() {
         this.callAPI();
+        this.getRatingFromAPI();
     }
 
     async callAPI() {
@@ -66,10 +86,10 @@ export default class Food extends React.Component {
                 this.state.html.push(<h3><br></br>Nutrition Facts</h3>)
                 this.state.html.push(<hr></hr>)
                 this.state.html.push(<h5>Serving size: {this.state.data.servingSize}</h5>)
-                this.state.html.push(<hr class="class-1"></hr>)
+                this.state.html.push(<hr className="class-1"></hr>)
                 this.state.html.push(<h5>Amount per serving<br></br></h5>)
                 this.state.html.push(<h3>Calories: {this.state.data.calories}<br></br></h3>)
-                this.state.html.push(<hr class="class-2"></hr>)
+                this.state.html.push(<hr className="class-2"></hr>)
                 this.state.html.push(<a><strong>Total Fat:</strong> {this.state.data.totalFat}<br></br></a>)
                 this.state.html.push(<hr></hr>)
                 this.state.html.push(<a>&emsp;&emsp;Saturated Fat: {this.state.data.saturatedFat}<br></br></a>)
@@ -87,11 +107,11 @@ export default class Food extends React.Component {
                 this.state.html.push(<a>&emsp;&emsp;&emsp;&emsp;Added Sugar: {this.state.data.addedSugar}<br></br></a>)
                 this.state.html.push(<hr></hr>)
                 this.state.html.push(<a><strong>Protein:</strong> {this.state.data.protein}<br></br></a>)
-                this.state.html.push(<hr class="class-1"></hr>)
+                this.state.html.push(<hr className="class-1"></hr>)
                 this.state.html.push(<a>Calcium: {this.state.data.calcium}<br></br></a>)
                 this.state.html.push(<hr></hr>)
                 this.state.html.push(<a>Iron: {this.state.data.iron}<br></br></a>)
-                this.state.html.push(<hr class="class-2"></hr>)
+                this.state.html.push(<hr className="class-2"></hr>)
                 this.state.html.push(<a>Tags: {this.state.data.tags}<br></br></a>)
                 this.state.html.push(<hr></hr>)
                 this.state.html.push(<a>Diets: {this.state.data.diet}<br></br></a>)
@@ -99,7 +119,7 @@ export default class Food extends React.Component {
                 this.state.html.push(<a>Groups: {this.state.data.group}<br></br></a>)
                 this.state.html.push(<hr></hr>)
                 this.state.html.push(<a>Cuisine: {this.state.data.cuisine}<br></br></a>)
-                this.state.html.push(<hr class="class-2"></hr>)
+                this.state.html.push(<hr className="class-2"></hr>)
                 this.state.html.push(<a>Ingredients: {this.state.data.ingredients}</a>)
             }
 
@@ -181,7 +201,7 @@ export default class Food extends React.Component {
                 to={d.props.to} id={d.key} style={d.props.style}
                 color={d.props.color}
                 height={d.props.height} width={d.props.height}
-                class={d.props.class}
+                className={d.props.class}
             >{d.props.children}</d.type>);
         const adminItems = this.state.adminhtml.map((d) =>
             <d.type
@@ -190,7 +210,7 @@ export default class Food extends React.Component {
                 to={d.props.to} id={d.key} style={d.props.style}
                 color={d.props.color}
                 height={d.props.height} width={d.props.height}
-                class={d.props.class}
+                className={d.props.class}
             >{d.props.children}</d.type>);
         const loggedInItems = this.state.loggedInhtml.map((d) =>
             <d.type
@@ -199,7 +219,7 @@ export default class Food extends React.Component {
                 to={d.props.to} id={d.key} style={d.props.style}
                 color={d.props.color}
                 height={d.props.height} width={d.props.height}
-                class={d.props.class}
+                className={d.props.class}
             >{d.props.children}</d.type>);
 
 
@@ -228,7 +248,7 @@ export default class Food extends React.Component {
                     </div>
                     <div className="p-3 my-4 mx-4 bg-light border rounded">
                         <h3>Give {this.state.data.name} a rating!</h3>
-                        <StarRating inputRating={0}/>
+                        <StarRating inputRating={this.state.rating}/>
                     </div>
                 </Container>
                 <Form onSubmit={this.handleSubmitTag}>

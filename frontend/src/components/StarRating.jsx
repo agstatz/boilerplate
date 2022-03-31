@@ -5,6 +5,7 @@
  */
 
 import { useState, useEffect } from "react";
+import { Button } from "react-bootstrap";
 
 function StarRating(props) {
 
@@ -66,19 +67,17 @@ function StarRating(props) {
             list.push(<i 
                         className="bi bi-star"
                         id={i.toString()}
+                        key={i}
                         onMouseOver={updateStar}
                         onMouseOut={revertStars}
                         onClick={updateRating}></i>);
         }
-
-        console.log("rating " + rating);
 
         setStars(list);
     }
 
     const revertStars = () => {
         var numberOfStars = rating;
-        console.log(numberOfStars);
 
         var list = [];
 
@@ -105,13 +104,13 @@ function StarRating(props) {
 
     const updateRating = (e) => {
         var numberOfStars = parseInt(e.target.id) + 1;
-        console.log("updating rating" + numberOfStars);
         setRating(parseInt(e.target.id) + 1);
     }
 
     return (
         <span className="rating-stars">
-            {stars}
+            {stars}<br />
+            <Button size="sm">Reset Rating</Button>
         </span>
     )
 }

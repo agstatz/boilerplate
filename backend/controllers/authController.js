@@ -273,6 +273,12 @@ exports.editUserDietaryPreferences = async (req, res) => {
 
   }
 
+    exports.editFoodRating = async (req, res) => {
+        
+        
+  
+    }
+
   User.updateOne(
     {username: req.body.data.username},
     {

@@ -3,6 +3,7 @@ const FoodTag = require("../models/userTagModel");
 const Users = require("../models/userModel");
 const Food = require("../models/Food");
 const mongoose = require('mongoose');
+const FoodRating = require("../models/FoodRating");
 
 // Will add a user tag, or if it already exists, it will add the tag to the selected food, or
 // if the food already has that tag, it will increase the tag's ranking
@@ -128,4 +129,27 @@ exports.addUserCreatedTag = (req, res) => {
             res.send({ message: "Successful post request."});
         })
     })
+}
+
+exports.editFoodRating = async (req, res) => {
+    console.log("edit food rating...");
+    try {
+        FoodRating.findOne({ownerName: req.body.data.ownerName, food: req.body.data.foodName}).exec((err, foodRating) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+            if (!foodRating) {
+                return res.status(404).send({ message: "User Not found" });
+            }
+
+            console.log(req.body.data.ownerName);
+        });
+        //res.send({ message: "Food Rating edited successfully." });
+    } catch (err) {
+        console.log("error encountered");
+        res.status(500).send({ message: "An error was encountered." });
+        return;
+    }
+    
 }
