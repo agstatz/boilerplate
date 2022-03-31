@@ -24,7 +24,7 @@ import { Home, PageNotFound, RegisterForm, LoginForm, PreferenceQuiz,
         PostFoodUpdate, PostTried, FoodsNeedUpdate, FoodsTried,
         DiningIndividual, Scheduler, DietaryInfo, EditLocation, AdminPanel, DiningLocationsSelection, AddLocation, EditFood } from './pages';
 import { Footer } from './components';
-import Scheduler from './pages/Scheduler';
+//import Scheduler from './pages/Scheduler';
 
 function App() {
     const username = store.getState().app.username;

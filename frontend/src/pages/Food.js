@@ -28,7 +28,8 @@ export default class Food extends React.Component {
             username: store.getState().app.username,
             showModal: false,
             newTagName: "",
-            rating: 0
+            rating: 0,
+            tried: false,
         };
         this.getRatingFromAPI = this.getRatingFromAPI.bind(this);
         this.callAPI = this.callAPI.bind(this);
