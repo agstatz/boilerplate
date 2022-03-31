@@ -60,7 +60,7 @@ export default class LoginForm extends React.Component {
             this.setState({ message: "Username field is empty or has invalid characters" })
             noErr = false
         }
-        if (noErr && !/^([a-zA-Z]{1,})$/.test(this.state.password)) {
+        if (noErr && !/^([\S]{1,})$/.test(this.state.password)) {
             this.setState({ message: "Password field is empty" })
             noErr = false
         }
