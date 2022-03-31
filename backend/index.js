@@ -74,22 +74,15 @@ app.get('/Foods', (req, res) => {
   let tags = req.query.tags
   let include = req.query.include
   let exclude = req.query.exclude
-  let diet = req.query.diet
-  let group = req.query.group
+  let diets = req.query.diets
+  let groups = req.query.groups
   let cuisine = req.query.cuisine
 
   if (search == null || search === "undefined") {
     search = "";
   }
 
-  if (diet == null || diet === "any" || diet === "undefined") {
-    diet = "";
-  }
-
-  if (group == null || group === "any" || group === "undefined") {
-    group = "";
-  }
-  if (cuisine == null || cuisine === "any" || cuisine === "undefined") {
+  if (cuisine == null || cuisine === "Any" || cuisine === "undefined") {
     cuisine = "";
   }
 
@@ -99,6 +92,22 @@ app.get('/Foods', (req, res) => {
   } else {
     tags = tags.split(",")
     console.log(tags)
+  }
+
+  if (groups == null || groups === "undefined" || groups === "") {
+    groups = [];
+    console.log("null")
+  } else {
+    groups = groups.split(",")
+    console.log(groups)
+  }
+
+  if (diets == null || diets === "undefined" || diets === "") {
+    diets = [];
+    console.log("null")
+  } else {
+    diets = diets.split(",")
+    console.log(diets)
   }
 
   if (include == null || include === "undefined" || include === "") {
@@ -116,9 +125,9 @@ app.get('/Foods', (req, res) => {
     let db = dbt.db("boilerplate");
     db.collection("foods").find({}).toArray(function(err, result) {
       if (err) throw err;
-      result2 = result.map(s => [
+      let result2 = result.map(s => [
           s.name, //0
-          s.totalfat, //1
+          s.totalFat, //1
           s.saturatedFat, //2
           s.cholesterol, //3
           s.sodium, //4
@@ -129,128 +138,157 @@ app.get('/Foods', (req, res) => {
           s.protein, //9
           s.calcium, //10
           s.iron, //11
-          s.dietaryTags //12
+          s.dietaryTags, //12
+          s.diets, //13
+          s.groups, //14
+          s.cuisine, //15
       ])
       result = result.map(a => a.name); //filters only the names of foods
       result = result.filter(s => s.toLowerCase().includes(search.toLowerCase())); //filters foods accordingly to search
 
       for (let i = 0; i < result2.length; i++) {
         let food = result2[i]
+        if (food[12] == null || food[12] === "undefined" || food[12] === "") {
+          food[12] = [];
+        }
+
+        if (food[13] == null || food[13] === "undefined" || food[13] === "") {
+          food[13] = [];
+        }
+
+        if (food[14] == null || food[14] === "undefined" || food[14] === "") {
+          food[14] = [];
+        }
 
         if (include.includes("Total Fat")) {
-          if (food[1] == null || food[1] === "0g") {
+          if (food[1] == null || food[1][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Total Fat")) {
-          if (food[1] != null && food[1] !== "0g") {
+          if (food[1] != null && food[1][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (include.includes("Saturated Fat")) {
-          if (food[2] == null || food[2] === "0g") {
+          if (food[2] == null || food[2][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Saturated Fat")) {
-          if (food[2] != null && food[2] !== "0g") {
+          if (food[2] != null && food[2][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (include.includes("Cholesterol")) {
-          if (food[3] == null || food[3] === "0mg") {
+          if (food[3] == null || food[3][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Cholesterol")) {
-          if (food[3] != null && food[3] !== "0mg") {
+          if (food[3] != null && food[3][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (include.includes("Sodium")) {
-          if (food[4] == null || food[4] === "0mg") {
+          if (food[4] == null || food[4][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Sodium")) {
-          if (food[4] != null && food[4] !== "0mg") {
+          if (food[4] != null && food[4][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (include.includes("Carbohydrate")) {
-          if (food[5] == null || food[5] === "0g") {
+          if (food[5] == null || food[5][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Carbohydrate")) {
-          if (food[5] != null && food[5] !== "0g") {
+          if (food[5] != null && food[5][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
 
         if (include.includes("Sugar")) {
-          if (food[6] == null || food[6] === "0g") {
+          if (food[6] == null || food[6][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Sugar")) {
-          if (food[6] != null && food[6] !== "0g") {
+          if (food[6] != null && food[6][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (include.includes("Added Sugar")) {
-          if (food[7] == null || food[7] === "0g") {
+          if (food[7] == null || food[7][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Added Sugar")) {
-          if (food[7] != null && food[7] !== "0g") {
+          if (food[7] != null && food[7][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (include.includes("Dietary Fiber")) {
-          if (food[8] == null || food[8] === "0g") {
+          if (food[8] == null || food[8][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Dietary Fiber")) {
-          if (food[8] != null && food[8] !== "0g") {
+          if (food[8] != null && food[8][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (include.includes("Protein")) {
-          if (food[9] == null || food[9] === "0g") {
+          if (food[9] == null || food[9][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Protein")) {
-          if (food[9] != null && food[9] !== "0g") {
+          if (food[9] != null && food[9][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (include.includes("Calcium")) {
-          if (food[10] == null || food[10] === "0g") {
+          if (food[10] == null || food[10][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Calcium")) {
-          if (food[10] != null && food[10] !== "0g") {
+          if (food[10] != null && food[10][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (include.includes("Iron")) {
-          if (food[11] == null || food[11] === "0g") {
+          if (food[11] == null || food[11][0] === "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         if (exclude.includes("Iron")) {
-          if (food[11] != null && food[11] !== "0g") {
+          if (food[11] != null && food[11][0] !== "0") {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
           }
         }
         for (let j = 0; j < tags.length; j++) {
           if (!food[12].includes(tags[j])) {
             if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        for (let j = 0; j < diets.length; j++) {
+          if (!food[13].includes(diets[j])) {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        for (let j = 0; j < groups.length; j++) {
+          if (!food[14].includes(groups[j])) {
+            if (result.indexOf(food[0]) !== -1) result.splice(result.indexOf(food[0]), 1);
+          }
+        }
+        if (cuisine !== "") {
+          if (result.indexOf(food[0]) !== -1)  {
+            if (food[15] !== cuisine) result.splice(result.indexOf(food[0]), 1);
           }
         }
       }
@@ -261,9 +299,82 @@ app.get('/Foods', (req, res) => {
   });
   console.log('/foods sent');
 })
+
+app.get('/Foods_Need_Update', (req, res) => {
+
+  MongoClient.connect(url, function(err, dbt) {
+    if (err) throw err;
+    let db = dbt.db("boilerplate");
+    db.collection("foods").find({}).toArray(function(err, result) {
+      if (err) throw err;
+      let result2 = result.map(s => [
+          s.name, //0
+          s.totalFat, //1
+          s.saturatedFat, //2
+          s.cholesterol, //3
+          s.sodium, //4
+          s.totalCarbohydrate, //5
+          s.sugar, //6
+          s.calories, //7
+          s.dietaryFiber, //8
+          s.protein, //9
+          s.groups, //10
+          s.cuisine, //11
+          s.servingSize, //12
+      ])
+      result = [];
+      for (let i = 0; i < result2.length; i++) {
+        let food = result2[i]
+        if (food[0] == null || food[0] === "undefined" || food[0] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[1] == null || food[1] === "undefined" || food[1] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[2] == null || food[2] === "undefined" || food[2] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[3] == null || food[3] === "undefined" || food[3] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[4] == null || food[4] === "undefined" || food[4] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[5] == null || food[5] === "undefined" || food[5] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[6] == null || food[6] === "undefined" || food[6] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[7] == null || food[7] === "undefined" || food[7] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[8] == null || food[8] === "undefined" || food[8] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[9] == null || food[9] === "undefined" || food[9] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[10] == null || food[10] === "undefined" || food[10] === "" || food[10].length === 0) {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[11] == null || food[11] === "undefined" || food[11] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[12] == null || food[12] === "undefined" || food[12] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+      }
+      result = result.sort((a, b) => a.localeCompare(b)); //sorts tags alphabetically
+      console.log(result)
+      res.send(result);
+    });
+  });
+  console.log('/Foods_Need_Update sent');
+})
+
 app.get('/Food', (req, res) => {
-  let queryName = req.query.name
-  queryName = queryName.split('_').join(' ');
+  let queryName = req.query.name.split('_').join(' ');
   console.log(queryName);
 
   MongoClient.connect(url, function(err, dbt) {
@@ -276,6 +387,51 @@ app.get('/Food', (req, res) => {
     });
   });
   console.log('/food sent');
+})
+
+app.get('/Tried', (req, res) => {
+  let queryName = req.query.name.split('_').join(' ');
+  let username = req.query.username
+
+  MongoClient.connect(url, function(err, dbt) {
+    if (err) throw err;
+    let db = dbt.db("boilerplate");
+    db.collection("users").find({ username : username }).toArray(function(err, result) {
+      if (err) throw err;
+      result = result.map(s => s.tried)[0]
+      if (result == null || result === "undefined" || result === "") {
+        result = [];
+      }
+      let tried = false
+      for (let i = 0; i < result.length; i++) {
+        if (result[i] === queryName) {
+          tried = true
+        }
+      }
+      res.send(tried);
+    });
+  });
+  console.log('/Tried sent');
+})
+
+app.get('/Foods_Tried', (req, res) => {
+  let username = req.query.username
+
+  MongoClient.connect(url, function(err, dbt) {
+    if (err) throw err;
+    let db = dbt.db("boilerplate");
+    db.collection("users").find({ username : username }).toArray(function(err, result) {
+      if (err) throw err;
+      console.log(result)
+      result = result.map(s => s.tried)
+      console.log(result)
+      if (result == null || result === "undefined" || result === "") {
+        result = [];
+      }
+      res.send(result);
+    });
+  });
+  console.log('/Foods_Tried sent');
 })
 
 
@@ -296,7 +452,7 @@ app.get('/Nutrition', (req, res) => {
   console.log('/nutrition sent');
 })
 
-app.get('/Diet', (req, res) => {
+app.get('/Diets', (req, res) => {
 
   MongoClient.connect(url, function(err, dbt) {
     if (err) throw err;
@@ -305,16 +461,16 @@ app.get('/Diet', (req, res) => {
       if (err) throw err;
       result = result.map(a => a.list); //filters only the names of foods
       result = result[0];
-      result = result.sort((a, b) => a.localeCompare(b)); //sorts names alphabetically
-      result.unshift("Any");
+      //result = result.sort((a, b) => a.localeCompare(b)); //sorts names alphabetically
+      //result.unshift("Any");
       console.log(result);
       res.send(result);
     });
   });
-  console.log('/Diet sent');
+  console.log('/Diets sent');
 })
 
-app.get('/Group', (req, res) => {
+app.get('/Groups', (req, res) => {
 
   MongoClient.connect(url, function(err, dbt) {
     if (err) throw err;
@@ -324,12 +480,12 @@ app.get('/Group', (req, res) => {
       result = result.map(a => a.list); //filters only the names of foods
       result = result[0];
       result = result.sort((a, b) => a.localeCompare(b)); //sorts names alphabetically
-      result.unshift("Any");
+      //result.unshift("Any");
       console.log(result);
       res.send(result);
     });
   });
-  console.log('/Group sent');
+  console.log('/Groups sent');
 })
 
 app.get('/Cuisine', (req, res) => {
@@ -358,10 +514,8 @@ app.get('/Tags', (req, res) => {
     db.collection("filters").find({ name:"tags" }).toArray(function(err, result) {
       if (err) throw err;
       result = result.map(a => a.list); //filters only the names of tags
-      console.log(result);
       result = result[0];
       result = result.sort((a, b) => a.localeCompare(b)); //sorts tags alphabetically
-      console.log(result);
       console.log('done');
       res.send(result);
     });
@@ -465,35 +619,120 @@ app.post('/Update_Food', (req, res) => {
     db.collection("foods").find({name: req.query.name}).toArray(function(err, result) {
       if (err) throw err;
       if (result.length === 0) {
-        console.log("empty")
         res.send("Food does not exist");
         return;
       }
-      console.log(req.query.servingSize);
-      const updateDoc = {
-        $set: {
-          name: req.query.newName,
-          servingSize: req.query.servingSize,
-          calories: req.query.calories,
-          totalFat: req.query.totalFat,
-          saturatedFat: req.query.saturatedFat,
-          cholesterol: req.query.cholesterol,
-          sodium: req.query.sodium,
-          totalCarbohydrate: req.query.totalCarbohydrate,
-          dietaryFiber: req.query.dietaryFiber,
-          sugar: req.query.sugar,
-          addedSugar: req.query.addedSugar,
-          protein: req.query.protein,
-          calcium: req.query.calcium,
-          iron: req.query.iron,
-          diet: req.query.diet,
-          cuisine: req.query.cuisine,
-          ingredients: req.query.ingredients,
-          dietaryTags: req.query.tags,
-          groups: req.query.groups,
-        },
-      };
-      let ret = db.collection("foods").updateOne( { name : req.query.name } , updateDoc)
+      if (req.query.newName !== req.query.name) {
+        db.collection("foods").find({name: req.query.newName}).toArray(function(err, result) {
+          if (err) throw err;
+          if (result.length === 0) {
+            console.log("serving=" + req.query.servingSize);
+            const updateDoc = {
+              $set: {
+                name: req.query.newName,
+                servingSize: req.query.servingSize,
+                calories: req.query.calories,
+                totalFat: req.query.totalFat,
+                saturatedFat: req.query.saturatedFat,
+                cholesterol: req.query.cholesterol,
+                sodium: req.query.sodium,
+                totalCarbohydrate: req.query.totalCarbohydrate,
+                dietaryFiber: req.query.dietaryFiber,
+                sugar: req.query.sugar,
+                addedSugar: req.query.addedSugar,
+                protein: req.query.protein,
+                calcium: req.query.calcium,
+                iron: req.query.iron,
+                diets: req.query.diets.split(','),
+                cuisine: req.query.cuisine,
+                ingredients: req.query.ingredients,
+                dietaryTags: req.query.tags.split(','),
+                groups: req.query.groups.split(','),
+              },
+            };
+            ret = db.collection("foods").updateOne({name: req.query.name}, updateDoc)
+            res.send("success");
+          } else {
+            res.send("Food with the same name already exists.");
+          }
+        });
+      } else {
+        const updateDoc = {
+          $set: {
+            name: req.query.newName,
+            servingSize: req.query.servingSize,
+            calories: req.query.calories,
+            totalFat: req.query.totalFat,
+            saturatedFat: req.query.saturatedFat,
+            cholesterol: req.query.cholesterol,
+            sodium: req.query.sodium,
+            totalCarbohydrate: req.query.totalCarbohydrate,
+            dietaryFiber: req.query.dietaryFiber,
+            sugar: req.query.sugar,
+            addedSugar: req.query.addedSugar,
+            protein: req.query.protein,
+            calcium: req.query.calcium,
+            iron: req.query.iron,
+            diets: req.query.diets.split(','),
+            cuisine: req.query.cuisine,
+            ingredients: req.query.ingredients,
+            dietaryTags: req.query.tags.split(','),
+            groups: req.query.groups.split(','),
+          },
+        };
+        ret = db.collection("foods").updateOne({name: req.query.name}, updateDoc)
+        res.send("Food was updated successfully.");
+      }
+    });
+  });
+})
+
+app.post('/Tried_Food', (req, res) => {
+  MongoClient.connect(url, function(err, dbt) {
+    console.log("updating tried")
+    console.log(req.query)
+    let db = dbt.db("boilerplate");
+
+    db.collection("users").find({username: req.query.username}).toArray(function(err, result) {
+      if (err) throw err;
+      console.log(result[0])
+
+
+
+
+      let user = result[0];
+      if (result.length === 0) {
+        res.send("User does not exist");
+      } else {
+        db.collection("foods").find({name: req.query.name.split('_').join(' ')}).toArray(function(err, result) {
+          if (err) throw err;
+          if (result.length === 0) {
+            res.send("Food does not exist");
+          } else {
+            result = user.tried
+            if (result == null || result === "undefined" || result === "") {
+              result = [];
+            }
+            if (req.query.changeFrom === "true") {
+              if (result.indexOf(req.query.name.split('_').join(' ')) !== -1) {
+                result.splice(result.indexOf(req.query.name.split('_').join(' ')), 1);
+              }
+            }
+            if (req.query.changeFrom === "false") {
+              if (result.indexOf(req.query.name.split('_').join(' ')) === -1) {
+                result.push(req.query.name.split('_').join(' '))
+              }
+            }
+            const updateDoc = {
+              $set: {
+                tried: result,
+              },
+            };
+            ret = db.collection("users").updateOne({username: req.query.username}, updateDoc)
+            res.send("Food was updated successfully.");
+          }
+        });
+      }
     });
   });
 })

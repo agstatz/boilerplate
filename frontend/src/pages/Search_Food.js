@@ -68,6 +68,8 @@ export default class Search_Food extends React.Component {
             loading: true,
             width: window.innerWidth,
             tags: [],
+            diets: [],
+            groups: [],
             nutrition: [],
             nutritionSelected: "",
             cuisine: [],
@@ -76,6 +78,7 @@ export default class Search_Food extends React.Component {
             groupSelected: "",
             diet: [],
             dietSelected: "",
+            isChecked: false,
         };
         this.callAPI = this.callAPI.bind(this);
     }
@@ -84,11 +87,24 @@ export default class Search_Food extends React.Component {
     }
 
     handleOnChange = (position) => {
-        console.log("handleonchange")
         if (position.target.checked) {//add to list
             this.state.tags.push(position.target.name)
         } else {//remove from list
             this.state.tags.splice(this.state.tags.indexOf(position.target.name),1);
+        }
+    };
+    handleOnChange2 = (position) => {
+        if (position.target.checked) {//add to list
+            this.state.diets.push(position.target.name)
+        } else {//remove from list
+            this.state.diets.splice(this.state.diets.indexOf(position.target.name),1);
+        }
+    };
+    handleOnChange3 = (position) => {
+        if (position.target.checked) {//add to list
+            this.state.groups.push(position.target.name)
+        } else {//remove from list
+            this.state.groups.splice(this.state.groups.indexOf(position.target.name),1);
         }
     };
 
@@ -101,60 +117,62 @@ export default class Search_Food extends React.Component {
             console.log("error")
         } finally {
             for (let i = 0; i < response.data.length; i++) {
-                if (i == 0) {//top
-                    this.state.html.push(
+                this.state.html.push(
+                    <div className={response.data[i]}
+                         onChange={this.handleOnChange}
+                         style={{
+                         }}>
+                        <input
+                            type={"checkbox"}
+                            id={"box" + i}
+                            name={response.data[i]}
+                            value={response.data[i]}
+                            defaultChecked={this.state.isChecked}
+                        />
+                        {" " + response.data[i]}
+                    </div>
+                )
+            }
+            try {
+                response = await axios.get(url + `Diets`);
+            } catch (error) {
+                console.log("error")
+            } finally {
+                for (let i = 0; i < response.data.length; i++) {
+                    this.state.html4.push(
                         <div className={response.data[i]}
-                             onChange={this.handleOnChange}
-                             style={{
-                                 borderLeft: '2px solid grey',
-                                 borderRight: '2px solid grey',
-                                 borderTop: '2px solid grey'
-                             }}>
+                             onChange={this.handleOnChange2}>
                             <input
                                 type={"checkbox"}
                                 id={"box" + i}
                                 name={response.data[i]}
                                 value={response.data[i]}
-                                checked={this.state.isChecked}
+                                defaultChecked={this.state.isChecked}
                             />
                             {" " + response.data[i]}
-                        </div>)
-                } else if (i == response.data.length - 1) {//bottom
-                    this.state.html.push(
+                        </div>
+                    )
+                }
+            }
+            try {
+                response = await axios.get(url + `Groups`);
+            } catch (error) {
+                console.log("error")
+            } finally {
+                for (let i = 0; i < response.data.length; i++) {
+                    this.state.html5.push(
                         <div className={response.data[i]}
-                             onChange={this.handleOnChange}
-                             style={{
-                                 borderLeft: '2px solid grey',
-                                 borderRight: '2px solid grey',
-                                 borderBottom: '2px solid grey'
-                             }}>
+                             onChange={this.handleOnChange3}>
                             <input
                                 type={"checkbox"}
                                 id={"box" + i}
                                 name={response.data[i]}
                                 value={response.data[i]}
-                                checked={this.state.isChecked}
+                                defaultChecked={this.state.isChecked}
                             />
                             {" " + response.data[i]}
-                        </div>)
-                } else {
-                    this.state.html.push(
-                        <div className={response.data[i]}
-                             onChange={this.handleOnChange}
-                             style={{
-                                 borderLeft: '2px solid grey',
-                                 borderRight: '2px solid grey'
-                             }}>
-                            <input
-                                type={"checkbox"}
-                                id={"box" + i}
-                                name={response.data[i]}
-                                value={response.data[i]}
-                                checked={this.state.isChecked}
-                            />
-                            {" " + response.data[i]}
-                        </div>)
-
+                        </div>
+                    )
                 }
             }
             try {
@@ -175,47 +193,13 @@ export default class Search_Food extends React.Component {
                 this.state.html2.push(clonedToPush)
             }
             try {
-                response = await axios.get(url + `Diet`);
-            } catch (error) {
-                console.log("error")
-            } finally {
-                this.setState({diet : response})
-                this.setState({dietSelected : this.state.diet.data[0]})
-                let toPush = <select class="form-select" id="drop2" onChange={this.handleDrop3}></select>;
-                let clonedToPush = React.cloneElement(
-                    toPush,
-                    { children: [] }
-                );
-                for (let i = 0; i < this.state.diet.data.length; i++) {
-                    clonedToPush.props.children.push(<option value={this.state.diet.data[i]}>{this.state.diet.data[i]}</option>)
-                }
-                this.state.html4.push(clonedToPush)
-            }
-            try {
-                response = await axios.get(url + `Group`);
-            } catch (error) {
-                console.log("error")
-            } finally {
-                this.setState({group : response})
-                this.setState({groupSelected : this.state.group.data[0]})
-                let toPush = <select class="form-select" id="drop3" onChange={this.handleDrop4}></select>;
-                let clonedToPush = React.cloneElement(
-                    toPush,
-                    { children: [] }
-                );
-                for (let i = 0; i < this.state.group.data.length; i++) {
-                    clonedToPush.props.children.push(<option value={this.state.group.data[i]}>{this.state.group.data[i]}</option>)
-                }
-                this.state.html5.push(clonedToPush)
-            }
-            try {
                 response = await axios.get(url + `Cuisine`);
             } catch (error) {
                 console.log("error")
             } finally {
                 this.setState({cuisine : response})
                 this.setState({cuisineSelected : this.state.cuisine.data[0]})
-                let toPush = <select class="form-select" id="drop4" onChange={this.handleDrop5}></select>;
+                let toPush = <select class="form-select" id="drop4" onChange={this.handleDrop3}></select>;
                 let clonedToPush = React.cloneElement(
                     toPush,
                     { children: [] }
@@ -255,6 +239,7 @@ export default class Search_Food extends React.Component {
                 type={d.props.type} name={d.props.name}
                 value={d.props.value} checked={d.props.checked}
                 onChange={d.props.onChange} class={d.props.class}
+                defaultChecked={d.props.defaultChecked}
             >{d.props.children}</d.type>);
 
         const listItems2 = this.state.html2.map((d) =>
@@ -267,17 +252,7 @@ export default class Search_Food extends React.Component {
                 type={d.props.type} name={d.props.name}
                 value={d.props.value} checked={d.props.checked}
                 onChange={d.props.onChange} class={d.props.class}
-            >{d.props.children}</d.type>);
-        const listItems3 = this.state.html3.map((d) =>
-            <d.type
-                key={"list" + i++}
-                src={d.props.src} alt={d.props.name}
-                to={d.props.to} id={d.key} style={d.props.style}
-                color={d.props.color}
-                height={d.props.height} width={d.props.height}
-                type={d.props.type} name={d.props.name}
-                value={d.props.value} checked={d.props.checked}
-                onChange={d.props.onChange} class={d.props.class}
+                defaultChecked={d.props.defaultChecked}
             >{d.props.children}</d.type>);
         const listItems4 = this.state.html4.map((d) =>
             <d.type
@@ -289,6 +264,7 @@ export default class Search_Food extends React.Component {
                 type={d.props.type} name={d.props.name}
                 value={d.props.value} checked={d.props.checked}
                 onChange={d.props.onChange} class={d.props.class}
+                defaultChecked={d.props.defaultChecked}
             >{d.props.children}</d.type>);
         const listItems5 = this.state.html5.map((d) =>
             <d.type
@@ -300,6 +276,7 @@ export default class Search_Food extends React.Component {
                 type={d.props.type} name={d.props.name}
                 value={d.props.value} checked={d.props.checked}
                 onChange={d.props.onChange} class={d.props.class}
+                defaultChecked={d.props.defaultChecked}
             >{d.props.children}</d.type>);
         const listItems6 = this.state.html6.map((d) =>
             <d.type
@@ -311,8 +288,20 @@ export default class Search_Food extends React.Component {
                 type={d.props.type} name={d.props.name}
                 value={d.props.value} checked={d.props.checked}
                 onChange={d.props.onChange} class={d.props.class}
+                defaultChecked={d.props.defaultChecked}
             >{d.props.children}</d.type>);
-
+        const listItems3 = this.state.html3.map((d) =>
+            <d.type
+                key={"list" + i++}
+                src={d.props.src} alt={d.props.name}
+                to={d.props.to} id={d.key} style={d.props.style}
+                color={d.props.color}
+                height={d.props.height} width={d.props.height}
+                type={d.props.type} name={d.props.name}
+                value={d.props.value} checked={d.props.checked}
+                onChange={d.props.onChange} class={d.props.class}
+                defaultChecked={d.props.defaultChecked}
+            >{d.props.children}</d.type>);
         return (
             <div className="App">
                 <Container style={{ paddingTop: '8vh', paddingBottom: '8vh'}} >
@@ -418,8 +407,8 @@ export default class Search_Food extends React.Component {
     }
 
     handleDrop2 = (event) => {
-        let string = this.state.html3.find(a => a.props.id == "nutrition" + event.target.id.substring(4)).props.children[1]
-        string = string.substring(1, string.length - 1);
+        console.log("handledrop");
+        let string = this.state.html3.find(a => a.props.id == "nutrition" + event.target.id.substring(4)).props.children[1].props.children
         if (event.target.value == "exclude") {
             this.state.include.pop(string)
             this.state.exclude.push(string)
@@ -428,14 +417,7 @@ export default class Search_Food extends React.Component {
             this.state.exclude.pop(string)
         }
     }
-
     handleDrop3 = (event) => {
-        this.setState({ dietSelected : event.target.value })
-    }
-    handleDrop4 = (event) => {
-        this.setState({ groupSelected : event.target.value })
-    }
-    handleDrop5 = (event) => {
         this.setState({ cuisineSelected : event.target.value })
     }
 
@@ -464,14 +446,11 @@ export default class Search_Food extends React.Component {
     }
 
     removeButton = (event) => {
-        console.log("removebutton")
         let string = this.state.html3.pop({id : "drop" + event.target.value}).props.children[1].props.children
-        console.log(string)
         string = string.substring(1, string.length - 1);
         this.state.onList.pop(string);
         this.state.include.pop(string);
         this.state.exclude.pop(string);
-        console.log("updating");
         this.forceUpdate();
     }
 
@@ -480,12 +459,11 @@ export default class Search_Food extends React.Component {
             "/foods?search=" +
             document.getElementById("search").value +
             "&tags=" + this.state.tags +
+            "&diets=" + this.state.diets +
+            "&groups=" + this.state.groups +
             "&include=" + this.state.include +
             "&exclude=" + this.state.exclude +
-            "&diet=" + this.state.dietSelected +
-            "&group=" + this.state.groupSelected +
             "&cuisine=" + this.state.cuisineSelected;
-        console.log(string)
         this.state.html.push(<Redirect to={string}/>)
         this.forceUpdate()
     }
