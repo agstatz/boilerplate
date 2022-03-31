@@ -42,7 +42,7 @@ export default class PostTried extends React.Component {
         let response;
         try {
             console.log("posting")
-            response = await axios.post(url + `TriedFood?` +
+            response = await axios.post(url + `Tried_Food?` +
                 "name=" + this.state.queries.name +
                 "&username=" + this.state.username +
                 "&changeFrom=" + this.state.queries.changeFrom +
@@ -52,8 +52,13 @@ export default class PostTried extends React.Component {
             console.log("error")
         } finally {
             console.log(response);
+            console.log(url + `Tried_Food?` +
+                "name=" + this.state.queries.name +
+                "&username=" + this.state.username +
+                "&changeFrom=" + this.state.queries.changeFrom +
+                "")
             let link = "/Food?name=" + this.state.queries.name;
-            //this.state.html.push(<Redirect to={link}/>)
+            this.state.html.push(<Redirect to={link}/>)
             this.setState({loading : false})
             this.forceUpdate();
         }
@@ -80,7 +85,6 @@ export default class PostTried extends React.Component {
             )
         }
         let i = 0;
-        console.log(this.state.html[0].props.to)
         const listItems = this.state.html.map((d) =>
             <d.type key={"list" + i++} to={d.props.to} id={d.key} style={d.props.style} color={d.props.color}>{d.props.children}</d.type>);
         return (

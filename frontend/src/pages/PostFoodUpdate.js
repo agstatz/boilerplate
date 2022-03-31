@@ -67,7 +67,12 @@ export default class PostFoodUpdate extends React.Component {
             console.log("error")
         } finally {
             console.log(response);
+            console.log(response.data)
             let link = "/Food?name=" + this.state.queries.newName;
+            if (response.data === "Food with the same name already exists.") {
+                link = "/Food?name=" + this.state.queries.name;
+            }
+            link += "&message=" + response.data;
             this.state.html.push(<Redirect to={link}/>)
             this.setState({loading : false})
             this.forceUpdate();

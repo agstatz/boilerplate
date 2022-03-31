@@ -69,7 +69,7 @@ export default class Food extends React.Component {
                 this.state.html.push(<h1>{this.state.data.name}</h1>)
                 this.state.html.push(<hr></hr>)
 
-                if (this.state.username != null || this.state.username !== "undefined" || this.state.username !== "") {
+                if (this.state.username != null && this.state.username !== "undefined" && this.state.username !== "") {
                     try {
                         var response = await axios.get(url + `Tried?name=` + this.state.queries.name + "&username=" + this.state.username);
                     } catch (error) {
@@ -77,17 +77,24 @@ export default class Food extends React.Component {
                     } finally {
                         console.log(response.data);
                         this.setState({tried: response.data})
+                        console.log("tried = " + this.state.tried);
                         if (response.data === false) {
                             this.state.html.push(<h5>You have not tried this food.<br></br></h5>)
-                            this.state.html.push(<Link to={"Post_Tried?name=" + this.state.queries.name}>
-                                <Button onClick={this.submitButton} type="button">
+                            this.state.html.push(<Link to={
+                                "Post_Tried?name=" + this.state.queries.name +
+                                "&changeFrom=" + this.state.tried +
+                                ""}>
+                                <Button type="button">
                                     I have tried this food
                                 </Button>
                             </Link>)
                         } else {
                             this.state.html.push(<h5>You have tried this food.<br></br></h5>)
-                            this.state.html.push(<Link to={"Post_Tried?name=" + this.state.queries.name}>
-                                <Button onClick={this.submitButton} type="button">
+                            this.state.html.push(<Link to={
+                                "Post_Tried?name=" + this.state.queries.name +
+                                "&changeFrom=" + this.state.tried +
+                                ""}>
+                                <Button type="button">
                                     I have not tried this food
                                 </Button>
                             </Link>)
@@ -198,27 +205,36 @@ export default class Food extends React.Component {
 
 
 
-        return (
-            <div className="App">
-                <Container style={{ paddingTop: '10vh', paddingBottom: '10vh'}}>
-                    <div>
-                        {adminItems}
-                        {loggedInItems}
-                    </div>
-                    <div className="p-3 my-4 mx-4 bg-light border rounded w-50">
-                        {listItems}
-                    </div>
-                </Container>
-            </div>
-        );
-    }
-    submitButton = (event) => {
-        let link =
-            "/Post_Tried?" +
-            "name=" + this.state.queries.name +
-            "&changeFrom=" + this.state.tried +
-            "";
-        this.state.html.push(<Redirect to={link}/>)
-        this.forceUpdate()
+        if (this.state.queries.message != null && this.state.queries.message !== "undefined" && this.state.queries.message !== "") {
+            return (
+                <div className="App">
+                    <Container style={{paddingTop: '10vh', paddingBottom: '10vh'}}>
+                        <div>
+                            {adminItems}
+                        </div>
+                        <div className="p-3 my-4 mx-4 bg-light border rounded w-50">
+                            <a>{this.state.queries.message}</a>
+                        </div>
+                        <div className="p-3 my-4 mx-4 bg-light border rounded w-50">
+                            {listItems}
+                        </div>
+                    </Container>
+                </div>
+            );
+        } else {
+            return (
+                <div className="App">
+                    <Container style={{paddingTop: '10vh', paddingBottom: '10vh'}}>
+                        <div>
+                            {adminItems}
+                            {loggedInItems}
+                        </div>
+                        <div className="p-3 my-4 mx-4 bg-light border rounded w-50">
+                            {listItems}
+                        </div>
+                    </Container>
+                </div>
+            );
+        }
     }
 }

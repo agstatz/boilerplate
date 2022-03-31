@@ -299,8 +299,7 @@ app.get('/Foods', (req, res) => {
   console.log('/foods sent');
 })
 app.get('/Food', (req, res) => {
-  let queryName = req.query.name
-  queryName = queryName.split('_').join(' ');
+  let queryName = req.query.name.split('_').join(' ');
   console.log(queryName);
 
   MongoClient.connect(url, function(err, dbt) {
@@ -316,7 +315,7 @@ app.get('/Food', (req, res) => {
 })
 
 app.get('/Tried', (req, res) => {
-  let queryName = req.query.name
+  let queryName = req.query.name.split('_').join(' ');
   let username = req.query.username
 
   MongoClient.connect(url, function(err, dbt) {
@@ -525,36 +524,115 @@ app.post('/Update_Food', (req, res) => {
     db.collection("foods").find({name: req.query.name}).toArray(function(err, result) {
       if (err) throw err;
       if (result.length === 0) {
-        console.log("empty")
         res.send("Food does not exist");
         return;
       }
-      console.log(req.query.servingSize);
-      const updateDoc = {
-        $set: {
-          name: req.query.newName,
-          servingSize: req.query.servingSize,
-          calories: req.query.calories,
-          totalFat: req.query.totalFat,
-          saturatedFat: req.query.saturatedFat,
-          cholesterol: req.query.cholesterol,
-          sodium: req.query.sodium,
-          totalCarbohydrate: req.query.totalCarbohydrate,
-          dietaryFiber: req.query.dietaryFiber,
-          sugar: req.query.sugar,
-          addedSugar: req.query.addedSugar,
-          protein: req.query.protein,
-          calcium: req.query.calcium,
-          iron: req.query.iron,
-          diets: req.query.diets.split(','),
-          cuisine: req.query.cuisine,
-          ingredients: req.query.ingredients,
-          dietaryTags: req.query.tags.split(','),
-          groups: req.query.groups.split(','),
-        },
-      };
-      ret = db.collection("foods").updateOne( { name : req.query.name } , updateDoc)
-      res.send("success");
+      if (req.query.newName !== req.query.name) {
+        db.collection("foods").find({name: req.query.newName}).toArray(function(err, result) {
+          if (err) throw err;
+          if (result.length === 0) {
+            console.log("serving=" + req.query.servingSize);
+            const updateDoc = {
+              $set: {
+                name: req.query.newName,
+                servingSize: req.query.servingSize,
+                calories: req.query.calories,
+                totalFat: req.query.totalFat,
+                saturatedFat: req.query.saturatedFat,
+                cholesterol: req.query.cholesterol,
+                sodium: req.query.sodium,
+                totalCarbohydrate: req.query.totalCarbohydrate,
+                dietaryFiber: req.query.dietaryFiber,
+                sugar: req.query.sugar,
+                addedSugar: req.query.addedSugar,
+                protein: req.query.protein,
+                calcium: req.query.calcium,
+                iron: req.query.iron,
+                diets: req.query.diets.split(','),
+                cuisine: req.query.cuisine,
+                ingredients: req.query.ingredients,
+                dietaryTags: req.query.tags.split(','),
+                groups: req.query.groups.split(','),
+              },
+            };
+            ret = db.collection("foods").updateOne({name: req.query.name}, updateDoc)
+            res.send("success");
+          } else {
+            res.send("Food with the same name already exists.");
+          }
+        });
+      } else {
+        const updateDoc = {
+          $set: {
+            name: req.query.newName,
+            servingSize: req.query.servingSize,
+            calories: req.query.calories,
+            totalFat: req.query.totalFat,
+            saturatedFat: req.query.saturatedFat,
+            cholesterol: req.query.cholesterol,
+            sodium: req.query.sodium,
+            totalCarbohydrate: req.query.totalCarbohydrate,
+            dietaryFiber: req.query.dietaryFiber,
+            sugar: req.query.sugar,
+            addedSugar: req.query.addedSugar,
+            protein: req.query.protein,
+            calcium: req.query.calcium,
+            iron: req.query.iron,
+            diets: req.query.diets.split(','),
+            cuisine: req.query.cuisine,
+            ingredients: req.query.ingredients,
+            dietaryTags: req.query.tags.split(','),
+            groups: req.query.groups.split(','),
+          },
+        };
+        ret = db.collection("foods").updateOne({name: req.query.name}, updateDoc)
+        res.send("Food was updated successfully.");
+      }
+    });
+  });
+})
+
+app.post('/Tried_Food', (req, res) => {
+  MongoClient.connect(url, function(err, dbt) {
+    console.log("updating tried")
+    console.log(req.query)
+    let db = dbt.db("boilerplate");
+    let user = "";
+    db.collection("users").find({username: req.query.username}).toArray(function(err, result) {
+      if (err) throw err;
+      if (result.length === 0) {
+        res.send("User does not exist");
+      } else {
+        user = result;
+        db.collection("foods").find({name: req.query.name.split('_').join(' ')}).toArray(function(err, result) {
+          if (err) throw err;
+          if (result.length === 0) {
+            res.send("Food does not exist");
+          } else {
+            result = user.tried
+            if (result == null || result === "undefined" || result === "") {
+              result = [];
+            }
+            if (req.query.changeFrom === "true") {
+              if (result.indexOf(req.query.name.split('_').join(' ')) !== -1) {
+                result.splice(result.indexOf(req.query.name.split('_').join(' ')), 1);
+              }
+            }
+            if (req.query.changeFrom === "false") {
+              if (result.indexOf(req.query.name.split('_').join(' ')) === -1) {
+                result.push(req.query.name.split('_').join(' '))
+              }
+            }
+            const updateDoc = {
+              $set: {
+                tried: result,
+              },
+            };
+            ret = db.collection("users").updateOne({username: req.query.username}, updateDoc)
+            res.send("Food was updated successfully.");
+          }
+        });
+      }
     });
   });
 })
