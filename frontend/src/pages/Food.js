@@ -3,7 +3,8 @@ import {Link, Redirect} from "react-router-dom";
 import { Grid } from '@mui/material';
 import queryString from "query-string";
 
-import { Container, Placeholder, Button } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
+import { StarRating } from "../components/";
 
 const url = 'http://localhost:3001/'
 
@@ -151,13 +152,17 @@ export default class Food extends React.Component {
 
         return (
             <div className="App">
-                <Container style={{ paddingTop: '10vh', paddingBottom: '10vh'}}>
+                <Container style={{ paddingTop: '18vh', paddingBottom: '18vh'}} >
                     <div>
                         {adminItems}
                         {loggedInItems}
                     </div>
-                    <div className="p-3 my-4 mx-4 bg-light border rounded w-50">
+                    <div className="p-3 my-4 mx-4 bg-light border rounded">
                         {listItems}
+                    </div>
+                    <div className="p-3 my-4 mx-4 bg-light border rounded">
+                        <h3>Give {this.state.data.name} a rating!</h3>
+                        <StarRating inputRating={0}/>
                     </div>
                 </Container>
             </div>

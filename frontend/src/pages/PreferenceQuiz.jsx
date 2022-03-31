@@ -118,6 +118,7 @@ function PreferenceQuiz() {
                 );
             case 1:
                 return (
+                    <Container style={{ paddingTop: '12vh'}}>
                     <div className="p-3 my-4 mx-4 bg-light border rounded">
                         <Stack gap={2}>
                             <h1>Question 1</h1>
@@ -158,9 +159,11 @@ function PreferenceQuiz() {
                             <Button className="mx-2" onClick={incrementQuestion}>Next <i className="bi bi-chevron-right"></i></Button>
                         </Container>
                     </div>
+                    </Container>
                 );
             case 2:
                 return (
+                    <Container style={{ paddingTop: '12vh'}}>
                     <div className="p-3 my-4 mx-4 bg-light border rounded">
                         <Stack gap={2}>
                             <h1>Question 2</h1>
@@ -187,9 +190,11 @@ function PreferenceQuiz() {
                             <Button className="mx-2" onClick={incrementQuestion}>Next <i className="bi bi-chevron-right"></i></Button>
                         </Container>
                     </div>
+                    </Container>
                 );
             case 3:
                 return (
+                    <Container style={{ paddingTop: '12vh'}}>
                     <div className="p-3 my-4 mx-4 bg-light border rounded">
                         <Stack gap={2}>
                             <h1>Question 3</h1>
@@ -216,9 +221,11 @@ function PreferenceQuiz() {
                             <Button className="mx-2" onClick={incrementQuestion}>Next <i className="bi bi-chevron-right"></i></Button>
                         </Container>
                     </div>
+                    </Container>
                 );
             case 4:
                 return (
+                    <Container style={{ paddingTop: '12vh'}}>
                     <div className="p-3 my-4 mx-4 bg-light border rounded">
                         <Stack gap={2}>
                             <h1>Question 4 </h1>
@@ -245,9 +252,11 @@ function PreferenceQuiz() {
                             <Button className="mx-2" onClick={incrementQuestion}>Next <i className="bi bi-chevron-right"></i></Button>
                         </Container>
                     </div>
+                    </Container>
                 );
             case 5:
                 return (
+                    <Container style={{ paddingTop: '12vh'}}>
                     <div className="p-3 my-4 mx-4 bg-light border rounded">
                         <Stack gap={2}>
                             <h1>Question 5 </h1>
@@ -282,9 +291,11 @@ function PreferenceQuiz() {
                             <Button className="mx-2" onClick={incrementQuestion}>Next <i className="bi bi-chevron-right"></i></Button>
                         </Container>
                     </div>
+                    </Container>
                 );
             case 6:
                 return (
+                    <Container style={{ paddingTop: '12vh'}}>
                     <div className="p-3 my-4 mx-4 bg-light border rounded">
                         <Stack gap={2}>
                             <h1>Question 6 </h1>
@@ -305,9 +316,11 @@ function PreferenceQuiz() {
                             <Button className="mx-2" onClick={incrementQuestion}>Next <i className="bi bi-chevron-right"></i></Button>
                         </Container>
                     </div>
+                    </Container>
                 );
             case 7:
                 return (
+                    <Container style={{ paddingTop: '12vh'}}>
                     <div className="p-3 my-4 mx-4 bg-light border rounded">
                         <Stack gap={2}>
                             <h1>Question 7 </h1>
@@ -327,9 +340,11 @@ function PreferenceQuiz() {
                             <Button className="mx-2" onClick={submitForm}>Submit Preferences <i className="bi bi-chevron-right"></i></Button>
                         </Container>
                     </div>
+                    </Container>
                 );
             case 8:
                 return (
+                    <Container style={{ paddingTop: '12vh'}}>
                     <div className="p-3 my-4 mx-4 bg-light border rounded">
                         <Stack gap={2}>
                             <h1>That's all!</h1>
@@ -337,9 +352,11 @@ function PreferenceQuiz() {
                             <Button href={`/profile/${username}`}>Head to Profile Page <i className="bi bi-chevron-right"></i></Button>
                         </Stack>
                     </div>
+                    </Container>
                 );
             default:
                 return (
+                    <Container style={{ paddingTop: '12vh'}}>
                     <div className="p-3 my-4 mx-4 bg-light border rounded">
                         <Stack gap={2}>
                             <h1>Something went wrong...</h1>
@@ -347,6 +364,7 @@ function PreferenceQuiz() {
                             <Button onClick={decrementQuestion}><i className="bi bi-chevron-left"></i> Back</Button>
                         </Stack>
                     </div>
+                    </Container>
                 );
         }
     }
