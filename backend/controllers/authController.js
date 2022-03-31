@@ -201,7 +201,6 @@ exports.get_user_info = (req, res) => {
 }
 
 exports.resetUser = (req, res) => {
-  console.log('RESET1')
   User.updateOne(
     {username: req.body.data.username},
     {
@@ -234,6 +233,69 @@ exports.resetUser = (req, res) => {
   });
 
 }
+
+exports.editUserDietaryPreferences = async (req, res) => {
+
+  let diets = []
+  let allergies = []
+
+  for (const [key, value] of Object.entries(req.body.data)) {
+    if (key.toString() == "dietary" && value != 0) {
+      switch (value) {
+        case 1: diets.push((await Food_Tag.findOne({ name: "vegetarian" }))._id);
+          break;
+        case 2: diets.push((await Food_Tag.findOne({ name: "vegan" }))._id);
+          break;
+        case 3: diets.push((await Food_Tag.findOne({ name: "pescatarian" }))._id);
+      }
+    }
+
+    if (key == "dairy" && value == 1) {
+      allergies.push((await Food_Tag.findOne({ name: "dairy" }))._id);
+    }
+
+    if (key == "gluten" && value == 1) {
+      allergies.push((await Food_Tag.findOne({ name: "gluten" }))._id);
+    }
+
+    if (key == "nuts" && value == 1) {
+      allergies.push((await Food_Tag.findOne({ name: "nuts" }))._id);
+    }
+
+    if (key == "religious" && value != 0) {
+      switch (value) {
+        case 1: diets.push((await Food_Tag.findOne({ name: "halal" }))._id);
+          break;
+        case 2: diets.push((await Food_Tag.findOne({ name: "kosher" }))._id);
+          break;
+      }
+    }
+
+  }
+
+  User.updateOne(
+    {username: req.body.data.username},
+    {
+      mealSwipes: req.body.data.mealSwipes,
+      diets: diets,
+      allergies: allergies
+    }
+  )
+    .exec((err, user) => {
+      if (err) {
+        res.status(500).send({ message: err });
+        return;
+      }
+      if (!user) {
+        return res.status(404).send({ message: "User Not found" });
+      }
+      res.status(200).send({
+        message: "User dietary preferences updated successfully"
+      });
+    });
+}
+
+
 // edit user preferences from preference quiz
 exports.editUserPreferences = (req, res) => {
   User.findOne({ username: req.body.data.username })

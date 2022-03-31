@@ -15,84 +15,92 @@ import {
   Dropdown,
   DropdownButton,
 } from "react-bootstrap";
-import RangeSlider from 'react-bootstrap-range-slider';
+import RangeSlider from "react-bootstrap-range-slider";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import { store } from "../store/store.js";
 
 function DietaryInfo(props) {
+  const [dietary, setDietary] = useState(0);
+  const [dairy, setDairy] = useState(0);
+  const [gluten, setGluten] = useState(0);
+  const [nuts, setNuts] = useState(0);
+  const [religious, setReligious] = useState(0);
+  const [mealSwipes, setMealSwipes] = useState(0);
 
-
-    function submitForm(){
-        console.log(dietary, dairy, gluten, nuts, religious, mealSwipes);
+  function submitForm() {
+    try {
+      axios
+        .post("http://localhost:3001/api/editUserDietaryPreferences", {data: {
+          dietary: dietary,
+          dairy: dairy,
+          gluten: gluten,
+          nuts: nuts,
+          religious: religious,
+          mealSwipes: mealSwipes,
+          username: store.getState().app.username,
+        }})
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } catch (err) {
+      console.error(err);
     }
-
-
-
-
-    const [dietary, setDietary] = useState(0);
-    const [dairy, setDairy] = useState(0);
-    const [gluten, setGluten] = useState(0);
-    const [nuts, setNuts] = useState(0);
-    const [religious, setReligious] = useState(0);
-    const [mealSwipes, setMealSwipes] = useState(0);
-
+  }
 
   useEffect(async () => {
     try {
-        const { data: response } = await axios.get(
-          "http://localhost:3001/api/users/dietary/"+store.getState().app.username
-        );
-        console.log(response)
-        const restriction_tags = []
-        for (const restriction of response.restrictions) {
-            restriction_tags.push(restriction.name)
-        }
+      const { data: response } = await axios.get(
+        "http://localhost:3001/api/users/dietary/" +
+          store.getState().app.username
+      );
+      console.log(response);
+      const restriction_tags = [];
+      for (const restriction of response.restrictions) {
+        restriction_tags.push(restriction.name);
+      }
 
-        if (restriction_tags.includes('vegetarian')) {
-            setDietary(1);
-        }
+      if (restriction_tags.includes("vegetarian")) {
+        setDietary(1);
+      }
 
-        if (restriction_tags.includes('vegan')) {
-            setDietary(2);
-        }
+      if (restriction_tags.includes("vegan")) {
+        setDietary(2);
+      }
 
-        if (restriction_tags.includes('pescatarian')) {
-            setDietary(3);
-        }
+      if (restriction_tags.includes("pescatarian")) {
+        setDietary(3);
+      }
 
-        if (restriction_tags.includes('dairy')) {
-            setDairy(1);
-        }
+      if (restriction_tags.includes("dairy")) {
+        setDairy(1);
+      }
 
-        if (restriction_tags.includes('gluten')) {
-            setGluten(1);
-        }
+      if (restriction_tags.includes("gluten")) {
+        setGluten(1);
+      }
 
-        if (restriction_tags.includes('nuts')) {
-            setNuts(1);
-        }
+      if (restriction_tags.includes("nuts")) {
+        setNuts(1);
+      }
 
-        if (restriction_tags.includes('halal')) {
-            setReligious(1);
-        }
+      if (restriction_tags.includes("halal")) {
+        setReligious(1);
+      }
 
-        if (restriction_tags.includes('kosher')) {
-            setReligious(2);
-        }
+      if (restriction_tags.includes("kosher")) {
+        setReligious(2);
+      }
 
-        setMealSwipes(response.mealSwipes)
-
-
-
-
+      setMealSwipes(response.mealSwipes);
     } catch (err) {
       console.error(err);
     }
   }, []);
-
-    
 
   return (
     <Container style={{ paddingTop: "15vh", paddingBottom: "15vh" }}>
@@ -146,7 +154,6 @@ function DietaryInfo(props) {
                   onChange={() => setDietary(0)}
                 />
               </Stack>
-
             </div>
             <div className="p-3 my-4 mx-4 bg-light border rounded">
               <Stack gap={2}>
@@ -250,24 +257,27 @@ function DietaryInfo(props) {
               </Form.Label>
             </Form.Group>
             <div className="p-3 my-4 mx-4 bg-light border rounded">
-                        <Stack gap={2}>
-                            <h4>Meal Swipes</h4>
-                            <p>How many meal swipes do you have available per week?</p>
-                            <Container className="p-1 d-flex justify-content-center">
-                            <RangeSlider
-                                value={mealSwipes}
-                                onChange={changeEvent => setMealSwipes(parseInt(changeEvent.target.value))}
-                                min={0}
-                                max={30}
-                                />
-                            </Container>
-                            <br />
-                        </Stack>
-                       
-                    </div>
-                    <Container className="d-flex justify-content-center">
-                            <Button className="mx-2" onClick={submitForm}>Submit Preferences <i className="bi bi-chevron-right"></i></Button>
-                        </Container>
+              <Stack gap={2}>
+                <h4>Meal Swipes</h4>
+                <p>How many meal swipes do you have available per week?</p>
+                <Container className="p-1 d-flex justify-content-center">
+                  <RangeSlider
+                    value={mealSwipes}
+                    onChange={(changeEvent) =>
+                      setMealSwipes(parseInt(changeEvent.target.value))
+                    }
+                    min={0}
+                    max={30}
+                  />
+                </Container>
+                <br />
+              </Stack>
+            </div>
+            <Container className="d-flex justify-content-center">
+              <Button className="mx-2" onClick={submitForm}>
+                Submit Preferences <i className="bi bi-chevron-right"></i>
+              </Button>
+            </Container>
           </Form>
         </div>
         <Row>
