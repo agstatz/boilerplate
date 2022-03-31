@@ -1,3 +1,3 @@
 module.exports = {
-  key: "boilerplate-key"
+  key: "boilerplate-key",
 };

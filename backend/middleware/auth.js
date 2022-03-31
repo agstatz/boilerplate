@@ -26,7 +26,7 @@ isAdmin = (req, res, next) => {
     }
     PrivilegeClass.find(
       {
-        _id: { $in: user.privilegeClasses }
+        _id: { $in: user.privilegeClasses },
       },
       (err, privilege_classes) => {
         if (err) {
@@ -55,7 +55,7 @@ isDiningStaff = (req, res, next) => {
     }
     PrivilegeClass.find(
       {
-        _id: { $in: user.privilegeClasses }
+        _id: { $in: user.privilegeClasses },
       },
       (err, privilege_classes) => {
         if (err) {
@@ -84,7 +84,7 @@ isModerator = (req, res, next) => {
     }
     PrivilegeClass.find(
       {
-        _id: { $in: user.privilegeClasses }
+        _id: { $in: user.privilegeClasses },
       },
       (err, privilege_classes) => {
         if (err) {
@@ -113,7 +113,7 @@ isGuest = (req, res, next) => {
     }
     PrivilegeClass.find(
       {
-        _id: { $in: user.privilegeClasses }
+        _id: { $in: user.privilegeClasses },
       },
       (err, privilege_classes) => {
         if (err) {
@@ -133,11 +133,10 @@ isGuest = (req, res, next) => {
   });
 };
 
-
 const authJwt = {
   verifyToken,
   isAdmin,
-  isModerator
+  isModerator,
 };
 
 module.exports = authJwt;

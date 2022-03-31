@@ -16,13 +16,15 @@ const Meal_Plan = mongoose.model(
     private: Boolean,
     owner: String,
     likes: Number,
-    meals: [{
-      food: {
-        name: String,
-        id: String
-    } ,
-      day: String,
-    }]
+    meals: [
+      {
+        food: {
+          name: String,
+          id: String,
+        },
+        day: String,
+      },
+    ],
   })
 );
 module.exports = Meal_Plan;

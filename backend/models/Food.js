@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const FoodSchema = mongoose.Schema({
   name: {
-      type: String,
-      required: true,
-      unique: true
+    type: String,
+    required: true,
+    unique: true,
   },
   servingSize: String,
   calories: String,
@@ -22,11 +22,11 @@ const FoodSchema = mongoose.Schema({
   dietaryTags: [String],
   ingredients: String,
   userTags: [
-      {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "user_tags"
-      }
-  ]
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user_tags",
+    },
+  ],
 });
 
-module.exports = mongoose.model('foods', FoodSchema);
+module.exports = mongoose.model("foods", FoodSchema);

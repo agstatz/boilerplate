@@ -1,31 +1,34 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const locationsVisitedSchema = new Schema({
+const locationsVisitedSchema = new Schema(
+  {
     mostRecentRating: Number,
     location: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "locations"
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "locations",
     },
     visits: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "visits"
-        }
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "visits",
+      },
     ],
     comments: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "comments"
-        }
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "comments",
+      },
     ],
     replies: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "replies"
-        }
-    ]
-}, { _id: false });
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "replies",
+      },
+    ],
+  },
+  { _id: false }
+);
 
 const User = mongoose.model(
   "users",
@@ -41,66 +44,66 @@ const User = mongoose.model(
     newMenuNotifs: Boolean,
     mealSwipes: Number,
     friends: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "users"
-        }
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users",
+      },
     ],
     diets: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "food_categories"
-        }
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "food_categories",
+      },
     ],
     allergies: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "food_categories"
-        }
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "food_categories",
+      },
     ],
     locationStars: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "locations"
-        }
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "locations",
+      },
     ],
     foodStars: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "foods"
-        }
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "foods",
+      },
     ],
     foodBlacklist: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "foods"
-        }
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "foods",
+      },
     ],
     intakePlans: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "intake_plans"
-        }
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "intake_plans",
+      },
     ],
     mealPlans: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "meal_plans"
-        }
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "meal_plans",
+      },
     ],
     privilegeClasses: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "privilege_classes"
-        }
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "privilege_classes",
+      },
     ],
     userTags: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "user_tags"
-        }
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user_tags",
+      },
     ],
-    locationsVisited: [locationsVisitedSchema]
+    locationsVisited: [locationsVisitedSchema],
   })
 );
 module.exports = User;

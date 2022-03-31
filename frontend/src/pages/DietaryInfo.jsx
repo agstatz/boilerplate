@@ -286,7 +286,7 @@ function DietaryInfo(props) {
             </div>
             {}
             <p className="d-flex justify-content-center ">
-                <p className={submitted.color}>{submitted.text}</p>
+              <p className={submitted.color}>{submitted.text}</p>
             </p>
 
             <Container className="d-flex justify-content-center">

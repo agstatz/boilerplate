@@ -134,7 +134,7 @@ async function get_nutrition_facts(browser, item_name, item_link) {
     });
 
     foodItem.set({
-        foodTags: []
+      foodTags: [],
     });
 
     await foodItem.save();
