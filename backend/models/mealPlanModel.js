@@ -4,7 +4,7 @@ var ObjectIdSchema = Schema.ObjectId;
 var ObjectId = mongoose.Types.ObjectId;
 
 const Meal_Plan = mongoose.model(
-  "meal_plans",
+  "meal_plan",
   new mongoose.Schema({
     _id: {
       type: ObjectIdSchema,
@@ -16,19 +16,13 @@ const Meal_Plan = mongoose.model(
     private: Boolean,
     owner: String,
     likes: Number,
-    meals: [
-      mongoose.Schema({
-        food: mongoose.Schema({
-            name: {
-              type: String,
-              required: true,
-              unique: true
-            },
-            id: String
-        }),
-        day: String,
-      })
-    ]
+    meals: [{
+      food: {
+        name: String,
+        id: String
+    } ,
+      day: String,
+    }]
   })
 );
 module.exports = Meal_Plan;

@@ -16,6 +16,22 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.get("/restrictions/:restrictions", async (req, res) => {
+    console.log('here')
+    console.log(req.params.restrictions);
+    const restrictions = req.params.restrictions.split(",");
+    console.log(restrictions);
+    try {
+        const foods = await Food_Tag.find({
+            "_id": { $in: req.params.restrictions }
+        });
+        res.json(foods);
+    } catch(err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+})
+
 // @route   GET api/foods/:id
 // @desc    Get single food item from collection.
 // @access  Public
