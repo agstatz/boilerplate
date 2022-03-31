@@ -21,14 +21,15 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Home, PageNotFound, RegisterForm, LoginForm, PreferenceQuiz, 
          About, Profile, EditAccountForm, Popular, Map, MealPlans, Food, Foods,
          Search_Food, Dining_Court, Dining_Courts, Search, MealPlanIndividual,
-         PostFoodUpdate, PostTried, FoodsNeedUpdate, FoodsTried,
-         DiningIndividual, EditLocation, AdminPanel, DiningLocationsSelection, AddLocation, EditFood } from './pages';
+        PostFoodUpdate, PostTried, FoodsNeedUpdate, FoodsTried,
+        DiningIndividual, Scheduler, DietaryInfo, EditLocation, AdminPanel, DiningLocationsSelection, AddLocation, EditFood } from './pages';
 import { Footer } from './components';
 import Scheduler from './pages/Scheduler';
 
 function App() {
-
     const username = store.getState().app.username;
+    const isAdmin = store.getState().app.isAdmin;
+    const isNotGuest = store.getState().app.isNotGuest;
     const defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     const [theme, setTheme] = useState(defaultDark ? 'dark' : 'light');
@@ -157,10 +158,13 @@ function App() {
                         <NavDropdown.Item href="/meal-plans">View Meal Plans</NavDropdown.Item>
                         <NavDropdown.Item href="/schedule">Schedule Meal Plans</NavDropdown.Item>
                     </NavDropdown>
+                    <Nav.Link href="/dietary_info">Dietary Prefs</Nav.Link>
+
                     <Nav.Link href="/popular">Popular</Nav.Link>
                     <Nav.Link href="/map" >Map</Nav.Link>
                     <Nav.Link href="/search" >Search</Nav.Link>
-                    <Nav.Link href={username !== undefined ? `/profile/${username}` : '/'} >Profile</Nav.Link>
+                    <Nav.Link href={isNotGuest === true ? `/profile/${username}` : '/'} hidden={isNotGuest !== true}>Profile</Nav.Link>
+                    <Nav.Link href={isAdmin === true ? `/admin-panel` : '/'} hidden={isAdmin !== true}>Admin Panel</Nav.Link>
                 </Nav>
                 </Container>
             </Navbar>   
@@ -194,6 +198,7 @@ function App() {
                         <Route path="/foods" component={Foods}/>
                         <Route path="/food" component={Food}/>
                         <Route path="/dining_courts" component={Dining_Courts}/>
+                        <Route path="/dietary_info" component={DietaryInfo}/>
                         <Route path="/edit_food" component={EditFood}/>
                         <Route path="/post_food_update" component={PostFoodUpdate}/>
                         <Route path="/post_tried" component={PostTried}/>

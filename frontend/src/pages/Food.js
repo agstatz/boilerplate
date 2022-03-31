@@ -7,6 +7,7 @@ import { Container, Placeholder, Button } from "react-bootstrap";
 import { store, ClearForm, UpdateForm } from "../store/store";
 const url = 'http://localhost:3001/'
 
+var ress;
 const axios = require('axios')
 
 
@@ -17,13 +18,16 @@ export default class Food extends React.Component {
     constructor() {
         super();
         this.state = {
-            username: store.getState().app.username,
             res: "",
             loading: true,
             html: [],
             adminhtml: [],
             loggedInhtml: [],
             data: [],
+            isNotGuest: store.getState().app.isNotGuest,
+            username: store.getState().app.username,
+            showModal: false,
+            newTagName: ""
             tried: false,
         };
 
@@ -37,15 +41,17 @@ export default class Food extends React.Component {
 
     async callAPI() {
         this.state.loading = true;
+        let loggedIn = true;
         let admin = true;
+
         try {
             var response = await axios.get(url + `food?name=` + this.state.queries.name);
         } catch (error) {
             console.log("error")
         } finally {
+            //console.log(response)
             if (response.data[0] == null) {
                 this.state.html.push(<a>This food ({this.state.queries.name}) does not exist.</a>)
-                console.log("NA")
             } else {
                 if (admin) {
                     this.state.adminhtml.push(
@@ -200,6 +206,55 @@ export default class Food extends React.Component {
 
             this.state.loading = false;
             this.forceUpdate();
+        }
+    }
+
+    handleClose = (event) => {
+        this.setState({
+            showModal: false
+        });
+    }
+
+    handleOpen = (event) => {
+        this.setState({
+            showModal: true
+        });
+    }
+
+    handleChange = (event) => {
+        event.preventDefault();
+        let target = event.target;
+        let value = target.type === "checkbox" ? target.checked : target.value;
+        let name = target.id;
+        this.setState({
+            [name]: value
+        });
+    }
+
+    handleSubmitTag = (event) => {
+        event.preventDefault();
+        var noErr = true
+        if (noErr && !/^([a-zA-Z \-]{3,})$/.test(this.state.newTagName)) {
+            this.setState({ message: "Must be 3 characters long only letters" })
+            noErr = false
+        }
+        if (noErr && !/^([A-Z]{1,1}[a-z \-]{2,})$/.test(this.state.newTagName)) {
+            this.setState({ message: "Must start with a capital letter and have no other capital letters" })
+            noErr = false
+        }
+        const reqInfo = {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            username: this.state.username,
+            foodName: this.state.queries.name,
+            foodTagName: this.state.newTagName
+        }
+        if (noErr) {
+            axios
+                .post('http://localhost:3001/api/addUserTag', { data: reqInfo })
+            this.state.showModal = false;
+            window.location.reload();
         }
     }
 

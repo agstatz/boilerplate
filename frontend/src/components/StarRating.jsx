@@ -6,7 +6,7 @@
 
 import { useState, useEffect } from "react";
 
-function StarRating() {
+function StarRating(props) {
 
     const [stars, setStars] = useState([]);
     const [rating, setRating] = useState(0);
@@ -33,6 +33,9 @@ function StarRating() {
         }
         
         setStars(list);
+        if (props.inputRating) {
+            setRating(props.inputRating);
+        }
     }, []);
 
     useEffect(() => {

@@ -12,6 +12,7 @@ import React from "react";
 import axios from 'axios';
 import { Stack, Button, Container, Form } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
+import GuestUserRedirect from "../components/GuestUserRedirect"
 
 // File imports
 import { FormErrors } from "../components/FormErrors.js";
@@ -122,55 +123,60 @@ class EditAccountForm extends React.Component {
     }
 
     render() {
-        return (
-        <Container className="d-flex justify-content-center" >
-        <div className="p-5 my-4 mx-3  d-flex justify-content-center bg-light border rounded">
-            <Stack>
-                <div className="panel panel-default">
-                <FormErrors formErrors={this.state.formErrors} /></div>
-                <Container className="d-flex justify-content-center">
-                        <h3>Edit Account</h3>
-                </Container>
-                <Container className="d-flex justify-content-center">
-                        <h5>{this.state.oldUsername}</h5>
-                </Container>
-                <Container className="d-flex justify-content-center">
-                    <h1><i className="bi bi-person-circle" style={{ fontSize: '80px'}}></i></h1>
-                </Container>
-                <Form className="registerFormFields" onSubmit={this.handleSubmit} align="center">
-                    <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='username'>
-                        <Form.Label>Username</Form.Label>
-                        <Form.Control type="username" placeholder="Enter your username" onChange={this.handleChange} />
-                    </Form.Group>
-                    <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='email'>
-                        <Form.Label>Email Address</Form.Label>
-                        <Form.Control type="email" placeholder="Enter your email" onChange={this.handleChange}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='firstName'>
-                        <Form.Label>First Name</Form.Label>
-                        <Form.Control type="firstName" placeholder="Enter your first name" onChange={this.handleChange}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='lastName'>
-                        <Form.Label>Last Name</Form.Label>
-                        <Form.Control type="lastName" placeholder="Enter your last name" onChange={this.handleChange}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3" style={{width: '16.5em'}} controlId="password" >
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Enter your password" onChange={this.handleChange} />
-                    </Form.Group>
-                    <Form.Group className="mb-3" style={{width: '16.5em'}} controlId="light" >
-                        <Form.Label>Prefers Light Mode?</Form.Label>
-                        <Form.Check onChange={this.handleChange}/>
-                    </Form.Group>
-                    <Stack spacing={4}>
-                        <Button className="mb-2 mt-3 btn btn-primary btn-sm" onClick={this.handleSubmit} type="submit" disabled={!this.state.formValid}>Submit</Button>
-                        <a href={"/profile/" + this.state.oldUsername} align="center">Cancel</a>
-                    </Stack>
-                </Form>
-            </Stack>
-        </div>
-        </ Container>
-        );
+        if (store.getState().app.isNotGuest !== true) {
+            return(<GuestUserRedirect />);
+        }
+        else {
+            return (
+            <Container className="d-flex justify-content-center" >
+            <div className="p-5 my-4 mx-3  d-flex justify-content-center bg-light border rounded">
+                <Stack>
+                    <div className="panel panel-default">
+                    <FormErrors formErrors={this.state.formErrors} /></div>
+                    <Container className="d-flex justify-content-center">
+                            <h3>Edit Account</h3>
+                    </Container>
+                    <Container className="d-flex justify-content-center">
+                            <h5>{this.state.oldUsername}</h5>
+                    </Container>
+                    <Container className="d-flex justify-content-center">
+                        <h1><i className="bi bi-person-circle" style={{ fontSize: '80px'}}></i></h1>
+                    </Container>
+                    <Form className="registerFormFields" onSubmit={this.handleSubmit} align="center">
+                        <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='username'>
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control type="username" placeholder="Enter your username" onChange={this.handleChange} />
+                        </Form.Group>
+                        <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='email'>
+                            <Form.Label>Email Address</Form.Label>
+                            <Form.Control type="email" placeholder="Enter your email" onChange={this.handleChange}/>
+                        </Form.Group>
+                        <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='firstName'>
+                            <Form.Label>First Name</Form.Label>
+                            <Form.Control type="firstName" placeholder="Enter your first name" onChange={this.handleChange}/>
+                        </Form.Group>
+                        <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='lastName'>
+                            <Form.Label>Last Name</Form.Label>
+                            <Form.Control type="lastName" placeholder="Enter your last name" onChange={this.handleChange}/>
+                        </Form.Group>
+                        <Form.Group className="mb-3" style={{width: '16.5em'}} controlId="password" >
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password" placeholder="Enter your password" onChange={this.handleChange} />
+                        </Form.Group>
+                        <Form.Group className="mb-3" style={{width: '16.5em'}} controlId="light" >
+                            <Form.Label>Prefers Light Mode?</Form.Label>
+                            <Form.Check onChange={this.handleChange}/>
+                        </Form.Group>
+                        <Stack spacing={4}>
+                            <Button className="mb-2 mt-3 btn btn-primary btn-sm" onClick={this.handleSubmit} type="submit" disabled={!this.state.formValid}>Submit</Button>
+                            <a href={"/profile/" + this.state.oldUsername} align="center">Cancel</a>
+                        </Stack>
+                    </Form>
+                </Stack>
+            </div>
+            </ Container>
+            );
+        }
     }
 }
 

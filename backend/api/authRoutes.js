@@ -21,4 +21,5 @@ module.exports = function(app) {
   app.post("/api/editUser", bodyParser.json(), controller.editUser);
   app.post("/api/resetUser", bodyParser.json(), controller.resetUser);
   app.post("/api/editUserPreferences", bodyParser.json(), controller.editUserPreferences);
+  app.post("/api/editUserDietaryPreferences", bodyParser.json(), controller.editUserDietaryPreferences);
 };

@@ -60,3 +60,30 @@ hr.class-2 {
 .rating-stars {
     font-size: 20px;
 }
+
+.ovr {
+    overflow-x: auto;
+    white-space: nowrap;
+    gap: 10px;
+    align-content: flex-start;
+}
+
+.tag-container{
+    width: auto;
+    white-space: nowrap;
+    gap: 10px;
+    align-content: flex-start;
+    flex-direction: column;
+}
+
+.tag-block{
+    display:inline-block;
+	height: 70px;
+	width: auto;
+	background-color: #fff;
+	border: none;
+	background-position: center;
+	background-size: cover;
+	transition: all 0.2s ease-in-out !important;
+    border-radius: 6px;
+}

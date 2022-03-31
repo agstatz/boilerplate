@@ -104,7 +104,6 @@ router.put('/:name', async (req, res) => {
 router.delete('/:name', async (req, res) => {
     try {
         const dining_location = await Dining_Location.deleteOne({ name: req.params.name });
-        console.log("here");
         if (!dining_location) return res.status(400).json({ msg: 'delete successful'});
         res.send({ message: "Deleted successfully."});
     } catch(err) {

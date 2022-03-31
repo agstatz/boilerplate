@@ -50,6 +50,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/foods', require('./routes/foods'));
 app.use('/api/meal-plans', require('./routes/mealplans'));
 app.use('/api/dining-locations', require('./routes/diningLocations'));
+app.use('/api/users', require('./routes/users'));
 
 // allows requests from host
 app.use(function(req, res, next) {

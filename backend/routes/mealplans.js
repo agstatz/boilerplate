@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router()
-
+const User = require('../models/userModel')
 const Meal_Plan = require('../models/mealPlanModel')
+const mongoose = require("mongoose");
+
 
 // @route   GET api/meal-plans
 // @desc    Get all meal-plans from collection
@@ -39,13 +41,15 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     console.log('got:\n')
     console.log(req.body)
+    const plan_id = new mongoose.Types.ObjectId();
     try {
         const meal_plan = new Meal_Plan({
+            _id: plan_id,
             name: req.body.name,
             private: req.body.private,
             owner: req.body.owner,
             likes: req.body.likes,
-            meals: req.body.meals
+            meals: req.body.schedule
         })
         meal_plan.save((err, user) => {
             if (err) {
@@ -54,6 +58,23 @@ router.post('/', async (req, res) => {
             }
             res.send({ message: "Updated successfully."});
             console.log('saved')
+        });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+
+    try {
+        User.updateOne({
+            username: req.body.owner
+        }, {
+            $push:{mealPlans: plan_id}
+        }, (err, success) => {
+            if (err) {
+                console.error(err.message);
+                res.status(500).send({ message: err});
+            }
+            console.log('updated meal_plans')
         });
     } catch (err) {
         console.error(err.message);

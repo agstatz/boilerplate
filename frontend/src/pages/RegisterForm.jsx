@@ -67,8 +67,8 @@ class RegisterForm extends React.Component {
         }
         this.setState({ message: "" })
         var noErr = true
-        if (noErr && !/^([a-zA-Z]{4,})$/.test(this.state.username)) {
-            this.setState({ message: "Username must be at least 4 characters long and cannot contain numbers or symbols" })
+        if (noErr && !/^([a-zA-Z0-9]{4,})$/.test(this.state.username)) {
+            this.setState({ message: "Username must be at least 4 characters long and cannot contain symbols" })
             noErr = false
         }
         if (noErr && !/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(this.state.email)) {
@@ -97,6 +97,10 @@ class RegisterForm extends React.Component {
                     store.dispatch(UpdateForm(("email"), this.state.email));
                     store.dispatch(UpdateForm(("firstName"), this.state.firstName));
                     store.dispatch(UpdateForm(("lastName"), this.state.lastName));
+                    store.dispatch(UpdateForm(("isAdmin"), false));
+                    store.dispatch(UpdateForm(("isNotGuest"), true));
+                    store.dispatch(UpdateForm(("isModerator"), false));
+                    store.dispatch(UpdateForm(("isDiningStaff"), false));
 
                     // Redirect the user to initial quiz
                     const { history } = this.props;
@@ -136,7 +140,7 @@ class RegisterForm extends React.Component {
 
     render() {
         return (
-        <Container className="d-flex justify-content-center" >
+        <Container className="d-flex justify-content-center" style={{ paddingTop: '10vh', paddingBottom: '2vh', paddingLeft: '55vh', paddingRight: '55vh'}} >
         <div className="p-5 my-4 mx-3  d-flex justify-content-center bg-light border rounded">
             <Stack>
                 <Container className="d-flex justify-content-center">
