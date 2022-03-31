@@ -321,7 +321,6 @@ app.get('/Foods_Need_Update', (req, res) => {
           s.cuisine, //11
           s.servingSize, //12
       ])
-      //result = result.map(a => a.name); //filters only the names of foods
       result = [];
       for (let i = 0; i < result2.length; i++) {
         let food = result2[i]
@@ -422,6 +421,7 @@ app.get('/Foods_Tried', (req, res) => {
     let db = dbt.db("boilerplate");
     db.collection("users").find({ username : username }).toArray(function(err, result) {
       if (err) throw err;
+      console.log(result)
       result = result.map(s => s.tried)
       console.log(result)
       if (result == null || result === "undefined" || result === "") {
@@ -691,13 +691,18 @@ app.post('/Tried_Food', (req, res) => {
     console.log("updating tried")
     console.log(req.query)
     let db = dbt.db("boilerplate");
-    let user = "";
+
     db.collection("users").find({username: req.query.username}).toArray(function(err, result) {
       if (err) throw err;
+      console.log(result[0])
+
+
+
+
+      let user = result[0];
       if (result.length === 0) {
         res.send("User does not exist");
       } else {
-        user = result;
         db.collection("foods").find({name: req.query.name.split('_').join(' ')}).toArray(function(err, result) {
           if (err) throw err;
           if (result.length === 0) {

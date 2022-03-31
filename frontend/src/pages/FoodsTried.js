@@ -40,19 +40,25 @@ export default class FoodsTried extends React.Component {
     async callAPI() {
         this.setState({loading : true})
         let response;
-        try {
-            response = await axios.get(
-                url +
-                "Foods_Tried?username=" + this.state.username);
-        } catch (error) {
-            console.log("error")
-        } finally {
-            for (let i = 0; i < response.data.length; i++) {
-                this.state.html.push(<ColoredLine id={"line" + i} color="grey"/>);
-                this.state.html.push(<Link id={"link" + i} to={"/food?name=" + response.data[i][0].split(' ').join('_')}>{response.data[i]}</Link>)
+        if (this.state.username != null && this.state.username !== "undefined" && this.state.username !== "") {
+            try {
+                response = await axios.get(
+                    url +
+                    "Foods_Tried?username=" + this.state.username);
+            } catch (error) {
+                console.log("error")
+            } finally {
+                console.log(response.data[0])
+                for (let i = 0; i < response.data[0].length; i++) {
+                    this.state.html.push(<ColoredLine id={"line" + i} color="grey"/>);
+                    this.state.html.push(<Link id={"link" + i}
+                                               to={"/food?name=" + response.data[0][i].split(' ').join('_')}>{response.data[0][i]}</Link>)
+                }
+                this.setState({loading: false})
+                this.forceUpdate();
             }
-            this.setState({loading : false})
-            this.forceUpdate();
+        } else {
+            this.state.html.push(<h4>You have to be logged in to view this page.</h4>);
         }
     }
 

@@ -246,8 +246,6 @@ export default class Food extends React.Component {
                 class={d.props.class}
             >{d.props.children}</d.type>);
 
-
-
         if (this.state.queries.message != null && this.state.queries.message !== "undefined" && this.state.queries.message !== "") {
             return (
                 <div className="App">
