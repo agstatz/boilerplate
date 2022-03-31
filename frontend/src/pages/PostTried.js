@@ -3,6 +3,7 @@ import {Link, Redirect} from "react-router-dom";
 import queryString from "query-string";
 
 import { Container, Placeholder, Button, Form } from "react-bootstrap";
+import { store, ClearForm, UpdateForm } from "../store/store";
 
 const axios = require('axios')
 const url = "http://localhost:3001/"
@@ -16,11 +17,12 @@ const ColoredLine = ({ color }) => (
     />
 );
 
-export default class PostFoodUpdate extends React.Component {
+export default class PostTried extends React.Component {
 
     constructor() {
         super();
         this.state = {
+            username: store.getState().app.username,
             res: "",
             html: [],
             loading: true
@@ -40,35 +42,18 @@ export default class PostFoodUpdate extends React.Component {
         let response;
         try {
             console.log("posting")
-            response = await axios.post(url + `Update_Food?` +
+            response = await axios.post(url + `TriedFood?` +
                 "name=" + this.state.queries.name +
-                "&newName=" + this.state.queries.newName +
-                "&servingSize=" + this.state.queries.servingSize +
-                "&calories=" + this.state.queries.calories +
-                "&totalFat=" + this.state.queries.totalFat +
-                "&saturatedFat=" + this.state.queries.saturatedFat +
-                "&cholesterol=" + this.state.queries.cholesterol +
-                "&sodium=" + this.state.queries.sodium +
-                "&totalCarbohydrate=" + this.state.queries.totalCarbohydrate +
-                "&dietaryFiber=" + this.state.queries.dietaryFiber +
-                "&sugar=" + this.state.queries.sugar +
-                "&addedSugar=" + this.state.queries.addedSugar +
-                "&protein=" + this.state.queries.protein +
-                "&calcium=" +this.state.queries.calcium +
-                "&iron=" + this.state.queries.iron +
-                "&diets=" + this.state.queries.diets +
-                "&cuisine=" + this.state.queries.cuisine +
-                "&ingredients=" + this.state.queries.ingredients +
-                "&tags=" + this.state.queries.tags +
-                "&groups=" + this.state.queries.groups +
+                "&username=" + this.state.username +
+                "&changeFrom=" + this.state.queries.changeFrom +
                 ""
             );
         } catch (error) {
             console.log("error")
         } finally {
             console.log(response);
-            let link = "/Food?name=" + this.state.queries.newName;
-            this.state.html.push(<Redirect to={link}/>)
+            let link = "/Food?name=" + this.state.queries.name;
+            //this.state.html.push(<Redirect to={link}/>)
             this.setState({loading : false})
             this.forceUpdate();
         }

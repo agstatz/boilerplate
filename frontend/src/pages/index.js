@@ -16,6 +16,7 @@ export { default as Dining_Court } from "./Dining_Court";
 export { default as Search_Food } from "./Search_Food";
 export { default as EditFood } from "./EditFood";
 export { default as PostFoodUpdate } from "./PostFoodUpdate"
+export { default as PostTried } from "./PostTried"
 export { default as Search } from "./Search";
 export { default as MealPlanIndividual } from "./MealPlanIndividual";
 export { default as DiningIndividual } from "./DiningIndividual";

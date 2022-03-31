@@ -85,6 +85,16 @@ export default class EditFood extends React.Component {
                 return;
             } else {
                 this.setState({data: response.data[0]})
+                if (this.state.data.dietaryTags == null || this.state.data.dietaryTags === "undefined" || this.state.data.dietaryTags === "") {
+                    this.state.data.dietaryTags = [];
+                }
+                if (this.state.data.groups == null || this.state.data.groups === "undefined" || this.state.data.groups === "") {
+                    this.state.data.groups = [];
+                }
+                if (this.state.data.diets == null || this.state.data.diets === "undefined" || this.state.data.diets === "") {
+                    this.state.data.diets = [];
+                }
+
                 this.state.html.push(<a>Food Name:</a>)
                 this.state.html.push(<input class={"form-control"} defaultValue={this.state.data.name} id={"name"}></input>)
                 this.state.html.push(<h3><br></br>Nutrition Facts</h3>)
@@ -236,9 +246,12 @@ export default class EditFood extends React.Component {
             } catch (error) {
                 console.log("error")
             } finally {
+                if (this.state.data.cuisine == null || this.state.data.cuisine === "undefined" || this.state.data.cuisine === "") {
+                    this.state.data.cuisine = "Other"
+                }
                 this.setState({cuisine : response})
-                this.setState({cuisineSelected : this.state.cuisine.data[0]})
-                let toPush = <select class="form-select" id="cuisine" onChange={this.handleDrop5}></select>;
+                this.setState({cuisineSelected : this.state.data.cuisine})
+                let toPush = <select class="form-select" id="cuisine" defaultValue={this.state.data.cuisine} onChange={this.handleDrop5}></select>;
                 let clonedToPush = React.cloneElement(
                     toPush,
                     { children: [] }
@@ -329,41 +342,30 @@ export default class EditFood extends React.Component {
         );
     }
     submitButton = (event) => {
-        let string = [];
-        string.push(document.getElementById("name").value)
-        string.push(document.getElementById("servingSize").value)
-        let response;
-        try {
-            response = axios.post(url + `Update_Food?` +
-                "name=" + this.state.data.name +
-                "&newName=" + document.getElementById("name").value +
-                "&servingSize=" + document.getElementById("servingSize").value +
-                "&calories=" + document.getElementById("calories").value +
-                "&totalFat=" + document.getElementById("totalFat").value +
-                "&saturatedFat=" + document.getElementById("saturatedFat").value +
-                "&cholesterol=" + document.getElementById("cholesterol").value +
-                "&sodium=" + document.getElementById("sodium").value +
-                "&totalCarbohydrate=" + document.getElementById("totalCarbohydrate").value +
-                "&dietaryFiber=" + document.getElementById("dietaryFiber").value +
-                "&sugar=" + document.getElementById("sugar").value +
-                "&addedSugar=" + document.getElementById("addedSugar").value +
-                "&protein=" + document.getElementById("protein").value +
-                "&calcium=" + document.getElementById("calcium").value +
-                "&iron=" + document.getElementById("iron").value +
-                "&diets=" + this.state.diets +
-                "&cuisine=" + document.getElementById("cuisine").value +
-                "&ingredients=" + document.getElementById("ingredients").value +
-                "&tags=" + this.state.tags +
-                "&groups=" + this.state.groups +
-                ""
-            );
-        } catch (error) {
-            console.log("error")
-        } finally {
-            console.log(response);
-        }
-
-        console.log(string);
+        let link =
+            "/Post_Food_Update?" +
+            "name=" + this.state.data.name +
+            "&newName=" + document.getElementById("name").value +
+            "&servingSize=" + document.getElementById("servingSize").value +
+            "&calories=" + document.getElementById("calories").value +
+            "&totalFat=" + document.getElementById("totalFat").value +
+            "&saturatedFat=" + document.getElementById("saturatedFat").value +
+            "&cholesterol=" + document.getElementById("cholesterol").value +
+            "&sodium=" + document.getElementById("sodium").value +
+            "&totalCarbohydrate=" + document.getElementById("totalCarbohydrate").value +
+            "&dietaryFiber=" + document.getElementById("dietaryFiber").value +
+            "&sugar=" + document.getElementById("sugar").value +
+            "&addedSugar=" + document.getElementById("addedSugar").value +
+            "&protein=" + document.getElementById("protein").value +
+            "&calcium=" + document.getElementById("calcium").value +
+            "&iron=" + document.getElementById("iron").value +
+            "&diets=" + this.state.diets +
+            "&cuisine=" + document.getElementById("cuisine").value +
+            "&ingredients=" + document.getElementById("ingredients").value +
+            "&tags=" + this.state.tags +
+            "&groups=" + this.state.groups +
+            "";
+        this.state.html.push(<Redirect to={link}/>)
         this.forceUpdate()
     }
 

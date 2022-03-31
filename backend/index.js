@@ -315,6 +315,31 @@ app.get('/Food', (req, res) => {
   console.log('/food sent');
 })
 
+app.get('/Tried', (req, res) => {
+  let queryName = req.query.name
+  let username = req.query.username
+
+  MongoClient.connect(url, function(err, dbt) {
+    if (err) throw err;
+    let db = dbt.db("boilerplate");
+    db.collection("users").find({ username : username }).toArray(function(err, result) {
+      if (err) throw err;
+      result = result.map(s => s.tried)[0]
+      if (result == null || result === "undefined" || result === "") {
+        result = [];
+      }
+      let tried = false
+      for (let i = 0; i < result.length; i++) {
+        if (result[i] === queryName) {
+          tried = true
+        }
+      }
+      res.send(tried);
+    });
+  });
+  console.log('/Tried sent');
+})
+
 
 app.get('/Nutrition', (req, res) => {
 
@@ -528,7 +553,8 @@ app.post('/Update_Food', (req, res) => {
           groups: req.query.groups.split(','),
         },
       };
-      let ret = db.collection("foods").updateOne( { name : req.query.name } , updateDoc)
+      ret = db.collection("foods").updateOne( { name : req.query.name } , updateDoc)
+      res.send("success");
     });
   });
 })

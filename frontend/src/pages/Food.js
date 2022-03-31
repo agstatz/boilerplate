@@ -7,24 +7,26 @@ import { Container, Placeholder, Button } from "react-bootstrap";
 import { store, ClearForm, UpdateForm } from "../store/store";
 const url = 'http://localhost:3001/'
 
-var ress;
 const axios = require('axios')
-const username = store.getState().app.username;
 
 
 
 
 export default class Food extends React.Component {
+
     constructor() {
         super();
         this.state = {
+            username: store.getState().app.username,
             res: "",
             loading: true,
             html: [],
             adminhtml: [],
             loggedInhtml: [],
             data: [],
+            tried: false,
         };
+
         this.callAPI = this.callAPI.bind(this);
         this.state.queries = queryString.parse(window.location.search);
     }
@@ -34,16 +36,14 @@ export default class Food extends React.Component {
     }
 
     async callAPI() {
-        console.log(username)
+        console.log(this.state.username)
         this.state.loading = true;
-        let loggedIn = true;
         let admin = true;
         try {
             var response = await axios.get(url + `food?name=` + this.state.queries.name);
         } catch (error) {
             console.log("error")
         } finally {
-            console.log(response)
             if (response.data[0] == null) {
                 this.state.html.push(<a>This food ({this.state.queries.name}) does not exist.</a>)
                 console.log("NA")
@@ -52,7 +52,7 @@ export default class Food extends React.Component {
                     this.state.adminhtml.push(
                         <Link to={"edit_food?name=" + this.state.queries.name}>
                             <Button type="button">
-                                Edit Food
+                                Edit This Food
                             </Button>
                         </Link>)
                 }
@@ -66,9 +66,37 @@ export default class Food extends React.Component {
                 if (this.state.data.groups == null || this.state.data.groups === "undefined" || this.state.data.groups === "") {
                     this.state.data.groups = [];
                 }
-                console.log(this.state.data)
                 this.state.html.push(<h1>{this.state.data.name}</h1>)
-                this.state.html.push(<h3><br></br>Nutrition Facts</h3>)
+                this.state.html.push(<hr></hr>)
+
+                if (this.state.username != null || this.state.username !== "undefined" || this.state.username !== "") {
+                    try {
+                        var response = await axios.get(url + `Tried?name=` + this.state.queries.name + "&username=" + this.state.username);
+                    } catch (error) {
+                        console.log("error")
+                    } finally {
+                        console.log(response.data);
+                        this.setState({tried: response.data})
+                        if (response.data === false) {
+                            this.state.html.push(<h5>You have not tried this food.<br></br></h5>)
+                            this.state.html.push(<Link to={"Post_Tried?name=" + this.state.queries.name}>
+                                <Button onClick={this.submitButton} type="button">
+                                    I have tried this food
+                                </Button>
+                            </Link>)
+                        } else {
+                            this.state.html.push(<h5>You have tried this food.<br></br></h5>)
+                            this.state.html.push(<Link to={"Post_Tried?name=" + this.state.queries.name}>
+                                <Button onClick={this.submitButton} type="button">
+                                    I have not tried this food
+                                </Button>
+                            </Link>)
+
+                        }
+                        this.state.html.push(<hr></hr>)
+                    }
+                }
+                this.state.html.push(<h3>Nutrition Facts</h3>)
                 this.state.html.push(<hr></hr>)
                 this.state.html.push(<h5>Serving size: {this.state.data.servingSize}</h5>)
                 this.state.html.push(<hr class="class-1"></hr>)
@@ -183,5 +211,14 @@ export default class Food extends React.Component {
                 </Container>
             </div>
         );
+    }
+    submitButton = (event) => {
+        let link =
+            "/Post_Tried?" +
+            "name=" + this.state.queries.name +
+            "&changeFrom=" + this.state.tried +
+            "";
+        this.state.html.push(<Redirect to={link}/>)
+        this.forceUpdate()
     }
 }

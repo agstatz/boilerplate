@@ -464,7 +464,6 @@ export default class Search_Food extends React.Component {
             "&include=" + this.state.include +
             "&exclude=" + this.state.exclude +
             "&cuisine=" + this.state.cuisineSelected;
-        console.log(string)
         this.state.html.push(<Redirect to={string}/>)
         this.forceUpdate()
     }
