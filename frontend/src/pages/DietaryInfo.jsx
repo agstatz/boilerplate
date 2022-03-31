@@ -28,24 +28,35 @@ function DietaryInfo(props) {
   const [nuts, setNuts] = useState(0);
   const [religious, setReligious] = useState(0);
   const [mealSwipes, setMealSwipes] = useState(0);
+  const [submitted, setSubmitted] = useState({});
 
   function submitForm() {
     try {
       axios
-        .post("http://localhost:3001/api/editUserDietaryPreferences", {data: {
-          dietary: dietary,
-          dairy: dairy,
-          gluten: gluten,
-          nuts: nuts,
-          religious: religious,
-          mealSwipes: mealSwipes,
-          username: store.getState().app.username,
-        }})
+        .post("http://localhost:3001/api/editUserDietaryPreferences", {
+          data: {
+            dietary: dietary,
+            dairy: dairy,
+            gluten: gluten,
+            nuts: nuts,
+            religious: religious,
+            mealSwipes: mealSwipes,
+            username: store.getState().app.username,
+          },
+        })
         .then((res) => {
           console.log(res);
+          setSubmitted({
+            text: "Your dietary preferences have been updated!",
+            color: "text-success",
+          });
         })
         .catch((err) => {
           console.error(err);
+          setSubmitted({
+            text: "En error occured, please try again.",
+            color: "text-danger",
+          });
         });
     } catch (err) {
       console.error(err);
@@ -273,6 +284,11 @@ function DietaryInfo(props) {
                 <br />
               </Stack>
             </div>
+            {}
+            <p className="d-flex justify-content-center ">
+                <p className={submitted.color}>{submitted.text}</p>
+            </p>
+
             <Container className="d-flex justify-content-center">
               <Button className="mx-2" onClick={submitForm}>
                 Submit Preferences <i className="bi bi-chevron-right"></i>
