@@ -156,6 +156,8 @@ function App() {
                         <NavDropdown.Item href="/meal-plans">View Meal Plans</NavDropdown.Item>
                         <NavDropdown.Item href="/schedule">Schedule Meal Plans</NavDropdown.Item>
                     </NavDropdown>
+                    <Nav.Link href="/dietary_info">Dietary Prefs</Nav.Link>
+
                     <Nav.Link href="/popular">Popular</Nav.Link>
                     <Nav.Link href="/map" >Map</Nav.Link>
                     <Nav.Link href="/search" >Search</Nav.Link>
