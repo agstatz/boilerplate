@@ -165,6 +165,41 @@ exports.editUser = (req, res) => {
     });
 };
 
+exports.get_user_info = (req, res) => {
+  User.findOne({
+    username: req.body.data.username
+  })
+    .exec((err, user) => {
+      if (err) {
+        res.status(500).send({ message: err });
+        return;
+      }
+      if (!user) {
+        return res.status(404).send({ message: "User Not found" });
+      }
+      res.status(200).send({
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        lightMode: user.lightMode,
+        carbOpt: user.carbOpt,
+        starNotifs: user.starNotifs,
+        newMenuNotifs: user.newMenuNotifs,
+        mealSwipes: user.mealSwipes,
+        friends: user.friends,
+        diets: user.diets,
+        allergies: user.allergies,
+        locationStars: user.locationStars,
+        foodStars: user.foodStars,
+        foodBlacklist: user.foodBlacklist,
+        intakePlans: user.intakePlans,
+        mealPlans: user.mealPlans,
+        locationsVisited: user.locationsVisited
+      });
+    });
+}
+
 exports.resetUser = (req, res) => {
   console.log('RESET1')
   User.updateOne(

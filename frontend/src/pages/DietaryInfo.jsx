@@ -5,75 +5,278 @@
  * @author Arjan Mobin
  */
 
- import { Container, Button, Row, Col, Form, Dropdown, DropdownButton } from "react-bootstrap";
- import axios from "axios";
- import { useEffect, useState } from "react";
- import Select from 'react-select'
- import { store } from "../store/store.js";
- 
- 
- function DietaryInfo(props) {
-   
-   useEffect(async () => {
-     try {
-       const { data: response } = await axios.get(
-         
-       );
-       
-     } catch (err) {
-       console.error(err);
-     } 
-   }, []);
- 
+import {
+  Container,
+  Button,
+  Row,
+  Col,
+  Form,
+  Stack,
+  Dropdown,
+  DropdownButton,
+} from "react-bootstrap";
+import RangeSlider from 'react-bootstrap-range-slider';
+import axios from "axios";
+import { useEffect, useState } from "react";
+import Select from "react-select";
+import { store } from "../store/store.js";
 
- 
-   return (
-     <Container style={{ paddingTop: "15vh", paddingBottom: "15vh" }}>
-       <div className="p-3 my-4 mx-4 bg-light border rounded">
-         <h1><strong>Dietary Info</strong></h1><br />
-         <div>
-           <Form>
-             <Form.Group
-               as={Row}
-               className="mb-3"
-               controlId="formHorizontalEmail"
-             >
-               <Form.Label column sm={6}>
-                 <h3>Meal Schedule Name:</h3>
-               </Form.Label>
-               <Col sm={4}>
-                 <Form.Control type="text" placeholder="My Healthy Meal Plan" onChange={(e) => {
+function DietaryInfo(props) {
 
-                }}/>
-               </Col>
-             </Form.Group>
-             {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"].map(
-               (day, i) => {
-                 return;
-               }
-             )}
-           <Form.Check
-             type="checkbox"
-             label="Private"
-             onChange={(e) => {
-               
-             }}
-           />
-           
-           </Form>
-           
-         </div>
-         <Row>
-         <Col md={10} sm={9} xs={8}>
-         </Col>
-         <Col md={2} sm={3} xs={4}>
-         </Col>
-         </Row>
-         
-       </div>
-     </Container>
-   );
- }
- 
- export default DietaryInfo;
- 
+
+    function submitForm(){
+        console.log(dietary, dairy, gluten, nuts, religious, mealSwipes);
+    }
+
+
+
+
+    const [dietary, setDietary] = useState(0);
+    const [dairy, setDairy] = useState(0);
+    const [gluten, setGluten] = useState(0);
+    const [nuts, setNuts] = useState(0);
+    const [religious, setReligious] = useState(0);
+    const [mealSwipes, setMealSwipes] = useState(0);
+
+
+  useEffect(async () => {
+    try {
+        const { data: response } = await axios.get(
+          "http://localhost:3001/api/users/dietary/"+store.getState().app.username
+        );
+        console.log(response)
+        const restriction_tags = []
+        for (const restriction of response.restrictions) {
+            restriction_tags.push(restriction.name)
+        }
+
+        if (restriction_tags.includes('vegetarian')) {
+            setDietary(1);
+        }
+
+        if (restriction_tags.includes('vegan')) {
+            setDietary(2);
+        }
+
+        if (restriction_tags.includes('pescatarian')) {
+            setDietary(3);
+        }
+
+        if (restriction_tags.includes('dairy')) {
+            setDairy(1);
+        }
+
+        if (restriction_tags.includes('gluten')) {
+            setGluten(1);
+        }
+
+        if (restriction_tags.includes('nuts')) {
+            setNuts(1);
+        }
+
+        if (restriction_tags.includes('halal')) {
+            setReligious(1);
+        }
+
+        if (restriction_tags.includes('kosher')) {
+            setReligious(2);
+        }
+
+        setMealSwipes(response.mealSwipes)
+
+
+
+
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
+
+    
+
+  return (
+    <Container style={{ paddingTop: "15vh", paddingBottom: "15vh" }}>
+      <div className="p-3 my-4 mx-4 bg-light border rounded">
+        <h1>
+          <strong>Dietary Info</strong>
+        </h1>
+        <br />
+        <div>
+          <Form>
+            <Form.Group
+              as={Row}
+              className="mb-3"
+              controlId="formHorizontalEmail"
+            >
+              <Form.Label column sm={6}>
+                <h3>Restrictions:</h3>
+              </Form.Label>
+            </Form.Group>
+            <div className="p-3 my-4 mx-4 bg-light border rounded">
+              <Stack gap={2}>
+                <h4>Dietary</h4>
+              </Stack>
+              <Stack className="p-1 d-flex justify-content-center">
+                <Form.Check
+                  type="radio"
+                  label="Vegetarian"
+                  name="veg_status"
+                  checked={dietary == 1}
+                  onChange={() => setDietary(1)}
+                />
+                <Form.Check
+                  type="radio"
+                  label="Vegan"
+                  name="veg_status"
+                  checked={dietary == 2}
+                  onChange={() => setDietary(2)}
+                />
+                <Form.Check
+                  type="radio"
+                  label="Pescatarian"
+                  name="veg_status"
+                  checked={dietary == 3}
+                  onChange={() => setDietary(3)}
+                />
+                <Form.Check
+                  type="radio"
+                  label="None of these apply"
+                  name="veg_status"
+                  checked={dietary == 0}
+                  onChange={() => setDietary(0)}
+                />
+              </Stack>
+
+            </div>
+            <div className="p-3 my-4 mx-4 bg-light border rounded">
+              <Stack gap={2}>
+                <h4>Dairy Allergy</h4>
+              </Stack>
+              <Stack className="p-1 d-flex justify-content-center">
+                <Form.Check
+                  type="radio"
+                  label="Yes"
+                  name="dairy_allergy"
+                  checked={dairy == 1}
+                  onChange={() => setDairy(1)}
+                />
+                <Form.Check
+                  type="radio"
+                  label="No"
+                  name="dairy_allergy"
+                  checked={dairy == 0}
+                  onChange={() => setDairy(0)}
+                />
+              </Stack>
+            </div>
+            <div className="p-3 my-4 mx-4 bg-light border rounded">
+              <Stack gap={2}>
+                <h4>Gluten Allergy</h4>
+              </Stack>
+              <Stack className="p-1 d-flex justify-content-center">
+                <Form.Check
+                  type="radio"
+                  label="Yes"
+                  name="gluten_allergy"
+                  checked={gluten == 1}
+                  onChange={() => setGluten(1)}
+                />
+                <Form.Check
+                  type="radio"
+                  label="No"
+                  name="gluten_allergy"
+                  checked={gluten == 0}
+                  onChange={() => setGluten(0)}
+                />
+              </Stack>
+            </div>
+            <div className="p-3 my-4 mx-4 bg-light border rounded">
+              <Stack gap={2}>
+                <h4>Nut Allergy</h4>
+              </Stack>
+              <Stack className="p-1 d-flex justify-content-center">
+                <Form.Check
+                  type="radio"
+                  label="Yes"
+                  name="nut_allergy"
+                  checked={nuts == 1}
+                  onChange={() => setNuts(1)}
+                />
+                <Form.Check
+                  type="radio"
+                  label="No"
+                  name="nut_allergy"
+                  checked={nuts == 0}
+                  onChange={() => setNuts(0)}
+                />
+              </Stack>
+            </div>
+            <div className="p-3 my-4 mx-4 bg-light border rounded">
+              <Stack gap={2}>
+                <h4>Religious Restrictions</h4>
+                <Stack className="p-1 d-flex justify-content-center">
+                  <Form.Check
+                    type="radio"
+                    label="Halal"
+                    name="law_status"
+                    checked={religious == 1}
+                    onChange={() => setReligious(1)}
+                  />
+                  <Form.Check
+                    type="radio"
+                    label="Kosher"
+                    name="law_status"
+                    checked={religious == 2}
+                    onChange={() => setReligious(2)}
+                  />
+                  <Form.Check
+                    type="radio"
+                    label="None"
+                    name="law_status"
+                    checked={religious == 0}
+                    onChange={() => setReligious(0)}
+                  />
+                </Stack>
+                <br />
+              </Stack>
+            </div>
+            <Form.Group
+              as={Row}
+              className="mb-3"
+              controlId="formHorizontalEmail"
+            >
+              <Form.Label column sm={6}>
+                <h3>Meal Plan Info:</h3>
+              </Form.Label>
+            </Form.Group>
+            <div className="p-3 my-4 mx-4 bg-light border rounded">
+                        <Stack gap={2}>
+                            <h4>Meal Swipes</h4>
+                            <p>How many meal swipes do you have available per week?</p>
+                            <Container className="p-1 d-flex justify-content-center">
+                            <RangeSlider
+                                value={mealSwipes}
+                                onChange={changeEvent => setMealSwipes(parseInt(changeEvent.target.value))}
+                                min={0}
+                                max={30}
+                                />
+                            </Container>
+                            <br />
+                        </Stack>
+                       
+                    </div>
+                    <Container className="d-flex justify-content-center">
+                            <Button className="mx-2" onClick={submitForm}>Submit Preferences <i className="bi bi-chevron-right"></i></Button>
+                        </Container>
+          </Form>
+        </div>
+        <Row>
+          <Col md={10} sm={9} xs={8}></Col>
+          <Col md={2} sm={3} xs={4}></Col>
+        </Row>
+      </div>
+    </Container>
+  );
+}
+
+export default DietaryInfo;
