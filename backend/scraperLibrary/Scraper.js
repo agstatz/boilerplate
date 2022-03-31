@@ -4,7 +4,7 @@ const { camelCase } = require("./utils");
 
 const DINING_HOMEPAGE = "https://dining.purdue.edu";
 
-async function Scraper() {
+async function scraper() {
   // Create browser object
   const browser = await puppeteer.launch();
 
@@ -41,10 +41,7 @@ async function Scraper() {
     return urls;
   }
 
-  async function scrapeDiningCourtInfo(diningCourtURL, options) {
-    // Extract options
-    const { buildSchedule } = options;
-
+  async function scrapeDiningCourtInfo(diningCourtURL) {
     // Setup scraper
     await page.goto(diningCourtURL, { waitUntil: "networkidle2" });
     const html = await page.content();
@@ -55,7 +52,6 @@ async function Scraper() {
       name: "",
       address: "",
       serves: [],
-      schedule: [],
     };
 
     // Get the name of the dining court
@@ -93,8 +89,6 @@ async function Scraper() {
     // Build URL for given day and meal type
     const newURL =
       trimmedURL + "/" + year + "/" + month + "/" + day + "/" + mealType;
-
-    console.log(newURL);
 
     // Setup scraper
     await page.goto(newURL, { waitUntil: "networkidle2" });
@@ -140,11 +134,9 @@ async function Scraper() {
         const itemLink = DINING_HOMEPAGE + $(item).attr("href");
 
         const foodObject = {
-          itemName,
-          itemLink,
+          foodName: itemName,
+          foodURL: itemLink,
         };
-
-        console.log(foodObject);
 
         stationObject.foods.push(foodObject);
       }
@@ -248,23 +240,4 @@ async function Scraper() {
   });
 }
 
-// Run the scraper
-(async function () {
-  const scraper = await Scraper();
-  const urls = await scraper.scrapeMenuURLs();
-
-  const court = await scraper.scrapeDiningCourtInfo(urls.diningCourts[0], {});
-
-  const today = new Date();
-
-  const menu = await scraper.scrapeMealMenu(
-    urls.diningCourts[0],
-    today,
-    "Breakfast"
-  );
-
-  console.log(menu);
-  console.log(menu.stations[0].foods);
-
-  await scraper.close();
-})();
+module.exports = scraper;
