@@ -4,11 +4,13 @@ import { Grid } from '@mui/material';
 import queryString from "query-string";
 
 import { Container, Placeholder, Button } from "react-bootstrap";
-
+import { store, ClearForm, UpdateForm } from "../store/store";
 const url = 'http://localhost:3001/'
 
 var ress;
 const axios = require('axios')
+const username = store.getState().app.username;
+
 
 
 
@@ -32,6 +34,7 @@ export default class Food extends React.Component {
     }
 
     async callAPI() {
+        console.log(username)
         this.state.loading = true;
         let loggedIn = true;
         let admin = true;
@@ -54,6 +57,15 @@ export default class Food extends React.Component {
                         </Link>)
                 }
                 this.setState({data: response.data[0]})
+                if (this.state.data.dietaryTags == null || this.state.data.dietaryTags === "undefined" || this.state.data.dietaryTags === "") {
+                    this.state.data.dietaryTags = [];
+                }
+                if (this.state.data.diets == null || this.state.data.diets === "undefined" || this.state.data.diets === "") {
+                    this.state.data.diets = [];
+                }
+                if (this.state.data.groups == null || this.state.data.groups === "undefined" || this.state.data.groups === "") {
+                    this.state.data.groups = [];
+                }
                 console.log(this.state.data)
                 this.state.html.push(<h1>{this.state.data.name}</h1>)
                 this.state.html.push(<h3><br></br>Nutrition Facts</h3>)
@@ -85,13 +97,23 @@ export default class Food extends React.Component {
                 this.state.html.push(<hr></hr>)
                 this.state.html.push(<a>Iron: {this.state.data.iron}<br></br></a>)
                 this.state.html.push(<hr class="class-2"></hr>)
-                this.state.html.push(<a>Tags: {this.state.data.tags}<br></br></a>)
+                this.state.html.push(<h5>Tags:<br></br></h5>)
+                for (let i = 0; i < this.state.data.dietaryTags.length; i++) {
+                    this.state.html.push(<a>• {this.state.data.dietaryTags[i]}<br></br></a>)
+                }
                 this.state.html.push(<hr></hr>)
-                this.state.html.push(<a>Diets: {this.state.data.diet}<br></br></a>)
+                this.state.html.push(<h5>Diets:<br></br></h5>)
+                for (let i = 0; i < this.state.data.diets.length; i++) {
+                    this.state.html.push(<a>• {this.state.data.diets[i]}<br></br></a>)
+                }
                 this.state.html.push(<hr></hr>)
-                this.state.html.push(<a>Groups: {this.state.data.group}<br></br></a>)
+                this.state.html.push(<h5>Groups:</h5>)
+                for (let i = 0; i < this.state.data.groups.length; i++) {
+                    this.state.html.push(<a>• {this.state.data.groups[i]}<br></br></a>)
+                }
                 this.state.html.push(<hr></hr>)
-                this.state.html.push(<a>Cuisine: {this.state.data.cuisine}<br></br></a>)
+                this.state.html.push(<h5>Cuisine:</h5>)
+                this.state.html.push(<a>{this.state.data.cuisine}</a>)
                 this.state.html.push(<hr class="class-2"></hr>)
                 this.state.html.push(<a>Ingredients: {this.state.data.ingredients}</a>)
             }

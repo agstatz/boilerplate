@@ -93,7 +93,7 @@ app.get('/Foods', (req, res) => {
     console.log(tags)
   }
 
-  if (groups == null || tags === "undefined" || tags === "") {
+  if (groups == null || groups === "undefined" || groups === "") {
     groups = [];
     console.log("null")
   } else {
@@ -101,7 +101,7 @@ app.get('/Foods', (req, res) => {
     console.log(groups)
   }
 
-  if (diets == null || tags === "undefined" || tags === "") {
+  if (diets == null || diets === "undefined" || diets === "") {
     diets = [];
     console.log("null")
   } else {
@@ -147,7 +147,17 @@ app.get('/Foods', (req, res) => {
 
       for (let i = 0; i < result2.length; i++) {
         let food = result2[i]
-        console.log(food);
+        if (food[12] == null || food[12] === "undefined" || food[12] === "") {
+          food[12] = [];
+        }
+
+        if (food[13] == null || food[13] === "undefined" || food[13] === "") {
+          food[13] = [];
+        }
+
+        if (food[14] == null || food[14] === "undefined" || food[14] === "") {
+          food[14] = [];
+        }
 
         if (include.includes("Total Fat")) {
           if (food[1] == null || food[1][0] === "0") {
@@ -276,7 +286,9 @@ app.get('/Foods', (req, res) => {
           }
         }
         if (cuisine !== "") {
-          if (food[15] !== cuisine) result.splice(result.indexOf(food[0]), 1);
+          if (result.indexOf(food[0]) !== -1)  {
+            if (food[15] !== cuisine) result.splice(result.indexOf(food[0]), 1);
+          }
         }
       }
       result = result.sort((a, b) => a.localeCompare(b)); //sorts tags alphabetically
