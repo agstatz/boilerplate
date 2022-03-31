@@ -36,7 +36,6 @@ export default class Food extends React.Component {
     }
 
     async callAPI() {
-        console.log(this.state.username)
         this.state.loading = true;
         let admin = true;
         try {
@@ -124,31 +123,75 @@ export default class Food extends React.Component {
                 this.state.html.push(<hr></hr>)
                 this.state.html.push(<a>&emsp;&emsp;Sugar: {this.state.data.sugar}<br></br></a>)
                 this.state.html.push(<hr></hr>)
-                this.state.html.push(<a>&emsp;&emsp;&emsp;&emsp;Added Sugar: {this.state.data.addedSugar}<br></br></a>)
-                this.state.html.push(<hr></hr>)
+                console.log("addedSugar=" + this.state.data.addedSugar)
+                if (this.state.data.addedSugar != null && this.state.data.addedSugar !== "undefined" && this.state.data.addedSugar !== "") {
+                    this.state.html.push(<a>&emsp;&emsp;&emsp;&emsp;Added Sugar: {this.state.data.addedSugar}<br></br></a>)
+                    this.state.html.push(<hr></hr>)
+                }
                 this.state.html.push(<a><strong>Protein:</strong> {this.state.data.protein}<br></br></a>)
                 this.state.html.push(<hr class="class-1"></hr>)
-                this.state.html.push(<a>Calcium: {this.state.data.calcium}<br></br></a>)
-                this.state.html.push(<hr></hr>)
-                this.state.html.push(<a>Iron: {this.state.data.iron}<br></br></a>)
-                this.state.html.push(<hr class="class-2"></hr>)
+                if (this.state.data.calcium != null && this.state.data.calcium !== "undefined" && this.state.data.calcium !== "") {
+                    this.state.html.push(<a>Calcium: {this.state.data.calcium}<br></br></a>)
+                    if (this.state.data.iron != null && this.state.data.iron !== "undefined" && this.state.data.iron !== "") {
+                        this.state.html.push(<hr></hr>)
+                    } else {
+                        this.state.html.push(<hr class="class-2"></hr>)
+                    }
+                }
+                if (this.state.data.iron != null && this.state.data.iron !== "undefined" && this.state.data.iron !== "") {
+                    this.state.html.push(<a>Iron: {this.state.data.iron}<br></br></a>)
+                    this.state.html.push(<hr class="class-2"></hr>)
+                }
                 this.state.html.push(<h5>Tags:<br></br></h5>)
-                for (let i = 0; i < this.state.data.dietaryTags.length; i++) {
-                    this.state.html.push(<a>• {this.state.data.dietaryTags[i]}<br></br></a>)
+
+                if (this.state.data.dietaryTags == null || this.state.data.dietaryTags === "undefined" || this.state.data.dietaryTags.length === 0) {
+                    this.state.html.push(<a>This food does not have any tags.<br></br></a>)
+                } else {
+                    for (let i = 0; i < this.state.data.dietaryTags.length; i++) {
+                        if (this.state.data.dietaryTags[i] == null || this.state.data.dietaryTags[i] === "undefined" || this.state.data.dietaryTags[i] === "") {
+                            this.state.html.push(<a>This food does not have any tags.<br></br></a>)
+                        } else {
+                            this.state.html.push(<a>• {this.state.data.dietaryTags[i]}<br></br></a>)
+                        }
+                    }
                 }
                 this.state.html.push(<hr></hr>)
-                this.state.html.push(<h5>Diets:<br></br></h5>)
-                for (let i = 0; i < this.state.data.diets.length; i++) {
-                    this.state.html.push(<a>• {this.state.data.diets[i]}<br></br></a>)
+
+                this.state.html.push(<h5>Diet Groups:<br></br></h5>)
+                if (this.state.data.diets == null || this.state.data.diets === "undefined" || this.state.data.diets.length === 0) {
+                    this.state.html.push(<a>This food does not have any diet groups.<br></br></a>)
+                } else {
+                    for (let i = 0; i < this.state.data.diets.length; i++) {
+                        if (this.state.data.diets[i] == null || this.state.data.diets[i] === "undefined" || this.state.data.diets[i] === "") {
+                            this.state.html.push(<a>This food does not have any diet groups.<br></br></a>)
+                        } else {
+                            this.state.html.push(<a>• {this.state.data.diets[i]}<br></br></a>)
+                        }
+                    }
                 }
                 this.state.html.push(<hr></hr>)
-                this.state.html.push(<h5>Groups:</h5>)
-                for (let i = 0; i < this.state.data.groups.length; i++) {
-                    this.state.html.push(<a>• {this.state.data.groups[i]}<br></br></a>)
+
+                this.state.html.push(<h5>Food Groups:</h5>)
+                if (this.state.data.groups == null || this.state.data.groups === "undefined" || this.state.data.groups.length === 0) {
+                    this.state.html.push(<a>This food does not have any food groups.<br></br></a>)
+                } else {
+                    for (let i = 0; i < this.state.data.groups.length; i++) {
+                        if (this.state.data.groups[i] == null || this.state.data.groups[i] === "undefined" || this.state.data.groups[i] === "") {
+                            this.state.html.push(<a>This food does not have any food groups.<br></br></a>)
+                        } else {
+                            this.state.html.push(<a>• {this.state.data.groups[i]}<br></br></a>)
+                        }
+                    }
                 }
+
+
                 this.state.html.push(<hr></hr>)
                 this.state.html.push(<h5>Cuisine:</h5>)
-                this.state.html.push(<a>{this.state.data.cuisine}</a>)
+                if (this.state.data.cuisine == null || this.state.data.cuisine === undefined || this.state.data.cuisine === "") {
+                    this.state.html.push(<a>This food does not have any cuisine defined.<br></br></a>)
+                } else {
+                    this.state.html.push(<a>{this.state.data.cuisine}</a>)
+                }
                 this.state.html.push(<hr class="class-2"></hr>)
                 this.state.html.push(<a>Ingredients: {this.state.data.ingredients}</a>)
             }

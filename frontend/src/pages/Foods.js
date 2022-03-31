@@ -23,6 +23,7 @@ export default class Foods extends React.Component {
         this.state = {
             res: "",
             html: [],
+            admin: [],
             loading: true
         };
         this.callAPI = this.callAPI.bind(this);
@@ -38,6 +39,7 @@ export default class Foods extends React.Component {
     async callAPI() {
         this.setState({loading : true})
         let response;
+        let admin = true;
         try {
             response = await axios.get(
                 url +
@@ -54,6 +56,14 @@ export default class Foods extends React.Component {
             for (let i = 0; i < response.data.length; i++) {
                 this.state.html.push(<ColoredLine id={"line" + i} color="grey"/>);
                 this.state.html.push(<Link id={"link" + i} to={"/food?name=" + response.data[i].split(' ').join('_')}>{response.data[i]}</Link>)
+            }
+            if (admin === true) {
+                this.state.admin.push(<Link to={"Foods_Need_Update"}>
+                    <Button type="button">
+                        Foods That Need to Be Updated
+                    </Button>
+                    <br></br> <br></br>
+                </Link>)
             }
             this.setState({loading : false})
             this.forceUpdate();
@@ -80,6 +90,11 @@ export default class Foods extends React.Component {
                         <Button type="button">
                             Advanced Search
                         </Button>
+                    </Link>{' '}
+                    <Link to="/Search" style={{textAlign : "left"}}>
+                        <Button type="button">
+                            Reset Search Settings
+                        </Button>
                     </Link>
                 </form>
                 <header className="App-header p-3 my-4 mx-4 bg-light border rounded">
@@ -100,9 +115,14 @@ export default class Foods extends React.Component {
         let i = 0;
         const listItems = this.state.html.map((d) =>
             <d.type key={"list" + i++} to={d.props.to} id={d.key} style={d.props.style} color={d.props.color}>{d.props.children}</d.type>);
+        const admin = this.state.admin.map((d) =>
+            <d.type key={"list" + i++} to={d.props.to} id={d.key} style={d.props.style} color={d.props.color}>{d.props.children}</d.type>);
         return (
             <div className="App">
                 <Container style={{ paddingTop: '18vh', paddingBottom: '18vh'}} >
+                    <div style={{textAlignVertical: "right",textAlign: "right", paddingRight: "40px"}}>
+                        {admin}
+                    </div>
                 <form action="/foods" method="get" style={{textAlignVertical: "right",textAlign: "right", paddingRight: "40px"}}>
                     <label htmlFor="header-search">
                         <span className="visually-hidden">Search</span>

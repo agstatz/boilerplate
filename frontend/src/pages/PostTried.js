@@ -40,26 +40,33 @@ export default class PostTried extends React.Component {
     async callAPI() {
         this.setState({loading : true})
         let response;
-        try {
-            console.log("posting")
-            response = await axios.post(url + `Tried_Food?` +
-                "name=" + this.state.queries.name +
-                "&username=" + this.state.username +
-                "&changeFrom=" + this.state.queries.changeFrom +
-                ""
-            );
-        } catch (error) {
-            console.log("error")
-        } finally {
-            console.log(response);
-            console.log(url + `Tried_Food?` +
-                "name=" + this.state.queries.name +
-                "&username=" + this.state.username +
-                "&changeFrom=" + this.state.queries.changeFrom +
-                "")
+        if (this.state.username != null && this.state.username !== "undefined" && this.state.username !== "") {
+            try {
+                console.log("posting")
+                response = await axios.post(url + `Tried_Food?` +
+                    "name=" + this.state.queries.name +
+                    "&username=" + this.state.username +
+                    "&changeFrom=" + this.state.queries.changeFrom +
+                    ""
+                );
+            } catch (error) {
+                console.log("error")
+            } finally {
+                console.log(response);
+                console.log(url + `Tried_Food?` +
+                    "name=" + this.state.queries.name +
+                    "&username=" + this.state.username +
+                    "&changeFrom=" + this.state.queries.changeFrom +
+                    "")
+                let link = "/Food?name=" + this.state.queries.name;
+                this.state.html.push(<Redirect to={link}/>)
+                this.setState({loading: false})
+                this.forceUpdate();
+            }
+        } else {
             let link = "/Food?name=" + this.state.queries.name;
             this.state.html.push(<Redirect to={link}/>)
-            this.setState({loading : false})
+            this.setState({loading: false})
             this.forceUpdate();
         }
     }

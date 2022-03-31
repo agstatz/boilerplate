@@ -124,9 +124,9 @@ app.get('/Foods', (req, res) => {
     let db = dbt.db("boilerplate");
     db.collection("foods").find({}).toArray(function(err, result) {
       if (err) throw err;
-      result2 = result.map(s => [
+      let result2 = result.map(s => [
           s.name, //0
-          s.totalfat, //1
+          s.totalFat, //1
           s.saturatedFat, //2
           s.cholesterol, //3
           s.sodium, //4
@@ -298,6 +298,81 @@ app.get('/Foods', (req, res) => {
   });
   console.log('/foods sent');
 })
+
+app.get('/Foods_Need_Update', (req, res) => {
+
+  MongoClient.connect(url, function(err, dbt) {
+    if (err) throw err;
+    let db = dbt.db("boilerplate");
+    db.collection("foods").find({}).toArray(function(err, result) {
+      if (err) throw err;
+      let result2 = result.map(s => [
+          s.name, //0
+          s.totalFat, //1
+          s.saturatedFat, //2
+          s.cholesterol, //3
+          s.sodium, //4
+          s.totalCarbohydrate, //5
+          s.sugar, //6
+          s.calories, //7
+          s.dietaryFiber, //8
+          s.protein, //9
+          s.groups, //10
+          s.cuisine, //11
+          s.servingSize, //12
+      ])
+      //result = result.map(a => a.name); //filters only the names of foods
+      result = [];
+      for (let i = 0; i < result2.length; i++) {
+        let food = result2[i]
+        if (food[0] == null || food[0] === "undefined" || food[0] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[1] == null || food[1] === "undefined" || food[1] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[2] == null || food[2] === "undefined" || food[2] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[3] == null || food[3] === "undefined" || food[3] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[4] == null || food[4] === "undefined" || food[4] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[5] == null || food[5] === "undefined" || food[5] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[6] == null || food[6] === "undefined" || food[6] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[7] == null || food[7] === "undefined" || food[7] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[8] == null || food[8] === "undefined" || food[8] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[9] == null || food[9] === "undefined" || food[9] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[10] == null || food[10] === "undefined" || food[10] === "" || food[10].length === 0) {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[11] == null || food[11] === "undefined" || food[11] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+        if (food[12] == null || food[12] === "undefined" || food[12] === "") {
+          if (result.indexOf(food[0]) === -1) result.push(food[0]);
+        }
+      }
+      result = result.sort((a, b) => a.localeCompare(b)); //sorts tags alphabetically
+      console.log(result)
+      res.send(result);
+    });
+  });
+  console.log('/Foods_Need_Update sent');
+})
+
 app.get('/Food', (req, res) => {
   let queryName = req.query.name.split('_').join(' ');
   console.log(queryName);
@@ -337,6 +412,25 @@ app.get('/Tried', (req, res) => {
     });
   });
   console.log('/Tried sent');
+})
+
+app.get('/Foods_Tried', (req, res) => {
+  let username = req.query.username
+
+  MongoClient.connect(url, function(err, dbt) {
+    if (err) throw err;
+    let db = dbt.db("boilerplate");
+    db.collection("users").find({ username : username }).toArray(function(err, result) {
+      if (err) throw err;
+      result = result.map(s => s.tried)
+      console.log(result)
+      if (result == null || result === "undefined" || result === "") {
+        result = [];
+      }
+      res.send(result);
+    });
+  });
+  console.log('/Foods_Tried sent');
 })
 
 
