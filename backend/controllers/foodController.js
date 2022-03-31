@@ -138,6 +138,7 @@ exports.addUserCreatedTag = (req, res) => {
   });
 };
 
+// Allows for editing a given food rating
 exports.editFoodRating = async (req, res) => {
   console.log("edit food rating...");
   try {
@@ -153,8 +154,23 @@ exports.editFoodRating = async (req, res) => {
         return res.status(404).send({ message: "User Not found" });
       }
 
-      console.log(req.body.data.ownerName);
+        var filter = { ownerName: foodRating.ownerName, food: foodRating.food };
+        var updateDoc = {
+        $set: {
+            rating: req.body.data.rating,
+        },
+        };
+        FoodRating.updateOne(filter, updateDoc).exec((err3, foodRating2) => {
+        foodRating.save((err7, foodRating3) => {
+            if (err7) {
+                res.status(500).send({ message: err7 });
+                return;
+            }
+        });
+        
+        });
     });
+
     //res.send({ message: "Food Rating edited successfully." });
   } catch (err) {
     console.log("error encountered");

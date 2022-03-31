@@ -29,6 +29,7 @@ export default class Food extends React.Component {
       rating: 0,
       tried: false,
     };
+    this.username = store.getState().app.username;
     this.getRatingFromAPI = this.getRatingFromAPI.bind(this);
     this.callAPI = this.callAPI.bind(this);
     this.state.queries = queryString.parse(window.location.search);
@@ -36,9 +37,8 @@ export default class Food extends React.Component {
 
   async getRatingFromAPI() {
     const userdata = {
-      ownerName: "broski",
-      foodName: "food",
-      rating: 2,
+      ownerName: this.username,
+      foodName: this.state.queries.name.replaceAll("_", " "),
     };
 
     axios
@@ -53,7 +53,9 @@ export default class Food extends React.Component {
 
   componentDidMount() {
     this.callAPI();
-    this.getRatingFromAPI();
+    if (this.username) {
+        this.getRatingFromAPI();
+    }
   }
 
   async callAPI() {
@@ -596,9 +598,11 @@ export default class Food extends React.Component {
             <div className="p-3 my-4 mx-4 bg-light border rounded">
               {listItems}
             </div>
-            <div className="p-3 my-4 mx-4 bg-light border rounded">
-              <StarRating inputRating={this.state.rating} />
-            </div>
+            {this.username !== undefined ? (<div className="p-3 my-4 mx-4 bg-light border rounded">
+                <h3>Give {this.state.queries.name.replaceAll("_", " ")} a rating!</h3>
+                <StarRating inputRating={this.state.rating} />
+            </div>) : (<></>) }
+            
           </Container>
         </div>
       );
