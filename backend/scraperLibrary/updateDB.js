@@ -38,15 +38,26 @@ async function updateDB(alwaysUpdateFood) {
     // Get today's meal schedule for every meal the dining court serves
     const today = new Date();
 
-    //
+    // Parse date for database
+    const day = today.getDate();
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+    const dateString = month + "/" + day + "/" + year;
+
+    // Create menu day
+    const menuDay = {
+      date: dateString,
+      menus: [],
+    };
+
+    // Build the menus this dining court serves
     for (const meal of earhartInformation.serves) {
       // Get meal info
       const mealInfo = await scraper.scrapeMealMenu(earhartURL, today, meal);
 
       // Store basic meal info
-      const mealObject = {
-        date: mealInfo.date,
-        mealType: mealInfo.mealType,
+      const menuObject = {
+        menuType: mealInfo.mealType,
         timeServed: mealInfo.timeServed,
         stations: [],
       };
@@ -99,11 +110,12 @@ async function updateDB(alwaysUpdateFood) {
           }
         }
         // Push station info onto meal info
-        mealObject.stations.push(stationObject);
+        menuObject.stations.push(stationObject);
       }
-      dbDiningCourt.schedule.push(mealObject);
+      menuDay.menus.push(menuObject);
     }
 
+    dbDiningCourt.schedule.push(menuDay);
     await dbDiningCourt.save();
   } catch (err) {
     console.error(err);

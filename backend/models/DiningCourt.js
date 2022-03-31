@@ -13,12 +13,16 @@ const DiningCourtSchema = mongoose.Schema({
   schedule: [
     {
       date: String,
-      mealType: String,
-      timeServed: String,
-      stations: [
+      menus: [
         {
-          name: String,
-          foods: [{ type: mongoose.Schema.Types.ObjectId, ref: "Food" }],
+          menuType: String,
+          timeServed: String,
+          stations: [
+            {
+              name: String,
+              foods: [{ type: mongoose.Schema.Types.ObjectId, ref: "Food" }],
+            },
+          ],
         },
       ],
     },
