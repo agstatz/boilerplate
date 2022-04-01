@@ -231,7 +231,7 @@ export default class Search_Food extends React.Component {
     if (this.state.loading) {
       return (
         <div className="App">
-          <Container style={{ paddingTop: "8vh", paddingBottom: "8vh" }}>
+          <Container style={{ paddingTop: "12vh", paddingBottom: "8vh" }}>
             <header className="p-3 my-4 mx-4 bg-light border rounded">
               <h1
                 className="App-title"
@@ -381,14 +381,14 @@ export default class Search_Food extends React.Component {
     ));
     return (
       <div className="App">
-        <Container style={{ paddingTop: "8vh", paddingBottom: "8vh" }}>
+        <Container style={{ paddingTop: "12vh", paddingBottom: "8vh" }}>
           <header className="p-3 my-4 mx-4 bg-light border rounded">
             <h1
               className="App-title"
               style={{ textAlignVertical: "center", textAlign: "center" }}
-            >
+            ><strong>
               Advanced Search
-            </h1>
+            </strong></h1>
             <ColoredLine color="grey"></ColoredLine>
             <div
               style={{

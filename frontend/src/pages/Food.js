@@ -1,6 +1,5 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
-import { Grid } from "@mui/material";
 import queryString from "query-string";
 
 import { StarRating } from "../components/";
@@ -547,8 +546,21 @@ export default class Food extends React.Component {
     if (this.state.loading) {
       return (
         <div className="App">
-          <header className="App-header"></header>
-        </div>
+        <Container style={{ padding: "20vh" }}>
+          <div className="p-6 my-4 mx-4 bg-light border rounded ">
+            <Placeholder animation="gglow" size="xl">
+                <Placeholder xs={3} />
+                <Placeholder xs={4} />
+                <Placeholder xs={6} />
+                <Placeholder xs={12} />
+                <Placeholder xs={5} />
+                <Placeholder xs={12} />
+                <Placeholder xs={3} />
+                <Placeholder xs={8} />
+            </Placeholder>
+          </div>
+        </Container>
+      </div>
       );
     }
     let i = 0;
@@ -608,12 +620,12 @@ export default class Food extends React.Component {
     ) {
       return (
         <div className="App">
-          <Container style={{ paddingTop: "10vh", paddingBottom: "10vh" }}>
+          <Container style={{ paddingTop: "14vh", paddingBottom: "10vh" }}>
             <div>{adminItems}</div>
-            <div className="p-3 my-4 mx-4 bg-light border rounded w-50">
+            <div className="p-6 my-4 mx-4 bg-light border rounded">
               <a>{this.state.queries.message}</a>
             </div>
-            <div className="p-3 my-4 mx-4 bg-light border rounded w-50">
+            <div className="p-6 my-4 mx-4 bg-light border rounded">
               {listItems}
             </div>
           </Container>
@@ -622,7 +634,7 @@ export default class Food extends React.Component {
     } else {
       return (
         <div className="App">
-          <Container style={{ paddingTop: "18vh", paddingBottom: "10vh" }}>
+          <Container style={{ paddingTop: "14vh", paddingBottom: "10vh" }}>
             <div>
               <Container style={{ paddingLeft: '2vh', paddingRight: '115vh'}}>
                   <Stack>
