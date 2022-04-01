@@ -333,6 +333,12 @@ function DietaryInfo(props) {
                     <p>No tag data available...</p>
                 </Stack>
             </div>
+            <div className="p-3 my-4 mx-4 bg-light border rounded" style={{maxWidth: "calc(53vw - 250px)"}}>
+                <h4>Favorite Food Groups</h4>
+                <Stack gap={2}>
+                    <p>No food group data available...</p>
+                </Stack>
+            </div>
             </Form.Group>
             <p className="d-flex justify-content-center ">
               <p className={submitted.color}>{submitted.text}</p>
