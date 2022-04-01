@@ -16,6 +16,7 @@ import axios from "axios";
 function MealPlanList(props) {
   const [hiddenRowsArray, setHiddenRowsArray] = useState({});
   const [mealPlanArray, setMealPlanArray] = useState([{}]);
+  const [loading, setLoading] = useState(false);
 
   // this defines all of the rows in the table
   var columns = [
@@ -59,11 +60,13 @@ function MealPlanList(props) {
 
   useEffect(async () => {
     // filter private or not private rows
+    setLoading(true);
     try {
       const { data: response } = await axios.get(
         "http://localhost:3001/api/meal-plans"
       );
       setMealPlanArray(response);
+      setLoading(false);
     } catch (err) {
       console.error(err);
     }
@@ -118,15 +121,17 @@ function MealPlanList(props) {
 
   return (
     <Container>
-      <div className="p-2 my-2 mx-2">
-        <BootstrapTable
-          keyField="_id"
-          data={mealPlanArray}
-          columns={columns}
-          hiddenRows={hiddenRowsArray}
-          bordered={false}
-        />
-      </div>
+    {loading ? (<></>) : (
+        <div className="p-2 my-2 mx-2">
+          <BootstrapTable
+            keyField="_id"
+            data={mealPlanArray}
+            columns={columns}
+            hiddenRows={hiddenRowsArray}
+            bordered={false}
+          />
+        </div>
+      )}
     </Container>
   );
 }

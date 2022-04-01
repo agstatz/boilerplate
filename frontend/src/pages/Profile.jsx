@@ -99,6 +99,16 @@ function Profile(props) {
     window.location.reload();
   };
 
+  const ColoredLine = ({ color }) => (
+    <hr
+        style={{
+            color: color,
+            backgroundColor: color,
+            height: 2
+        }}
+    />
+);
+
   useEffect(async () => {
     const { data: response } = await axios.get(
       "http://localhost:3001/api/foods/recommendations"
@@ -237,6 +247,7 @@ function Profile(props) {
                   </Placeholder>
                 </Tab>
               </Tabs>
+              <ColoredLine />
               <Row className="mt-3">
                 <Col className="text-center">
                   <strong>{mealSwipes}</strong>

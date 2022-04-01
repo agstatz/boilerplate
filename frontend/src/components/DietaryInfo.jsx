@@ -323,6 +323,13 @@ function DietaryInfo(props) {
                     
                 </Stack>
             </div>
+            <div className="p-3 my-4 mx-4 bg-light border rounded">
+                <h4>Favorite Dietary Tags</h4>
+                <Stack gap={2}>
+                    
+                    
+                </Stack>
+            </div>
             </Form.Group>
             <p className="d-flex justify-content-center ">
               <p className={submitted.color}>{submitted.text}</p>

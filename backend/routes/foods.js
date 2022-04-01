@@ -18,7 +18,6 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/recommendations/", async (req, res) => {
-  console.log("here");
   try {
     const foods = await Food.find(); // Get all foods
     let ret = [];
