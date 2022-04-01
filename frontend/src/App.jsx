@@ -211,26 +211,6 @@ function App() {
           </Nav>
         </Container>
       </Navbar>
-      <Toast
-        onClose={() => setShowLoggedInWarning(false)}
-        className="bg-light"
-        show={showLoggedInWarning}
-        style={{
-          position: "fixed",
-          top: "2em",
-          right: "2em",
-          zIndex: "1",
-          color: "black",
-        }}
-        delay={3000}
-        autohide
-      >
-        <Toast.Header>
-          <strong className="me-auto">Alert</strong>
-          <small>Now</small>
-        </Toast.Header>
-        <Toast.Body>You are already logged in.</Toast.Body>
-      </Toast>
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={Home} />

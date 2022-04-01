@@ -5,7 +5,7 @@ import BootstrapTable from "react-bootstrap-table-next";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function DiningLocationList(props: Props) {
+function DiningLocationList(props) {
   const [hiddenRowsArray, setHiddenRowsArray] = useState({});
   const [diningLocationArray, setDiningLocationArray] = useState([{}]);
 
