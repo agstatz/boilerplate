@@ -57,6 +57,7 @@ export default class Dining_Courts extends React.Component {
       html: [],
       loading: true,
       width: window.innerWidth,
+      onthego: ""
     };
     this.callAPI = this.callAPI.bind(this);
   }
@@ -82,6 +83,7 @@ export default class Dining_Courts extends React.Component {
   async callAPI() {
     this.setState({ loading: true });
     let response;
+
     try {
       response = await axios.get(url + `Dining_Courts`);
     } catch (error) {
@@ -197,6 +199,9 @@ export default class Dining_Courts extends React.Component {
             </h1>
             {listItems}
           </header>
+        </Container>
+        <Container style={{ paddingTop: "18vh", paddingBottom: "18vh" }}>
+            <p>{this.state.onthego}</p>
         </Container>
       </div>
     );

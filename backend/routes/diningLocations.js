@@ -42,16 +42,12 @@ router.get("/:name", async (req, res) => {
 router.get("/v2/onthego", async (req, res) => {
   try {
     var retarr = [];
-    const dining_locations = await Dining_Courts.find().exec((err1, dcourts) => {
-      dcourts.userTags.forEach((dcourt) => {
-          if (dcourt.includes("On-the-GO")) {
-            retarr.push(dcourt);
-          }
-        })
+    const dining_locations = await Dining_Courts.find();
+      dining_locations.forEach((dcourt) => {
+        if (dcourt.name.includes("On-the-GO")) {
+          retarr.push(dcourt);
+        }
       })
-    if (!dining_locations) {
-      return res.status(400).json({ msg: "No on the go locations exist" });
-    }
     res.json(retarr);
   } catch (err) {
     console.error(err.message);
