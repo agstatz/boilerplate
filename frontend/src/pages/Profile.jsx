@@ -222,14 +222,6 @@ function Profile(props) {
           <Card className="my-3" bg="light">
             <Card.Body>
               <Tabs className="mx-3">
-                <Tab label="Meal History">
-                  <Placeholder animation="glow" size="lg">
-                    <Placeholder xs={12} />
-                    <Placeholder xs={12} />
-                    <Placeholder xs={12} />
-                    <Placeholder xs={12} />
-                  </Placeholder>
-                </Tab>
                 <Tab label="My Meal Plans">
                   <MealPlanList filterValue={id} />
                 </Tab>
@@ -237,6 +229,14 @@ function Profile(props) {
                   <DietaryInfo />
                 </Tab>
               </Tabs>
+              <Tab label="Meal History">
+                  <Placeholder animation="glow" size="lg">
+                    <Placeholder xs={12} />
+                    <Placeholder xs={12} />
+                    <Placeholder xs={12} />
+                    <Placeholder xs={12} />
+                  </Placeholder>
+                </Tab>
               <Row className="mt-3">
                 <Col className="text-center">
                   <strong>{mealSwipes}</strong>
