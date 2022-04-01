@@ -62,8 +62,12 @@ function Home() {
                     students to utilize campus dining to its fullest.
                     </p>
                 </Stack>
-                    <img className="p-2" src={ford_picture} style={{maxWidth: "35%"}}></img>
-            </Stack>
+            <img
+              className="p-2"
+              src={ford_picture}
+              style={{ maxWidth: "35%" }}
+            ></img>
+          </Stack>
         </div>
       </Container>
     </>

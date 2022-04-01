@@ -6,14 +6,14 @@
 
 import { Stack, Container } from "react-bootstrap";
 import { RecommendedFood } from "./";
-
+import { store } from "../store/store.js";
 import { useState, useEffect } from "react";
 
 function RecommendedList(props: any) {
   const [data, setData] = useState([{}]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/recommendations/food")
+    fetch("http://localhost:3001/foods/recommendations/")
       .then((res) => res.json())
       .then((data) => {
         setData(data);

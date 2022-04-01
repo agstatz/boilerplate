@@ -127,13 +127,15 @@ function StarRating(props) {
   const resetRating = () => {
     props.updateFunction(0);
     setRating(0);
-  }
+  };
 
   return (
     <span className="rating-stars">
       {stars}
       <br />
-      <Button size="sm" onClick={resetRating}>Reset Rating</Button>
+      <Button size="sm" onClick={resetRating}>
+        Reset Rating
+      </Button>
     </span>
   );
 }

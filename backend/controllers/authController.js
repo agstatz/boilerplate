@@ -389,11 +389,9 @@ exports.editUserPreferences = (req, res) => {
                               return res.status(500).send({ message: err });
                             }
                             if (!food) {
-                              return res
-                                .status(404)
-                                .send({
-                                  message: "Error while saving food type",
-                                });
+                              return res.status(404).send({
+                                message: "Error while saving food type",
+                              });
                             }
                             user.diets.push(food._id);
                           });
