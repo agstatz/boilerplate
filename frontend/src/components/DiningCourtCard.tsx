@@ -10,13 +10,15 @@
 import { Stack, Container } from "react-bootstrap";
 
 function DiningCourtCard(props: any) {
-  const { name, topFoodItems } = props;
+  const { name, coursesArray } = props;
 
-  const foods = [];
-  for (const [index, value] of topFoodItems.entries()) {
-    foods.push(<li key={index}>{value}</li>);
+  const courses = [];
+  if (coursesArray) {
+    for (const [index, value] of coursesArray.entries()) {
+      courses.push(<li key={index}>{value}</li>);
+    }
   }
-
+  
   return (
     <Container>
       <div className="p-2 my-2 mx-2 bg-light border rounded">
@@ -24,9 +26,9 @@ function DiningCourtCard(props: any) {
           <a href={"/dining-courts/" + name}>
             <h5>{name}</h5>
           </a>
-          Top Food Items:
+          Courses:
           <br />
-          <ul>{foods}</ul>
+          <ul>{courses}</ul>
         </Stack>
       </div>
     </Container>
