@@ -9,7 +9,7 @@ import { Stack, Container } from "react-bootstrap";
 
 function About() {
   return (
-    <Container style={{paddingTop: "12vh"}}>
+    <Container style={{paddingTop: "8vh"}}>
       <div className="p-3 my-5 mx-4 bg-light border rounded">
         <Stack gap={2}>
           <div>

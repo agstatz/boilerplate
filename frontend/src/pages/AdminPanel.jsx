@@ -36,7 +36,7 @@ class AdminPanel extends React.Component {
         <div className="p-5 my-4 mx-3 mt-5 d-flex justify-content-center bg-light border rounded">
           <Stack>
             <Container className="d-flex justify-content-center">
-              <h3>Admin Panel</h3>
+              <h1><strong>Admin Panel</strong></h1>
             </Container>
             <Container
               className="d-flex justify-content-center"
