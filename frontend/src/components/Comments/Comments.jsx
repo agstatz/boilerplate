@@ -58,6 +58,16 @@ const Comments = (props) => {
     });
   };
 
+  // Function to delete a comment
+  const deleteComment = (commentID) => {
+    if (window.confirm("Delete comment?")) {
+      apiDeleteComment(commentID).then(() => {
+        const updated = comments.filter((c) => c.id !== commentID);
+        setComments(updated);
+      });
+    }
+  };
+
   // Use effect hook
   useEffect(() => {
     apiGetComments().then((data) => {
@@ -79,6 +89,7 @@ const Comments = (props) => {
               replies={getReplies(c.id)}
               addComment={addComment}
               updateComment={updateComment}
+              deleteComment={deleteComment}
               activeComment={activeComment}
               setActiveComment={setActiveComment}
             />

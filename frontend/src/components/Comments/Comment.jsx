@@ -9,6 +9,7 @@ const Comment = (props) => {
     replies,
     addComment,
     updateComment,
+    deleteComment,
     activeComment,
     setActiveComment,
     parentID,
@@ -71,7 +72,14 @@ const Comment = (props) => {
               Edit
             </div>
           )}
-          {canModify && <div className="comment-action">Delete</div>}
+          {canModify && (
+            <div
+              className="comment-action"
+              onClick={() => deleteComment(comment.id)}
+            >
+              Delete
+            </div>
+          )}
         </div>
 
         {isReplying && (
@@ -94,6 +102,7 @@ const Comment = (props) => {
                   replies={[]}
                   addComment={addComment}
                   updateComment={updateComment}
+                  deleteComment={deleteComment}
                   activeComment={activeComment}
                   setActiveComment={setActiveComment}
                   parentId={comment.id}
