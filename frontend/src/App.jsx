@@ -172,8 +172,7 @@ function App() {
 
   return (
     <div data-theme={theme} style={{ position: "relative" }}>
-      <Navbar className="fixed-top px-0 bg-light border" variant="light">
-        <Container fluid>
+      <Navbar className="fixed-top bg-light border nav-alterations" variant="light">
           <Navbar.Brand href="/">
             <img
               src={theme === "light" ? logo_dark : logo_light}
@@ -181,7 +180,8 @@ function App() {
               alt="Boilerplate"
             ></img>
           </Navbar.Brand>
-          <Nav className="ml-auto">
+          <Container className="justify-content-end">
+          <Nav className="nav-text">
             <Nav.Link href="/">Home</Nav.Link>
             <NavDropdown title="Meal Plans">
               <NavDropdown.Item href="/meal-plans">
@@ -192,7 +192,6 @@ function App() {
               </NavDropdown.Item>
             </NavDropdown>
             <Nav.Link href="/dietary_info">Dietary Prefs</Nav.Link>
-
             <Nav.Link href="/popular">Popular</Nav.Link>
             <Nav.Link href="/map">Map</Nav.Link>
             <Nav.Link href="/search">Search</Nav.Link>
@@ -209,28 +208,8 @@ function App() {
               Admin Panel
             </Nav.Link>
           </Nav>
-        </Container>
+          </Container>
       </Navbar>
-      <Toast
-        onClose={() => setShowLoggedInWarning(false)}
-        className="bg-light"
-        show={showLoggedInWarning}
-        style={{
-          position: "fixed",
-          top: "2em",
-          right: "2em",
-          zIndex: "1",
-          color: "black",
-        }}
-        delay={3000}
-        autohide
-      >
-        <Toast.Header>
-          <strong className="me-auto">Alert</strong>
-          <small>Now</small>
-        </Toast.Header>
-        <Toast.Body>You are already logged in.</Toast.Body>
-      </Toast>
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={Home} />

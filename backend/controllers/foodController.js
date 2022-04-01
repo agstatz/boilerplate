@@ -140,7 +140,7 @@ exports.addUserCreatedTag = (req, res) => {
 
 // Allows for editing a given food rating
 exports.editFoodRating = async (req, res) => {
-  console.log("edit food rating...");
+  console.log("editing food rating");
   try {
     FoodRating.findOne({
       ownerName: req.body.data.ownerName,
@@ -154,21 +154,20 @@ exports.editFoodRating = async (req, res) => {
         return res.status(404).send({ message: "User Not found" });
       }
 
-        var filter = { ownerName: foodRating.ownerName, food: foodRating.food };
-        var updateDoc = {
+      var filter = { ownerName: foodRating.ownerName, food: foodRating.food };
+      var updateDoc = {
         $set: {
-            rating: req.body.data.rating,
+          rating: req.body.data.rating,
         },
-        };
-        FoodRating.updateOne(filter, updateDoc).exec((err3, foodRating2) => {
+      };
+      FoodRating.updateOne(filter, updateDoc).exec((err3, foodRating2) => {
         foodRating.save((err7, foodRating3) => {
-            if (err7) {
-                res.status(500).send({ message: err7 });
-                return;
-            }
+          if (err7) {
+            res.status(500).send({ message: err7 });
+            return;
+          }
         });
-        
-        });
+      });
     });
 
     //res.send({ message: "Food Rating edited successfully." });
@@ -176,5 +175,38 @@ exports.editFoodRating = async (req, res) => {
     console.log("error encountered");
     res.status(500).send({ message: "An error was encountered." });
     return;
+  }
+};
+
+// Allows for editing a given food rating
+exports.getFoodRating = async (req, res) => {
+  const queryFood = req.query.food.split("_").join(" ");
+  const queryUser = req.query.user;
+  try {
+    FoodRating.findOne({ ownerName: queryUser, food: queryFood }).exec(
+      (err, foodRating) => {
+        if (err) {
+          res.status(500).send({ message: err });
+          return;
+        }
+        if (!foodRating) {
+          console.log("eror1");
+          FoodRating.create(
+            { ownerName: queryUser, food: queryFood, rating: 0 },
+            function (err, newFoodRating) {
+              if (err) return handleError(err);
+              // saved!
+            }
+          );
+          //res.status(404).send({ message: "not found" });
+          return;
+        }
+
+        res.status(200).send(foodRating);
+        return;
+      }
+    );
+  } catch (err) {
+    return res.status(500).send({ message: err });
   }
 };
