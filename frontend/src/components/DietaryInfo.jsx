@@ -330,8 +330,7 @@ function DietaryInfo(props) {
             <div className="p-3 my-4 mx-4 bg-light border rounded" style={{maxWidth: "calc(53vw - 250px)"}}>
                 <h4>Favorite Dietary Tags</h4>
                 <Stack gap={2}>
-                    
-                    
+                    <p>No tag data available...</p>
                 </Stack>
             </div>
             </Form.Group>
