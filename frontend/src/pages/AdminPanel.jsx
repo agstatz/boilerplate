@@ -28,11 +28,11 @@ class AdminPanel extends React.Component {
       <Container
         style={{
           paddingTop: "8vh",
-          paddingBottom: "2vh",
-          paddingLeft: "30vh",
-          paddingRight: "30vh",
+          paddingBottom: "40vh",
         }}
       >
+
+        <Container></Container>
         <div className="p-5 my-4 mx-3 mt-5 d-flex justify-content-center bg-light border rounded">
           <Stack>
             <Container className="d-flex justify-content-center">
