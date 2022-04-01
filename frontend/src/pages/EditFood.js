@@ -401,7 +401,7 @@ export default class EditFood extends React.Component {
     if (this.state.queries.name == null) {
       return <Redirect to="/Foods" push />;
     }
-    if (store.getState().app.isAdmin) {
+    if (store.getState().app.isAdmin !== true) {
       return <UnauthorizedAccess />;
     }
     if (this.state.loading) {
