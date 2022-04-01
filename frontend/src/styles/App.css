@@ -5,7 +5,7 @@
  * see also app-theme.scss
  */
 
- /* 
+/* 
     theme colors - OLD
     ------------------------
     theme-white:    #FFFFFF,
@@ -23,40 +23,87 @@
 /* size specifier class for the logo
    appearing at the top on the navbar */
 .primary-logo {
-  height: 2.25em;
+  height: 2.9em;
   padding: 0.1vmin;
 }
 
 .white-content {
-    background: #292e33;
-    color: white;
-    border-color:white;
+  background: #292e33;
+  color: white;
+  border-color: white;
 }
 
 .black-content {
-    background: #f8f9fa;
-    color: black;
-    border-color: black;
+  background: #f8f9fa;
+  color: black;
+  border-color: black;
 }
 .btn-static {
-    background-color: white;
-    border: 1px solid lightgrey;
-    cursor: default;
+  background-color: white;
+  border: 1px solid lightgrey;
+  cursor: default;
 }
 .text-left {
-    text-align: left !important;
+  text-align: left !important;
 }
 hr.class-1 {
-    border-top: 10px solid;
-    color: #212121;
+  border-top: 10px solid;
+  color: #212121;
 }
 hr.class-2 {
-    border-top: 5px solid;
-    color: #212121;
+  border-top: 5px solid;
+  color: #212121;
 }
 
-
-
 .rating-stars {
-    font-size: 20px;
+  font-size: 20px;
+}
+
+.user-tag-empty {
+  font-size: 16px;
+  text-align: center
+}
+
+.user-tag-add-prompt {
+  font-size: 10px;
+}
+
+.ovr {
+  overflow-x: auto;
+  white-space: nowrap;
+  gap: 10px;
+  align-content: flex-start;
+}
+
+.tag-container {
+  width: auto;
+  white-space: nowrap;
+  gap: 10px;
+  align-content: flex-start;
+  flex-direction: column;
+}
+
+.tag-block {
+  display: inline-block;
+  height: 70px;
+  width: auto;
+  background-color: #fff;
+  border: none;
+  background-position: center;
+  background-size: cover;
+  transition: all 0.2s ease-in-out !important;
+  border-radius: 6px;
+}
+
+.nav-text {
+  font-size: 14px;
+}
+
+.nav-alterations {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+html {
+    font-size: small;
 }

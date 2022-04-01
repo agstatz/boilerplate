@@ -5,7 +5,7 @@ const FoodTag = dbm.food_categories;
 checkTagNotExists = (req, res, next) => {
   try {
     FoodTag.findOne({
-      name: req.body.data.name
+      name: req.body.data.name,
     }).exec((err, tag) => {
       if (err) {
         res.status(500).send({ message: err });
@@ -17,15 +17,14 @@ checkTagNotExists = (req, res, next) => {
       }
       next();
     });
-  }
-  catch (error) {
+  } catch (error) {
     // ignore, users table is empty
     next();
   }
 };
 
 const tagChecking = {
-  checkTagNotExists
+  checkTagNotExists,
 };
 
 module.exports = tagChecking;

@@ -7,7 +7,7 @@ const User = dbm.users;
 checkDuplicates = (req, res, next) => {
   try {
     User.findOne({
-      username: req.body.data.username
+      username: req.body.data.username,
     }).exec((err, user) => {
       if (err) {
         res.status(500).send({ message: err });
@@ -18,7 +18,7 @@ checkDuplicates = (req, res, next) => {
         return;
       }
       User.findOne({
-        email: req.body.data.email
+        email: req.body.data.email,
       }).exec((err, user) => {
         if (err) {
           res.status(500).send({ message: err });
@@ -31,13 +31,11 @@ checkDuplicates = (req, res, next) => {
         next();
       });
     });
-  }
-  catch (error) {
+  } catch (error) {
     // ignore, users table is empty
     next();
   }
 };
-
 
 // checks if the received privilege classes are valid
 checkPrivilegeClassExists = (req, res, next) => {
@@ -46,15 +44,14 @@ checkPrivilegeClassExists = (req, res, next) => {
       for (let i = 0; i < req.body.data.privilege_classes.length; i++) {
         if (!PRIVILEGE_CLASSES.includes(req.body.data.privilege_classes[i])) {
           res.status(400).send({
-            message: `Failed! Privilege Classes ${req.body.data.privilege_classes[i]} does not exist!`
+            message: `Failed! Privilege Classes ${req.body.data.privilege_classes[i]} does not exist!`,
           });
           return;
         }
       }
     }
     next();
-  }
-  catch (error) {
+  } catch (error) {
     //ignore, the privilege_classes table is empty
     next();
   }
@@ -62,7 +59,7 @@ checkPrivilegeClassExists = (req, res, next) => {
 
 const verifySignup = {
   checkDuplicates,
-  checkPrivilegeClassExists
+  checkPrivilegeClassExists,
 };
 
 module.exports = verifySignup;
