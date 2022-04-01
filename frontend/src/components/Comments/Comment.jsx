@@ -14,6 +14,13 @@ const Comment = (props) => {
           <div>{comment.createdAt}</div>
         </div>
         <div className="comment-text">{comment.body}</div>
+
+        <div className="comment-actions">
+          <div className="comment-action">Reply</div>
+          <div className="comment-action">Edit</div>
+          <div className="comment-action">Delete</div>
+        </div>
+
         {replies.length > 0 && (
           <div className="replies">
             {replies.map((reply) => {

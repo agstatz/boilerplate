@@ -2,18 +2,13 @@ export const getComments = async () => {
   return storedComments;
 };
 
-export const createComment = async (
-  text,
-  userID,
-  username,
-  parentID = null
-) => {
+export const createComment = async (text, parentID = null) => {
   return {
     id: Math.random().toString(36).substring(2, 9),
     parentID: parentID,
     body: text,
-    userID: userID,
-    username: username,
+    userID: "1",
+    username: "John Test",
     createdAt: new Date().toISOString(),
   };
 };

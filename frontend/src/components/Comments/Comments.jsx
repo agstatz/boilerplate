@@ -17,9 +17,6 @@ const Comments = () => {
   // Set up state
   const [comments, setComments] = useState([]);
 
-  // PULL THIS FROM STATE LATER
-  const currentUser = "1";
-
   // Find comments that have no parent. These are 'root' comments, not replies.
   const rootComments = comments.filter((c) => c.parentID === null);
 
