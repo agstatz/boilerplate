@@ -80,7 +80,7 @@ export default class Food extends React.Component {
   async callAPI() {
     this.state.loading = true;
     let loggedIn = true;
-    let admin = true;
+    let admin = store.getState().app.isAdmin;
 
     try {
       var response = await axios.get(
@@ -98,7 +98,7 @@ export default class Food extends React.Component {
         if (admin) {
           this.state.adminhtml.push(
             <Link to={"edit_food?name=" + this.state.queries.name}>
-              <Button type="button" hidden={store.getState().app.isAdmin}>Edit This Food</Button>
+              <Button type="button">Edit This Food</Button>
             </Link>
           );
         }

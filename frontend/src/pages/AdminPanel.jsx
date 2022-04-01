@@ -10,22 +10,27 @@ import React from "react";
 import axios from "axios";
 import { Stack, Button, Container } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
+import { store } from "../store/store.js";
+import UnauthorizedAccess from "../components/UnauthorizedAccess";
 const url = "http://localhost:3000/";
 const diningLocationSelectionUrl = url.concat("dining-location-selection");
+
 
 class AdminPanel extends React.Component {
   constructor() {
     super();
   }
-
   render() {
+    if (store.getState().app.isAdmin !== true) {
+      return(<UnauthorizedAccess />);
+    }
     return (
       <Container
         style={{
           paddingTop: "8vh",
           paddingBottom: "2vh",
-          paddingLeft: "55vh",
-          paddingRight: "55vh",
+          paddingLeft: "30vh",
+          paddingRight: "30vh",
         }}
       >
         <div className="p-5 my-4 mx-3 mt-5 d-flex justify-content-center bg-light border rounded">
