@@ -44,6 +44,20 @@ const Comments = (props) => {
     });
   };
 
+  // Function to update a comment
+  const updateComment = (text, commentID) => {
+    apiUpdateComment(text, commentID).then(() => {
+      const updated = comments.map((c) => {
+        if (c.id === commentID) {
+          return { ...c, body: text };
+        }
+        return c;
+      });
+      setComments(updated);
+      setActiveComment(null);
+    });
+  };
+
   // Use effect hook
   useEffect(() => {
     apiGetComments().then((data) => {
@@ -64,6 +78,7 @@ const Comments = (props) => {
               comment={c}
               replies={getReplies(c.id)}
               addComment={addComment}
+              updateComment={updateComment}
               activeComment={activeComment}
               setActiveComment={setActiveComment}
             />

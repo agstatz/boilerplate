@@ -2,7 +2,13 @@ import React, { useState } from "react";
 
 const CommentForm = (props) => {
   // Get props
-  const { submitLabel, handleSubmit, initialText = "" } = props;
+  const {
+    submitLabel,
+    handleSubmit,
+    hasCancelButton = false,
+    initialText = "",
+    handleCancel,
+  } = props;
 
   // Setup state
   const [text, setText] = useState(initialText);
@@ -27,6 +33,15 @@ const CommentForm = (props) => {
       <button className="comment-form-button" disabled={textAreaDisabled}>
         {submitLabel}
       </button>
+      {hasCancelButton && (
+        <button
+          type="button"
+          className="comment-form-button comment-form-cancel-button"
+          onClick={handleCancel}
+        >
+          Cancel
+        </button>
+      )}
     </form>
   );
 };

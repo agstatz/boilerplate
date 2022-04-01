@@ -8,6 +8,7 @@ const Comment = (props) => {
     comment,
     replies,
     addComment,
+    updateComment,
     activeComment,
     setActiveComment,
     parentID,
@@ -20,6 +21,10 @@ const Comment = (props) => {
   const isReplying =
     activeComment &&
     activeComment.type === "replying" &&
+    activeComment.id === comment.id;
+  const isEditing =
+    activeComment &&
+    activeComment.type === "editing" &&
     activeComment.id === comment.id;
 
   const replyID = parentID ? parentID : comment.id;
@@ -34,8 +39,17 @@ const Comment = (props) => {
           <div className="comment-author">{comment.username}</div>
           <div>{comment.createdAt}</div>
         </div>
-        <div className="comment-text">{comment.body}</div>
 
+        {!isEditing && <div className="comment-text">{comment.body}</div>}
+        {isEditing && (
+          <CommentForm
+            submitLabel="Update"
+            hasCancelButton
+            initialText={comment.body}
+            handleSubmit={(text) => updateComment(text, comment.id)}
+            handleCancel={() => setActiveComment(null)}
+          />
+        )}
         <div className="comment-actions">
           {canReply && (
             <div
@@ -47,14 +61,25 @@ const Comment = (props) => {
               Reply
             </div>
           )}
-          {canModify && <div className="comment-action">Edit</div>}
+          {canModify && (
+            <div
+              className="comment-action"
+              onClick={() =>
+                setActiveComment({ id: comment.id, type: "editing" })
+              }
+            >
+              Edit
+            </div>
+          )}
           {canModify && <div className="comment-action">Delete</div>}
         </div>
 
         {isReplying && (
           <CommentForm
             submitLabel="Reply"
+            hasCancelButton
             handleSubmit={(text) => addComment(text, replyID)}
+            handleCancel={() => setActiveComment(null)}
           />
         )}
 
@@ -68,6 +93,7 @@ const Comment = (props) => {
                   comment={reply}
                   replies={[]}
                   addComment={addComment}
+                  updateComment={updateComment}
                   activeComment={activeComment}
                   setActiveComment={setActiveComment}
                   parentId={comment.id}
