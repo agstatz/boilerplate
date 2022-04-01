@@ -38,6 +38,7 @@ const Comments = (props) => {
 
   // Function to add a comment
   const addComment = (text, parentID) => {
+    console.log("Adding", text, parentID);
     apiCreateComment(text, parentID).then((c) => {
       setComments([c, ...comments]); // Set the new comment on top
       setActiveComment(null); // Set active comment to null if this was a submit function

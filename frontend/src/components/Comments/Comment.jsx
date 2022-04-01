@@ -10,7 +10,7 @@ const Comment = (props) => {
     addComment,
     updateComment,
     deleteComment,
-    activeComment,
+    activeComment = null,
     setActiveComment,
     parentID,
   } = props;
@@ -105,7 +105,7 @@ const Comment = (props) => {
                   deleteComment={deleteComment}
                   activeComment={activeComment}
                   setActiveComment={setActiveComment}
-                  parentId={comment.id}
+                  parentID={comment.id}
                 />
               );
             })}
