@@ -17,6 +17,28 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get('/recommendations/', async (req, res) => {
+    console.log('here')
+    try {
+        const foods = await Food.find(); // Get all foods
+        let ret = []
+        for (let i = 0; i < 5; i++) {
+            food = foods[Math.floor(Math.random() * foods.length)]
+            ret.push({
+                name: food.name,
+                nutrition: `${food.calories} calories,\n 
+                ${food.totalFat}g fat,\n
+                 ${food.totalCarbohydrate}g carbs,\n
+                  ${food.protein}g protein`
+            })
+        }
+        res.json(ret);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server error");
+    }
+});
+
 router.get("/restrictions/:restrictions", async (req, res) => {
   console.log("here");
   console.log(req.params.restrictions);

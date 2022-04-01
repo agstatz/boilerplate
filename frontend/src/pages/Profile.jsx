@@ -14,10 +14,13 @@ import {
   Stack,
   Container,
   Placeholder,
+  ButtonGroup,
+  ToggleButton
 } from "react-bootstrap";
 import { Tabs, Tab } from "react-bootstrap-tabs";
 import {
   RecommendationList,
+  RecommendedFood,
   MealPlanList,
   RecommendedDiningCourtList,
 } from "../components";
@@ -26,7 +29,8 @@ import { PageNotFound } from "./";
 import { store, ClearForm, UpdateForm } from "../store/store";
 
 import { useParams, useHistory } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
 
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
@@ -36,6 +40,8 @@ function Profile(props) {
   const { id } = useParams();
   const username = store.getState().app.username;
   const mealSwipes = store.getState().app.mealSwipes;
+  const [foods, setFoods] = useState([{}]);
+  
 
   const handleLogout = () => {
     store.dispatch(ClearForm());
@@ -68,6 +74,7 @@ function Profile(props) {
     });
   }
 
+
   const handleMealSwipeReset = () => {
     const userInfo = {
       username: username,
@@ -87,7 +94,14 @@ function Profile(props) {
     window.location.reload();
   };
 
-  useEffect(() => {
+
+  useEffect(async () => {
+    const { data: response } = await axios.get(
+      "http://localhost:3001/api/foods/recommendations"
+    );
+    setFoods(response);
+
+
     const getProfile = async () => {
       try {
         // TODO: get user based on username
@@ -97,6 +111,50 @@ function Profile(props) {
     };
     getProfile(id);
   }, []);
+
+  function foodItems() {
+    return foods.map((food) => (
+      <Container>
+      <Stack gap={2}>
+        <RecommendedFood
+          title={food.name}
+          nutrition={food.nutrition}
+        />
+      {likeDislike()}
+      </Stack>
+
+    </Container>
+    ));
+  }
+
+  function likeDislike(liked) {
+    
+  
+    const radios = [
+      { name: 'Like', value: '1' },
+      { name: 'Dislike', value: '2' },    ];
+  
+    return (
+      <>
+        <ButtonGroup>
+        {radios.map((radio, idx) => (
+          <ToggleButton
+            key={idx}
+            id={`radio-${idx}`}
+            type="radio"
+            variant={idx % 2 == 0 ? 'outline-success' : 'outline-danger'}
+            name="radio"
+            value={radio.value}
+            checked={liked == radio.value}
+            onChange={(e) => 1}
+          >
+            {radio.name}
+          </ToggleButton>
+        ))}
+      </ButtonGroup>
+      </>
+    );
+  }
 
   return (
     <Container style={{ paddingTop: "12vh" }}>
@@ -242,13 +300,29 @@ function Profile(props) {
               <Row>
                 <Col>
                   <Card.Text>Food Items:</Card.Text>
-                  <RecommendationList />
-                </Col>
+                  <Container>
+          <Stack gap={2}>
+            {foodItems()}
+          </Stack>
+    </Container>                </Col>
+                
                 <Col>
                   <Card.Text>Dining Courts:</Card.Text>
                   <RecommendedDiningCourtList />
                 </Col>
               </Row>
+              <br />
+              <Container className="d-flex justify-content-center">
+              <Button className="mx-2" onClick={async () => {
+                fetch(`http://localhost:3001/api/foods/recommendations`)
+                  .then((res) => res.json())
+                  .then((data) => {
+                    setFoods(data);
+                  });
+              }}>
+                Generate Recommendations <i className="bi bi-chevron-right"></i>
+              </Button>
+            </Container>
             </Card.Body>
           </Card>
         </Col>
