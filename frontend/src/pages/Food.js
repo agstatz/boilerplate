@@ -529,7 +529,7 @@ export default class Food extends React.Component {
           //console.log(reqInfo);
           axios.post("http://localhost:3001/api/addUserTag", { data: reqInfo });
           this.state.showModal = false;
-          //window.location.reload();
+          window.location.reload();
         }
     }
     else {
