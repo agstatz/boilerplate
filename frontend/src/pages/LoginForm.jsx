@@ -96,7 +96,7 @@ export default class LoginForm extends React.Component {
         className="d-flex justify-content-center"
         style={{
           paddingTop: "10vh",
-          paddingBottom: "2vh",
+          paddingBottom: "12vh",
           paddingLeft: "55vh",
           paddingRight: "55vh",
         }}

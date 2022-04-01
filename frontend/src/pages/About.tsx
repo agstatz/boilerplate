@@ -9,11 +9,11 @@ import { Stack, Container } from "react-bootstrap";
 
 function About() {
   return (
-    <Container>
-      <div className="p-3 my-4 mx-4 bg-light border rounded">
+    <Container style={{paddingTop: "12vh"}}>
+      <div className="p-3 my-5 mx-4 bg-light border rounded">
         <Stack gap={2}>
           <div>
-            <h1>About</h1>
+            <h1><strong>About</strong></h1>
             <h4>General Overview</h4>
             <p>
               Boilerplate is a web application created for CS 40700 at Purdue
@@ -26,7 +26,7 @@ function About() {
           </div>
           <hr></hr>
           <div>
-            <h3>API</h3>
+            <h4>API</h4>
             <p>
               The boilerplate API makes it easy to get Purdue Dining information
               from an official source as a developer. Although this information
@@ -37,7 +37,7 @@ function About() {
           </div>
           <hr></hr>
           <div>
-            <h3>Meet the Team</h3>
+            <h4>Meet the Team</h4>
             <div>
               <p>Geon An - Pickle1235</p>
               <p>Colin Cross - crosstco</p>

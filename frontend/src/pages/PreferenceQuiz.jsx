@@ -14,7 +14,7 @@ import RangeSlider from "react-bootstrap-range-slider";
 import { store, UpdateForm } from "../store/store.js";
 
 /**
- * QuizQuestion.tsx
+ * QuizQuestion.jsx
  * Upon signing up, a user must take a quiz that will
  * assess their food preferences. This holds the framework
  * for an individual question component
@@ -23,6 +23,7 @@ import { store, UpdateForm } from "../store/store.js";
  */
 
 function PreferenceQuiz() {
+
   const [meatScore, setMeatScore] = useState(0); // meat dietary restrictions
   const [religionScore, setReligionScore] = useState(0); // religious dietary restrictions
   const [dairyScore, setDairyScore] = useState(false); // dairy dietary restrictions
@@ -95,6 +96,16 @@ function PreferenceQuiz() {
     const newNum = questionNumber + 1;
     setQuestionNumber(newNum);
   };
+
+  const getNoQuiz = () => {
+      return (
+        <Container style={{ paddingTop: "12vh", paddingBottom: "25vh" }}>
+            <div className="p-3 my-4 mx-4 bg-light border rounded">
+              <h2>Preference quiz can only be taken by users that are logged in.</h2>
+            </div>
+        </Container>
+      );
+  }
 
   const getQuizContent = () => {
     switch (questionNumber) {
@@ -414,7 +425,7 @@ function PreferenceQuiz() {
   };
 
   return (
-    <Container style={{ paddingBottom: "40vh" }}>{getQuizContent()}</Container>
+    <Container style={{ paddingBottom: "40vh" }}>{username !== undefined ? getQuizContent() : getNoQuiz()}</Container>
   );
 }
 
