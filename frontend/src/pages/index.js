@@ -26,5 +26,4 @@ export { default as EditLocation } from "./EditLocation";
 export { default as AddLocation } from "./AddLocation";
 export { default as AdminPanel } from "./AdminPanel";
 export { default as Scheduler } from "./Scheduler";
-export { default as DietaryInfo } from "./DietaryInfo";
 export { default as DiningLocationsSelection } from "./DiningLocationsSelection";

@@ -10,3 +10,4 @@ export { default as UnauthorizedAccess } from "./UnauthorizedAccess";
 export { default as GuestUserRedirect } from "./GuestUserRedirect";
 export { default as UserTags } from "./UserTags";
 export { default as UserTagsList } from "./UserTagsList";
+export { default as DietaryInfo } from "./DietaryInfo";

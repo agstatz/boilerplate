@@ -173,16 +173,16 @@ function App() {
   return (
     <div data-theme={theme} style={{ position: "relative" }}>
       <Navbar className="fixed-top bg-light border nav-alterations" variant="light">
-          <Navbar.Brand href="/">
-            <img
-              src={theme === "light" ? logo_dark : logo_light}
-              className="primary-logo px-4"
-              alt="Boilerplate"
-            ></img>
-          </Navbar.Brand>
+            <Navbar.Brand href="/">
+                <img
+                src={theme === "light" ? logo_dark : logo_light}
+                className="primary-logo px-4"
+                alt="Boilerplate"
+                ></img>
+            </Navbar.Brand>
           <Container className="justify-content-end">
           <Nav className="nav-text">
-            <Nav.Link href="/">Home</Nav.Link>
+            <Nav.Link href="/"><i class="bi bi-house-door-fill"></i> Home</Nav.Link>
             <NavDropdown title="Meal Plans">
               <NavDropdown.Item href="/meal-plans">
                 View Meal Plans
@@ -191,22 +191,20 @@ function App() {
                 Schedule Meal Plans
               </NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link href="/dietary_info" hidden={isNotGuest !== true}>Dietary Prefs</Nav.Link>
-            <Nav.Link href="/popular">Popular</Nav.Link>
-            <Nav.Link href="/map">Map</Nav.Link>
-            <Nav.Link href="/search">Search</Nav.Link>
+            <Nav.Link href="/map"><i class="bi bi-geo-alt-fill"></i> Map</Nav.Link>
+            <Nav.Link href="/search"><i class="bi bi-search"></i> Search</Nav.Link>
             <Nav.Link href="/login" hidden={isNotGuest === true}>Login</Nav.Link>
             <Nav.Link
               href={isNotGuest === true ? `/profile/${username}` : "/"}
               hidden={isNotGuest !== true}
             >
-              Profile
+              <i class="bi bi-person-fill"></i> Profile
             </Nav.Link>
             <Nav.Link
               href={isAdmin === true ? `/admin-panel` : "/"}
               hidden={isAdmin !== true}
             >
-              Admin Panel
+              <i class="bi bi-gear-fill"></i> Admin Panel
             </Nav.Link>
           </Nav>
           </Container>
@@ -214,14 +212,14 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/about" component={About} />
+          <Route exact path="/about" component={About} />
           <Route path="/edit/:id" component={EditAccountForm} />
-          <Route path="/login" component={LoginForm} />
-          <Route path="/map" component={Map} />
+          <Route exact path="/login" component={LoginForm} />
+          <Route exact path="/map" component={Map} />
           <Route exact path="/meal-plans" component={MealPlans} />
           <Route path="/meal-plans/:id" component={MealPlanIndividual} />
           <Route path="/popular" component={Popular} />
-          <Route path="/preference-quiz" component={PreferenceQuiz} />
+          <Route exact path="/preference-quiz" component={PreferenceQuiz} />
           <Route path="/profile/:id" component={Profile} />
           <Route path="/profile/" exact component={PageNotFound} />
           <Route path="/register" component={RegisterForm} />
@@ -230,7 +228,6 @@ function App() {
           <Route path="/foods" component={Foods} />
           <Route path="/food" component={Food} />
           <Route path="/dining_courts" component={Dining_Courts} />
-          <Route path="/dietary_info" component={DietaryInfo} />
           <Route path="/edit_food" component={EditFood} />
           <Route path="/post_food_update" component={PostFoodUpdate} />
           <Route path="/post_tried" component={PostTried} />

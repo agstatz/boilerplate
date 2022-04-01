@@ -1,5 +1,5 @@
 /**
- *  Scheduler.tsx
+ *  DietaryInfo.jsx
  *  The dietary restriction page for the application.
  *
  * @author Arjan Mobin
@@ -20,7 +20,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import { store } from "../store/store.js";
-import GuestUserRedirect from "../components/GuestUserRedirect";
+import GuestUserRedirect from "./GuestUserRedirect";
 
 function DietaryInfo(props) {
   const [dietary, setDietary] = useState(0);
@@ -125,8 +125,8 @@ function DietaryInfo(props) {
   }
 
   return (
-    <Container style={{ paddingTop: "15vh", paddingBottom: "15vh" }}>
-      <div className="p-3 my-4 mx-4 bg-light border rounded">
+    <Container>
+      <div className="p-3 my-1 mx-4">
         <h1>
           <strong>Dietary Info</strong>
         </h1>

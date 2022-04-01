@@ -19,11 +19,13 @@ import {
 } from "react-bootstrap";
 import { Tabs, Tab } from "react-bootstrap-tabs";
 import {
-  RecommendationList,
   RecommendedFood,
   MealPlanList,
   RecommendedDiningCourtList,
+  DietaryInfo
 } from "../components";
+
+
 import { PageNotFound } from "./";
 
 import { store, ClearForm, UpdateForm } from "../store/store";
@@ -232,20 +234,7 @@ function Profile(props) {
                   <MealPlanList filterValue={id} />
                 </Tab>
                 <Tab label="My Dietary Info">
-                  <Placeholder animation="glow" size="lg">
-                    <Placeholder xs={12} />
-                    <Placeholder xs={12} />
-                    <Placeholder xs={12} />
-                    <Placeholder xs={12} />
-                  </Placeholder>
-                </Tab>
-                <Tab label="My Preferences">
-                  <Placeholder animation="glow" size="lg">
-                    <Placeholder xs={12} />
-                    <Placeholder xs={12} />
-                    <Placeholder xs={12} />
-                    <Placeholder xs={12} />
-                  </Placeholder>
+                  <DietaryInfo />
                 </Tab>
               </Tabs>
               <Row className="mt-3">
