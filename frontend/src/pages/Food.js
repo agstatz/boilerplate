@@ -4,10 +4,10 @@ import { Grid } from "@mui/material";
 import queryString from "query-string";
 
 import { StarRating } from "../components/";
-
-import { Container, Placeholder, Button } from "react-bootstrap";
+import { Stack, Container, Placeholder, Button, Modal, Form } from "react-bootstrap";
 import { store, ClearForm, UpdateForm } from "../store/store";
-const url = "http://localhost:3001/";
+import UserTags from "../components/UserTags";
+const url = 'http://localhost:3001/';
 
 var ress;
 const axios = require("axios");
@@ -460,12 +460,14 @@ export default class Food extends React.Component {
   handleClose = (event) => {
     this.setState({
       showModal: false,
+      message: ""
     });
   };
 
   handleOpen = (event) => {
     this.setState({
       showModal: true,
+      message: ""
     });
   };
 
@@ -477,34 +479,44 @@ export default class Food extends React.Component {
     this.setState({
       [name]: value,
     });
+    console.log(this.state.newTagName);
   };
 
   handleSubmitTag = (event) => {
-    event.preventDefault();
-    var noErr = true;
-    if (noErr && !/^([a-zA-Z \-]{3,})$/.test(this.state.newTagName)) {
-      this.setState({ message: "Must be 3 characters long only letters" });
-      noErr = false;
+    if (this.state.isNotGuest) {
+        event.preventDefault();
+        var noErr = true;
+        if (noErr && !/^([a-zA-Z \-]{3,})$/.test(this.state.newTagName)) {
+          this.setState({ message: "Must be 3 characters long only letters" });
+          noErr = false;
+        }
+        if (noErr && !/^([A-Z]{1,1}[a-z \-]{2,})$/.test(this.state.newTagName)) {
+          this.setState({
+            message:
+              "Must start with a capital letter and have no other capital letters",
+          });
+          noErr = false;
+        }
+        var realFoodName = (this.state.queries.name).replace(/_/g, ' ');;
+        const reqInfo = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          username: this.state.username,
+          foodName: realFoodName,
+          foodTagName: this.state.newTagName,
+        };
+        if (noErr) {
+          console.log(reqInfo);
+          axios.post("http://localhost:3001/api/addUserTag", { data: reqInfo });
+          this.state.showModal = false;
+          //window.location.reload();
+        }
     }
-    if (noErr && !/^([A-Z]{1,1}[a-z \-]{2,})$/.test(this.state.newTagName)) {
+    else {
       this.setState({
-        message:
-          "Must start with a capital letter and have no other capital letters",
+        message: "You must be logged in for this feature"
       });
-      noErr = false;
-    }
-    const reqInfo = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      username: this.state.username,
-      foodName: this.state.queries.name,
-      foodTagName: this.state.newTagName,
-    };
-    if (noErr) {
-      axios.post("http://localhost:3001/api/addUserTag", { data: reqInfo });
-      this.state.showModal = false;
-      window.location.reload();
     }
   };
 
@@ -592,9 +604,23 @@ export default class Food extends React.Component {
         <div className="App">
           <Container style={{ paddingTop: "18vh", paddingBottom: "10vh" }}>
             <div>
-              {adminItems}
-              {loggedInItems}
+              <Container style={{ paddingLeft: '2vh', paddingRight: '115vh'}}>
+                  <Stack>
+                      {adminItems}
+                  </Stack>
+              </Container>
+
             </div>
+            <div className="pt-1 pb-2 p-3 my-4 mx-4 bg-light border rounded w-100">
+                <UserTags />
+                <Button className="mx-auto btn btn-secondary" hidden={this.state.isNotGuest !== true} onClick={this.handleOpen}>Add food tag</Button>
+                {loggedInItems}
+            </div>
+            <Container style={{ paddingRight: '115vh'}}>
+                <Stack>
+
+                </Stack>
+            </Container>
             <div className="p-3 my-4 mx-4 bg-light border rounded">
               {listItems}
             </div>
@@ -604,6 +630,25 @@ export default class Food extends React.Component {
             </div>) : (<></>) }
             
           </Container>
+            <Form onSubmit={this.handleSubmitTag}>
+                <Modal show={this.state.showModal} onHide={this.handleClose} animation={false}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Add user tag</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body><p class="user-tag-add-prompt">Add a user tag to {this.state.queries.name}?</p><p class="user-tag-add-prompt"> Proper format includes only lowercase
+                                letters, spaces, and hyphens, except for the first character. The first character MUST be capital.</p>
+                        <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='newTagName'>
+                            <Form.Label>New Tag Name</Form.Label>
+                            <Form.Control type="newTagName" value={this.state.newTagName} onChange={this.handleChange} />
+                        </Form.Group>
+                        {this.state.message}
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="primary" onClick={this.handleSubmitTag}>Add tag</Button>
+                        <Button variant="secondary" onClick={this.handleClose}>Cancel</Button>
+                    </Modal.Footer>
+                </Modal>
+            </Form>
         </div>
       );
     }

@@ -59,6 +59,15 @@ hr.class-2 {
   font-size: 20px;
 }
 
+.user-tag-empty {
+  font-size: 16px;
+  text-align: center
+}
+
+.user-tag-add-prompt {
+  font-size: 10px;
+}
+
 .ovr {
   overflow-x: auto;
   white-space: nowrap;
