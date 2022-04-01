@@ -121,13 +121,19 @@ function StarRating(props) {
   const updateRating = (e) => {
     var numberOfStars = parseInt(e.target.id) + 1;
     setRating(parseInt(e.target.id) + 1);
+    props.updateFunction(numberOfStars);
   };
+
+  const resetRating = () => {
+    props.updateFunction(0);
+    setRating(0);
+  }
 
   return (
     <span className="rating-stars">
       {stars}
       <br />
-      <Button size="sm">Reset Rating</Button>
+      <Button size="sm" onClick={resetRating}>Reset Rating</Button>
     </span>
   );
 }

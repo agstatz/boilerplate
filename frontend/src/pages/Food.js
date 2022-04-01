@@ -31,32 +31,49 @@ export default class Food extends React.Component {
     };
     this.username = store.getState().app.username;
     this.getRatingFromAPI = this.getRatingFromAPI.bind(this);
+    this.updateRating = this.updateRating.bind(this);
     this.callAPI = this.callAPI.bind(this);
     this.state.queries = queryString.parse(window.location.search);
   }
 
-  async getRatingFromAPI() {
-    const userdata = {
-      ownerName: this.username,
-      foodName: this.state.queries.name.replaceAll("_", " "),
-    };
+    // get a user's rating for this individual food
+    async getRatingFromAPI() {
+        this.state.loading = true;
 
-    axios
-      .post("http://localhost:3001/api/editFoodRating", { data: userdata })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  componentDidMount() {
-    this.callAPI();
-    if (this.username) {
-        this.getRatingFromAPI();
+        axios
+        .get(url + "api/getFoodRating?food=" + this.state.queries.name
+                + "&user=" + this.username)
+        .then((res) => {
+            console.log(res);
+            this.state.rating = res.data.rating;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+        this.state.loading = false;
     }
-  }
+
+    async updateRating(newRating) {
+        const userdata = {
+            ownerName: this.username,
+            foodName: this.state.queries.name.replaceAll("_", " "),
+            rating: newRating
+        };
+
+        axios.post(url + "api/editFoodRating", {data: userdata})
+        .then((res) => {
+            console.log(res);
+        })
+    }
+
+    
+    componentDidMount() {
+        this.callAPI();
+        // if the user is logged in load rating
+        if (this.username !== undefined ) {
+            this.getRatingFromAPI();
+        }
+    }
 
   async callAPI() {
     this.state.loading = true;
@@ -600,8 +617,8 @@ export default class Food extends React.Component {
             </div>
             {this.username !== undefined ? (<div className="p-3 my-4 mx-4 bg-light border rounded">
                 <h3>Give {this.state.queries.name.replaceAll("_", " ")} a rating!</h3>
-                <StarRating inputRating={this.state.rating} />
-            </div>) : (<></>) }
+                <StarRating inputRating={this.state.rating} updateFunction={this.updateRating} />
+            </div>) : (<></>) /* only display in the case that user is logged in */}
             
           </Container>
         </div>
