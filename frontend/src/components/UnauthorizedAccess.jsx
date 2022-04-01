@@ -11,6 +11,7 @@ function UnauthorizedAccess() {
         paddingBottom: "2vh",
         paddingLeft: "30vh",
         paddingRight: "30vh",
+        marginBottom: "30vh"
       }}
     >
       <div className="p-5 my-4 mx-3  d-flex justify-content-center bg-light border rounded">
