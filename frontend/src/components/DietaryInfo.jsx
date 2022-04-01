@@ -307,7 +307,7 @@ function DietaryInfo(props) {
               </Stack>
             </div>
             <Form.Label column sm={12}>
-                <h3>Cuisine Preferences:</h3>
+                <h3>Diet Preferences:</h3>
             </Form.Label>
             <div className="p-3 my-4 mx-4 bg-light border rounded" style={{maxWidth: "calc(53vw - 250px)"}}>
                 <h4>Select the types of cuisine you enjoy eating</h4>
