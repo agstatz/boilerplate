@@ -19,7 +19,8 @@ const Comments = (props) => {
   const { userID } = props;
 
   // Set up state
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState([]); // Comments state
+  const [activeComment, setActiveComment] = useState(null); // Active comment. Used for performing actions on a comment.
 
   // Find comments that have no parent. These are 'root' comments, not replies.
   const rootComments = comments.filter((c) => c.parentID === null);
@@ -39,6 +40,7 @@ const Comments = (props) => {
   const addComment = (text, parentID) => {
     apiCreateComment(text, parentID).then((c) => {
       setComments([c, ...comments]); // Set the new comment on top
+      setActiveComment(null); // Set active comment to null if this was a submit function
     });
   };
 
@@ -61,6 +63,9 @@ const Comments = (props) => {
               userID={userID}
               comment={c}
               replies={getReplies(c.id)}
+              addComment={addComment}
+              activeComment={activeComment}
+              setActiveComment={setActiveComment}
             />
           );
         })}

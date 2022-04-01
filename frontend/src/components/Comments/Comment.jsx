@@ -1,11 +1,28 @@
 import React from "react";
 
+import CommentForm from "./CommentForm";
+
 const Comment = (props) => {
-  const { comment, replies, userID } = props;
+  const {
+    userID,
+    comment,
+    replies,
+    addComment,
+    activeComment,
+    setActiveComment,
+    parentID,
+  } = props;
 
   // Flags
   const canReply = Boolean(userID); // A user can reply if they are logged in.
   const canModify = userID === comment.userID; // A user can edit or delete their comment if they own it.
+
+  const isReplying =
+    activeComment &&
+    activeComment.type === "replying" &&
+    activeComment.id === comment.id;
+
+  const replyID = parentID ? parentID : comment.id;
 
   return (
     <div className="comment">
@@ -20,10 +37,26 @@ const Comment = (props) => {
         <div className="comment-text">{comment.body}</div>
 
         <div className="comment-actions">
-          {canReply && <div className="comment-action">Reply</div>}
+          {canReply && (
+            <div
+              className="comment-action"
+              onClick={() =>
+                setActiveComment({ id: comment.id, type: "replying" })
+              }
+            >
+              Reply
+            </div>
+          )}
           {canModify && <div className="comment-action">Edit</div>}
           {canModify && <div className="comment-action">Delete</div>}
         </div>
+
+        {isReplying && (
+          <CommentForm
+            submitLabel="Reply"
+            handleSubmit={(text) => addComment(text, replyID)}
+          />
+        )}
 
         {replies.length > 0 && (
           <div className="replies">
@@ -34,6 +67,10 @@ const Comment = (props) => {
                   userID={userID}
                   comment={reply}
                   replies={[]}
+                  addComment={addComment}
+                  activeComment={activeComment}
+                  setActiveComment={setActiveComment}
+                  parentId={comment.id}
                 />
               );
             })}
