@@ -90,7 +90,7 @@ export default class Food extends React.Component {
     } catch (error) {
       console.log("error");
     } finally {
-      //console.log(response)
+      console.log(response)
       if (response.data[0] == null) {
         this.state.html.push(
           <a>This food ({this.state.queries.name}) does not exist.</a>
@@ -99,7 +99,7 @@ export default class Food extends React.Component {
         if (admin) {
           this.state.adminhtml.push(
             <Link to={"edit_food?name=" + this.state.queries.name}>
-              <Button type="button">Edit This Food</Button>
+              <Button type="button" hidden={store.getState().app.isAdmin}>Edit This Food</Button>
             </Link>
           );
         }
@@ -499,7 +499,7 @@ export default class Food extends React.Component {
     this.setState({
       [name]: value,
     });
-    console.log(this.state.newTagName);
+    //console.log(this.state.newTagName);
   };
 
   handleSubmitTag = (event) => {
@@ -527,7 +527,7 @@ export default class Food extends React.Component {
           foodTagName: this.state.newTagName,
         };
         if (noErr) {
-          console.log(reqInfo);
+          //console.log(reqInfo);
           axios.post("http://localhost:3001/api/addUserTag", { data: reqInfo });
           this.state.showModal = false;
           //window.location.reload();

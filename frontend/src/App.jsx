@@ -191,10 +191,11 @@ function App() {
                 Schedule Meal Plans
               </NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link href="/dietary_info">Dietary Prefs</Nav.Link>
+            <Nav.Link href="/dietary_info" hidden={isNotGuest !== true}>Dietary Prefs</Nav.Link>
             <Nav.Link href="/popular">Popular</Nav.Link>
             <Nav.Link href="/map">Map</Nav.Link>
             <Nav.Link href="/search">Search</Nav.Link>
+            <Nav.Link href="/login" hidden={isNotGuest === true}>Login</Nav.Link>
             <Nav.Link
               href={isNotGuest === true ? `/profile/${username}` : "/"}
               hidden={isNotGuest !== true}

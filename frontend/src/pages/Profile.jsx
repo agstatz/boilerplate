@@ -42,10 +42,16 @@ function Profile(props) {
   const [foods, setFoods] = useState([{}]);
 
   const handleLogout = () => {
-    store.dispatch(ClearForm());
-    window.location.reload();
-    history.push("/");
-    window.location.replace("/");
+    try {
+      store.dispatch(ClearForm()).then((res) => {
+          window.location.replace("/");
+        })
+        .catch((err) => {
+          window.location.replace("/");
+        });
+    } catch (err){
+      window.location.replace("/");
+    }
   };
 
   function resetAccount() {

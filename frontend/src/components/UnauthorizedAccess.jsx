@@ -9,8 +9,8 @@ function UnauthorizedAccess() {
       style={{
         paddingTop: "10vh",
         paddingBottom: "2vh",
-        paddingLeft: "55vh",
-        paddingRight: "55vh",
+        paddingLeft: "30vh",
+        paddingRight: "30vh",
       }}
     >
       <div className="p-5 my-4 mx-3  d-flex justify-content-center bg-light border rounded">

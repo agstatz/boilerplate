@@ -20,6 +20,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import { store } from "../store/store.js";
+import GuestUserRedirect from "../components/GuestUserRedirect";
 
 function DietaryInfo(props) {
   const [dietary, setDietary] = useState(0);
@@ -31,6 +32,9 @@ function DietaryInfo(props) {
   const [submitted, setSubmitted] = useState({});
 
   function submitForm() {
+    if (store.getState().app.isNotGuest !== true) {
+          return;
+    }
     try {
       axios
         .post("http://localhost:3001/api/editUserDietaryPreferences", {
@@ -64,6 +68,9 @@ function DietaryInfo(props) {
   }
 
   useEffect(async () => {
+    if (store.getState().app.isNotGuest !== true) {
+        return;
+    }
     try {
       const { data: response } = await axios.get(
         "http://localhost:3001/api/users/dietary/" +
@@ -112,6 +119,10 @@ function DietaryInfo(props) {
       console.error(err);
     }
   }, []);
+
+  if (store.getState().app.isNotGuest !== true) {
+      return <GuestUserRedirect />;
+  }
 
   return (
     <Container style={{ paddingTop: "15vh", paddingBottom: "15vh" }}>

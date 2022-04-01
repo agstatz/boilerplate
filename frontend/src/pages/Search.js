@@ -39,7 +39,7 @@ export default class Foods extends React.Component {
   async callAPI() {
     this.setState({ loading: true });
     let response;
-    let admin = true;
+    let admin = store.getState().app.isAdmin;
     try {
       response = await axios.get(
         url +

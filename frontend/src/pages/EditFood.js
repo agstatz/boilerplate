@@ -2,6 +2,8 @@ import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import { Grid } from "@mui/material";
 import queryString from "query-string";
+import UnauthorizedAccess from "../components/UnauthorizedAccess";
+import { store } from "../store/store.js";
 
 import { Container, Placeholder, Button } from "react-bootstrap";
 
@@ -75,7 +77,7 @@ export default class EditFood extends React.Component {
   async callAPI() {
     this.state.loading = true;
     let loggedIn = true;
-    let admin = true;
+    let admin = store.getState().app.isAdmin;
     if (!admin) {
       this.state.html.push(<h2>You do not have access to this page.</h2>);
       this.state.loading = false;
@@ -398,6 +400,9 @@ export default class EditFood extends React.Component {
   render() {
     if (this.state.queries.name == null) {
       return <Redirect to="/Foods" push />;
+    }
+    if (store.getState().app.isAdmin) {
+      return <UnauthorizedAccess />;
     }
     if (this.state.loading) {
       return (
