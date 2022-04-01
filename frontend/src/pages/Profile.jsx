@@ -15,7 +15,7 @@ import {
   Container,
   Placeholder,
   ButtonGroup,
-  ToggleButton
+  ToggleButton,
 } from "react-bootstrap";
 import { Tabs, Tab } from "react-bootstrap-tabs";
 import {
@@ -31,7 +31,6 @@ import { store, ClearForm, UpdateForm } from "../store/store";
 import { useParams, useHistory } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 function Profile(props) {
@@ -41,7 +40,6 @@ function Profile(props) {
   const username = store.getState().app.username;
   const mealSwipes = store.getState().app.mealSwipes;
   const [foods, setFoods] = useState([{}]);
-  
 
   const handleLogout = () => {
     store.dispatch(ClearForm());
@@ -74,7 +72,6 @@ function Profile(props) {
     });
   }
 
-
   const handleMealSwipeReset = () => {
     const userInfo = {
       username: username,
@@ -94,13 +91,11 @@ function Profile(props) {
     window.location.reload();
   };
 
-
   useEffect(async () => {
     const { data: response } = await axios.get(
       "http://localhost:3001/api/foods/recommendations"
     );
     setFoods(response);
-
 
     const getProfile = async () => {
       try {
@@ -115,43 +110,38 @@ function Profile(props) {
   function foodItems() {
     return foods.map((food) => (
       <Container>
-      <Stack gap={2}>
-        <RecommendedFood
-          title={food.name}
-          nutrition={food.nutrition}
-        />
-      {likeDislike()}
-      </Stack>
-
-    </Container>
+        <Stack gap={2}>
+          <RecommendedFood title={food.name} nutrition={food.nutrition} />
+          {likeDislike()}
+        </Stack>
+      </Container>
     ));
   }
 
   function likeDislike(liked) {
-    
-  
     const radios = [
-      { name: 'Like', value: '1' },
-      { name: 'Dislike', value: '2' },    ];
-  
+      { name: "Like", value: "1" },
+      { name: "Dislike", value: "2" },
+    ];
+
     return (
       <>
         <ButtonGroup>
-        {radios.map((radio, idx) => (
-          <ToggleButton
-            key={idx}
-            id={`radio-${idx}`}
-            type="radio"
-            variant={idx % 2 == 0 ? 'outline-success' : 'outline-danger'}
-            name="radio"
-            value={radio.value}
-            checked={liked == radio.value}
-            onChange={(e) => 1}
-          >
-            {radio.name}
-          </ToggleButton>
-        ))}
-      </ButtonGroup>
+          {radios.map((radio, idx) => (
+            <ToggleButton
+              key={idx}
+              id={`radio-${idx}`}
+              type="radio"
+              variant={idx % 2 == 0 ? "outline-success" : "outline-danger"}
+              name="radio"
+              value={radio.value}
+              checked={liked == radio.value}
+              onChange={(e) => 1}
+            >
+              {radio.name}
+            </ToggleButton>
+          ))}
+        </ButtonGroup>
       </>
     );
   }
@@ -301,11 +291,10 @@ function Profile(props) {
                 <Col>
                   <Card.Text>Food Items:</Card.Text>
                   <Container>
-          <Stack gap={2}>
-            {foodItems()}
-          </Stack>
-    </Container>                </Col>
-                
+                    <Stack gap={2}>{foodItems()}</Stack>
+                  </Container>{" "}
+                </Col>
+
                 <Col>
                   <Card.Text>Dining Courts:</Card.Text>
                   <RecommendedDiningCourtList />
@@ -313,16 +302,20 @@ function Profile(props) {
               </Row>
               <br />
               <Container className="d-flex justify-content-center">
-              <Button className="mx-2" onClick={async () => {
-                fetch(`http://localhost:3001/api/foods/recommendations`)
-                  .then((res) => res.json())
-                  .then((data) => {
-                    setFoods(data);
-                  });
-              }}>
-                Generate Recommendations <i className="bi bi-chevron-right"></i>
-              </Button>
-            </Container>
+                <Button
+                  className="mx-2"
+                  onClick={async () => {
+                    fetch(`http://localhost:3001/api/foods/recommendations`)
+                      .then((res) => res.json())
+                      .then((data) => {
+                        setFoods(data);
+                      });
+                  }}
+                >
+                  Generate Recommendations{" "}
+                  <i className="bi bi-chevron-right"></i>
+                </Button>
+              </Container>
             </Card.Body>
           </Card>
         </Col>

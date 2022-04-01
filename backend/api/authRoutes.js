@@ -44,5 +44,9 @@ module.exports = function (app) {
     foodController.editFoodRating
   );
 
-  app.get("/api/getFoodRating/", bodyParser.json(), foodController.getFoodRating);
+  app.get(
+    "/api/getFoodRating/",
+    bodyParser.json(),
+    foodController.getFoodRating
+  );
 };
