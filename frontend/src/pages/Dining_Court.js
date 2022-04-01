@@ -2,6 +2,9 @@ import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import { Container } from "react-bootstrap";
 
+// Import comments
+import Comments from "../components/Comments/Comments";
+
 const ColoredLine = ({ color }) => (
   <hr
     style={{
@@ -172,6 +175,7 @@ export default class Dining_Court extends React.Component {
             {listItems}
           </header>
         </Container>
+        <Comments />
       </div>
     );
   }
