@@ -40,8 +40,8 @@ function Profile(props) {
 
   const { id } = useParams();
   const username = store.getState().app.username;
-  const mealSwipes = store.getState().app.mealSwipes;
   const [foods, setFoods] = useState([{}]);
+  const [mealSwipes, setMealSwipes] = useState(0);
 
   const handleLogout = () => {
     try {
@@ -114,6 +114,13 @@ function Profile(props) {
       "http://localhost:3001/api/foods/recommendations"
     );
     setFoods(response);
+
+    const { data: response2 } = await axios.get(
+      "http://localhost:3001/api/users/dietary/" + username
+    );
+    setMealSwipes(response2.mealSwipes);
+
+
 
     const getProfile = async () => {
       try {
