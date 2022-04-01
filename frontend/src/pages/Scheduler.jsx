@@ -11,8 +11,6 @@ import {
   Row,
   Col,
   Form,
-  Dropdown,
-  DropdownButton,
 } from "react-bootstrap";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -23,6 +21,9 @@ import GuestUserRedirect from "../components/GuestUserRedirect";
 function Scheduler(props) {
   const [foods, setFoods] = useState([{}]);
   const [mealPlan, setMealPlan] = useState({});
+
+  const [success, setSuccess] = useState(false);
+
   useEffect(async () => {
     try {
       const { data: response } = await axios.get(
@@ -65,6 +66,7 @@ function Scheduler(props) {
       .catch((err) => {
         console.error(err);
       });
+    setSuccess(true);
   }
 
   function form_column(day) {
@@ -153,9 +155,16 @@ function Scheduler(props) {
               >
                 Submit <i className="bi bi-chevron-right"></i>
               </Button>
+              
             </Col>
           </Row>
-        </div>
+          
+        </div>{
+            success ? (<div class="alert alert-dismissible alert-success" role="alert">
+            Meal Plan was scheduled successfully.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
+        </div>) : (<></>)}
+        
       </Container>
     );
   }

@@ -230,10 +230,10 @@ function Profile(props) {
                 </Tab>
                 <Tab label="Meal History">
                   <Placeholder animation="glow" size="lg">
-                    <Placeholder xs={12} />
-                    <Placeholder xs={12} />
-                    <Placeholder xs={12} />
-                    <Placeholder xs={12} />
+                    <Placeholder xs={4} />{' '}
+                    <Placeholder xs={2} />{' '}<Placeholder xs={4} />
+                    <Placeholder xs={6} />{' '}
+                    <Placeholder xs={8} />
                   </Placeholder>
                 </Tab>
               </Tabs>
