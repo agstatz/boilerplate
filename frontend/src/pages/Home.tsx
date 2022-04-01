@@ -55,6 +55,12 @@ function Home() {
                     schedules/plans. There is a custom recommendation engine that
                     takes your preferences into account and suggests foods.
                     </p>
+                    <p>
+                    The Boilerplate team hopes you gain as much as you wish from our application.
+                    Since our founding in 2022, we have been dedicated to providing the best
+                    possible user experience, offering the best application, and allowing
+                    students to utilize campus dining to its fullest.
+                    </p>
                 </Stack>
                     <img className="p-2" src={ford_picture} style={{maxWidth: "35%"}}></img>
             </Stack>

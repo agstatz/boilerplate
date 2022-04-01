@@ -23,7 +23,7 @@
 /* size specifier class for the logo
    appearing at the top on the navbar */
 .primary-logo {
-  height: 2.25em;
+  height: 2.9em;
   padding: 0.1vmin;
 }
 
@@ -84,4 +84,17 @@ hr.class-2 {
   background-size: cover;
   transition: all 0.2s ease-in-out !important;
   border-radius: 6px;
+}
+
+.nav-text {
+  font-size: 14px;
+}
+
+.nav-alterations {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+html {
+    font-size: small;
 }
