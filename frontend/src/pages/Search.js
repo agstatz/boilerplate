@@ -127,13 +127,22 @@ export default class Foods extends React.Component {
               >
                 <strong>List of Foods</strong>
               </h1>
-              <Placeholder animation="gglow" size="lg">
+              <Placeholder animation="glow" size="lg">
+                <Placeholder xs={6} />
                 <Placeholder xs={12} />
+                <Placeholder xs={3} />{' '}
+                <Placeholder xs={8} />
+                <Placeholder xs={9} />{' '}
+                <Placeholder xs={2} />
+                <Placeholder xs={3} />{' '}
+                <Placeholder xs={8} />
+                <Placeholder xs={8} />{' '}
+                <Placeholder xs={3} />
                 <Placeholder xs={12} />
+                <Placeholder xs={8} />{' '}
+                <Placeholder xs={3} />
                 <Placeholder xs={12} />
-                <Placeholder xs={12} />
-                <Placeholder xs={12} />
-                <Placeholder xs={12} />
+                <Placeholder xs={10} />
               </Placeholder>
             </header>
           </Container>

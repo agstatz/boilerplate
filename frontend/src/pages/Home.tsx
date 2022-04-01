@@ -69,6 +69,27 @@ function Home() {
             ></img>
           </Stack>
         </div>
+        <div className="p-3 my-4 mx-4 bg-light border rounded">
+        <Stack gap={2}>
+                    <h1>
+                    <strong>Create a Meal Plan</strong>
+                    </h1>
+                    <i>Utilize Boilerplate to its fullest</i>
+                    <p>
+                    One of the best ways to take advantage of the information that
+                    Boilerplate provides is to create a meal plan. Creating a meal plan
+                    allows the user to take control of their dining experience and catalogue
+                    the items that they intend to eat over the course of a week. This is
+                    especially useful for trying to eat healthier or compare with friends.
+                    </p>
+                    <p>
+                        To create a meal plan, visit the navigation bar link dropdown titled
+                        Meal Plans, and select Schedule Meal Plans. Creating meal plans is a
+                        feature exclusive to those with accounts, so if you haven't already,
+                        sign up today to start creating meal plans.
+                    </p>
+                </Stack>
+        </div>
       </Container>
     </>
   );
