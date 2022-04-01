@@ -7,6 +7,9 @@ const CommentForm = (props) => {
   // Setup state
   const [text, setText] = useState(initialText);
 
+  // Check to disable button to prevent empty comments
+  const textAreaDisabled = text.length === 0;
+
   // On submit handler for the form
   const onSubmit = (e) => {
     e.preventDefault();
@@ -21,7 +24,9 @@ const CommentForm = (props) => {
         value={text}
         onChange={(e) => setText(e.target.value)}
       />
-      <button className="comment-form-button">{submitLabel}</button>
+      <button className="comment-form-button" disabled={textAreaDisabled}>
+        {submitLabel}
+      </button>
     </form>
   );
 };
