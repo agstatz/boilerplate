@@ -31,12 +31,17 @@ async function scraper() {
 
     // Get links of all dining courts
     let header = $("h2:contains('Dining Courts')");
-    const linkObjects = header.parent().find("a");
+    let linkObjects = header.parent().find("a");
     linkObjects.each((index, element) => {
       urls.diningCourts.push(DINING_HOMEPAGE + $(element).attr("href"));
     });
 
     // TODO: Scrape On The Go
+    header = $("h2:contains('On-the-GO!')");
+    linkObjects = header.parent().find("a");
+    linkObjects.each((index, element) => {
+      urls.onTheGo.push(DINING_HOMEPAGE + $(element).attr("href"));
+    });
 
     return urls;
   }
@@ -87,6 +92,7 @@ async function scraper() {
     const year = date.getFullYear();
 
     // Build URL for given day and meal type
+    if (mealType === "Breakfast/Lunch") mealType = "";
     const newURL =
       trimmedURL + "/" + year + "/" + month + "/" + day + "/" + mealType;
 

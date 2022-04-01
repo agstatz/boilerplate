@@ -16,8 +16,11 @@ async function updateDB(alwaysUpdateFood) {
   const scraper = await initScraper();
   const urls = await scraper.scrapeMenuURLs();
 
-  // Get Earhart information
-  const earhartURL = urls.diningCourts[0];
+  // Get On-The-GO! information
+  console.log(urls.onTheGo);
+
+  // Get Earhart OTG information
+  const earhartURL = urls.onTheGo[0];
   const earhartInformation = await scraper.scrapeDiningCourtInfo(earhartURL);
 
   try {
