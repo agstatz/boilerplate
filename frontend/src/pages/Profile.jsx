@@ -228,8 +228,7 @@ function Profile(props) {
                 <Tab label="My Dietary Info">
                   <DietaryInfo />
                 </Tab>
-              </Tabs>
-              <Tab label="Meal History">
+                <Tab label="Meal History">
                   <Placeholder animation="glow" size="lg">
                     <Placeholder xs={12} />
                     <Placeholder xs={12} />
@@ -237,6 +236,7 @@ function Profile(props) {
                     <Placeholder xs={12} />
                   </Placeholder>
                 </Tab>
+              </Tabs>
               <Row className="mt-3">
                 <Col className="text-center">
                   <strong>{mealSwipes}</strong>
