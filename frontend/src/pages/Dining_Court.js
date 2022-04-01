@@ -175,7 +175,7 @@ export default class Dining_Court extends React.Component {
             {listItems}
           </header>
         </Container>
-        <Comments />
+        <Comments userID="1" />
       </div>
     );
   }

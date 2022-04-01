@@ -1,7 +1,11 @@
 import React from "react";
 
 const Comment = (props) => {
-  const { comment, replies } = props;
+  const { comment, replies, userID } = props;
+
+  // Flags
+  const canReply = Boolean(userID); // A user can reply if they are logged in.
+  const canModify = userID === comment.userID; // A user can edit or delete their comment if they own it.
 
   return (
     <div className="comment">
@@ -16,15 +20,22 @@ const Comment = (props) => {
         <div className="comment-text">{comment.body}</div>
 
         <div className="comment-actions">
-          <div className="comment-action">Reply</div>
-          <div className="comment-action">Edit</div>
-          <div className="comment-action">Delete</div>
+          {canReply && <div className="comment-action">Reply</div>}
+          {canModify && <div className="comment-action">Edit</div>}
+          {canModify && <div className="comment-action">Delete</div>}
         </div>
 
         {replies.length > 0 && (
           <div className="replies">
             {replies.map((reply) => {
-              return <Comment key={reply.id} comment={reply} replies={[]} />;
+              return (
+                <Comment
+                  key={reply.id}
+                  userID={userID}
+                  comment={reply}
+                  replies={[]}
+                />
+              );
             })}
           </div>
         )}

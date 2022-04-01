@@ -13,7 +13,11 @@ import {
   deleteComment as apiDeleteComment,
 } from "./testAPI";
 
-const Comments = () => {
+const Comments = (props) => {
+  // Pull user ID from props
+  // TODO: Get this from state
+  const { userID } = props;
+
   // Set up state
   const [comments, setComments] = useState([]);
 
@@ -51,7 +55,14 @@ const Comments = () => {
       <CommentForm submitLabel="Post" handleSubmit={addComment} />
       <div className="comments-container">
         {rootComments.map((c) => {
-          return <Comment key={c.id} comment={c} replies={getReplies(c.id)} />;
+          return (
+            <Comment
+              key={c.id}
+              userID={userID}
+              comment={c}
+              replies={getReplies(c.id)}
+            />
+          );
         })}
       </div>
     </div>
