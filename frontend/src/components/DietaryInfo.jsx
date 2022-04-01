@@ -31,6 +31,14 @@ function DietaryInfo(props) {
   const [mealSwipes, setMealSwipes] = useState(0);
   const [submitted, setSubmitted] = useState({});
 
+  const cuisineList = ['Asian', 'Central Asian', 'East Asian', 'South Asian',
+                        'Southeast Asian', 'West Asian', 'Oceanic', 'American',
+                        'North American', 'Central American', 'South American',
+                        'Carribean', 'Central African', 'East African', 'North African',
+                        'Southern African', 'West African', 'European', 
+                        'Central European', 'Eastern European', 'Northern European',
+                        'Southern European', 'Western European' ];
+
   function submitForm() {
     if (store.getState().app.isNotGuest !== true) {
           return;
@@ -138,7 +146,7 @@ function DietaryInfo(props) {
               className="mb-3"
               controlId="formHorizontalEmail"
             >
-              <Form.Label column sm={6}>
+              <Form.Label column sm={12}>
                 <h3>Restrictions:</h3>
               </Form.Label>
             </Form.Group>
@@ -274,10 +282,9 @@ function DietaryInfo(props) {
               className="mb-3"
               controlId="formHorizontalEmail"
             >
-              <Form.Label column sm={6}>
+              <Form.Label column sm={12}>
                 <h3>Meal Plan Info:</h3>
               </Form.Label>
-            </Form.Group>
             <div className="p-3 my-4 mx-4 bg-light border rounded">
               <Stack gap={2}>
                 <h4>Meal Swipes</h4>
@@ -288,14 +295,35 @@ function DietaryInfo(props) {
                     onChange={(changeEvent) =>
                       setMealSwipes(parseInt(changeEvent.target.value))
                     }
-                    min={0}
+                    min={7}
                     max={30}
                   />
                 </Container>
                 <br />
               </Stack>
             </div>
-            {}
+            <Form.Label column sm={12}>
+                <h3>Cuisine Preferences:</h3>
+            </Form.Label>
+            <div className="p-3 my-4 mx-4 bg-light border rounded">
+                <h4>Select the types of cuisine you enjoy eating</h4>
+                <Stack gap={2}>
+                    {cuisineList.map((listItem) => {
+                        return (
+                        <Form.Check
+                            type="checkbox"
+                            label={listItem}
+                            name={listItem}
+                            /*checked={}
+                            onChange={}*/
+                        />
+                    );
+                })}
+                    
+                    
+                </Stack>
+            </div>
+            </Form.Group>
             <p className="d-flex justify-content-center ">
               <p className={submitted.color}>{submitted.text}</p>
             </p>
