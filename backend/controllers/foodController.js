@@ -140,7 +140,6 @@ exports.addUserCreatedTag = (req, res) => {
 
 // Allows for editing a given food rating
 exports.editFoodRating = async (req, res) => {
-  console.log("editing food rating");
   try {
     FoodRating.findOne({
       ownerName: req.body.data.ownerName,
@@ -151,7 +150,7 @@ exports.editFoodRating = async (req, res) => {
         return;
       }
       if (!foodRating) {
-        return res.status(404).send({ message: "User Not found" });
+        return res.status(404).send({ message: "Food Rating Not found" });
       }
 
       var filter = { ownerName: foodRating.ownerName, food: foodRating.food };
@@ -168,9 +167,54 @@ exports.editFoodRating = async (req, res) => {
           }
         });
       });
+
+      // The following code is for updating the aggregated rating
+      // of the food for the Food table
+      // in short, get all food ratings with the same food name,
+      // add the ratings together, divide by the number, set
+      // this average to the corresponding aggregate rating
+      // in the corresponding food
+
+      FoodRating.find({food: req.body.data.foodName}).exec((err, foodRatings) => {
+          console.log(foodRatings);
+          if (err) {
+              return;
+          }
+
+          var sum = 0;
+          var count = 0;
+          for (var i = 0; i < foodRatings.length; i++) {
+              if (foodRatings[i].rating != 0) {
+                  if (foodRatings[i].ownerName == req.body.data.ownerName) {
+                      sum += req.body.data.rating
+                      count++;
+                  } else {
+                    sum += foodRatings[i].rating;
+                    count++;
+                  }
+              }
+          }
+          var averageRating = count == 0 ? 0 : sum/count;
+          
+          Food.findOne({
+            name: req.body.data.foodName,
+          }).exec((err, food) => {
+              if (err) {
+                  return;
+              }
+          });
+
+          var filter = { name: req.body.data.foodName };
+          var updateDoc = {
+            $set: {
+              aggregateRating: averageRating,
+            },
+          };
+          Food.updateOne(filter, updateDoc).exec();
+      });
+      
     });
 
-    //res.send({ message: "Food Rating edited successfully." });
   } catch (err) {
     console.log("error encountered");
     res.status(500).send({ message: "An error was encountered." });
@@ -178,7 +222,7 @@ exports.editFoodRating = async (req, res) => {
   }
 };
 
-// Allows for editing a given food rating
+// Allows for getting a food rating
 exports.getFoodRating = async (req, res) => {
   const queryFood = req.query.food.split("_").join(" ");
   const queryUser = req.query.user;

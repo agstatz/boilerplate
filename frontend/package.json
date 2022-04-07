@@ -22,6 +22,7 @@
     "react-bootstrap": "^2.1.2",
     "react-bootstrap-range-slider": "^3.0.3",
     "react-bootstrap-table-next": "^4.0.3",
+    "react-bootstrap-table2-paginator": "^2.1.2",
     "react-bootstrap-tabs": "^2.0.0",
     "react-confirm-alert": "^2.8.0",
     "react-dom": "^17.0.2",

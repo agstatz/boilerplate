@@ -7,6 +7,7 @@
  */
 
 import { Stack, Container } from "react-bootstrap";
+import { FoodRatingList } from "../components/";
 
 function Popular() {
   return (
@@ -14,16 +15,7 @@ function Popular() {
       <div className="p-3 my-4 mx-4 bg-light border rounded">
         <Stack gap={2}>
           <h1>Popular - Food</h1>
-          <div>Popular Food Items</div>
-          <div>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-          </div>
+          <FoodRatingList />
         </Stack>
       </div>
       <div className="p-3 my-4 mx-4 bg-light border rounded">

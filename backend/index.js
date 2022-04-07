@@ -78,6 +78,8 @@ app.get("/Foods", (req, res) => {
   let groups = req.query.groups;
   let cuisine = req.query.cuisine;
 
+  console.log("in foods here");
+
   if (search == null || search === "undefined") {
     search = "";
   }
@@ -327,6 +329,26 @@ app.get("/Foods", (req, res) => {
       });
   });
   console.log("/foods sent");
+});
+
+app.get("/Foods_Rating_Data", (req, res) => {
+
+    MongoClient.connect(url, function (err, dbt) {
+    let db = dbt.db("boilerplate");
+    db.collection("foods")
+      .find({})
+      .toArray(function (err, result) {
+        if (err) throw err;
+        
+        result = result.map((a) => [
+            a._id,
+            a.name,
+            a.aggregateRating,
+        ]);
+        res.send(result);
+       });
+       
+    });
 });
 
 app.get("/Foods_Need_Update", (req, res) => {
