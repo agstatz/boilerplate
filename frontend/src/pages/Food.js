@@ -297,7 +297,7 @@ export default class Food extends React.Component {
             <br></br>
           </a>
         );
-        this.state.html.push(<hr class="class-1"></hr>);
+        this.state.html.push(<hr className="class-1"></hr>);
         if (
           this.state.data.calcium != null &&
           this.state.data.calcium !== "undefined" &&
@@ -316,7 +316,7 @@ export default class Food extends React.Component {
           ) {
             this.state.html.push(<hr></hr>);
           } else {
-            this.state.html.push(<hr class="class-2"></hr>);
+            this.state.html.push(<hr className="class-2"></hr>);
           }
         }
         if (
@@ -330,7 +330,7 @@ export default class Food extends React.Component {
               <br></br>
             </a>
           );
-          this.state.html.push(<hr class="class-2"></hr>);
+          this.state.html.push(<hr className="class-2"></hr>);
         }
         this.state.html.push(
           <h5>
@@ -467,7 +467,7 @@ export default class Food extends React.Component {
         } else {
           this.state.html.push(<a>{this.state.data.cuisine}</a>);
         }
-        this.state.html.push(<hr class="class-2"></hr>);
+        this.state.html.push(<hr className="class-2"></hr>);
         this.state.html.push(<a>Ingredients: {this.state.data.ingredients}</a>);
       }
 
@@ -678,7 +678,7 @@ export default class Food extends React.Component {
                     <Modal.Header closeButton>
                         <Modal.Title>Add user tag</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body><p class="user-tag-add-prompt">Add a user tag to {this.state.queries.name}?</p><p class="user-tag-add-prompt"> Proper format includes only lowercase
+                    <Modal.Body><p className="user-tag-add-prompt">Add a user tag to {this.state.queries.name}?</p><p className="user-tag-add-prompt"> Proper format includes only lowercase
                                 letters, spaces, and hyphens, except for the first character. The first character MUST be capital.</p>
                         <Form.Group className="mb-3 " style={{width: '16.5em'}} controlId='newTagName'>
                             <Form.Label>New Tag Name</Form.Label>

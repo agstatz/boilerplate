@@ -62,7 +62,6 @@ function App() {
     ).matches;
 
     const [theme, setTheme] = useState(defaultDark ? 'dark' : 'light');
-    const [showLoggedInWarning, setShowLoggedInWarning] = useState(false);
 
     // handles toggling the values that keep track of the current theme
     // aka dark mode/light mode
@@ -161,14 +160,6 @@ function App() {
                     }
                 }
                 break;
-        }
-    };
-
-    // handles when a user attempts to sign in
-    // (if already signed in, they just get a warning)
-    const handleSignInButton = () => {
-        if (username) {
-            setShowLoggedInWarning(true);
         }
     };
 
@@ -286,7 +277,6 @@ function App() {
             <Footer
                 toggleDark={() => toggleDarkMode()}
                 theme={theme === 'dark' ? true : false}
-                handleSignIn={() => handleSignInButton()}
             />
         </div>
     );

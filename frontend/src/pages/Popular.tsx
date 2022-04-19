@@ -14,7 +14,7 @@ function Popular() {
     <Container style={{ paddingTop: "12vh", paddingBottom: "15vh" }}>
       <div className="p-3 my-4 mx-4 bg-light border rounded">
         <Stack gap={2}>
-          <h1>Popular - Food</h1>
+          <h1><strong>Popular - Food</strong></h1>
           <FoodRatingList />
         </Stack>
       </div>
