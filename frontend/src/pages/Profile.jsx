@@ -256,7 +256,7 @@ function Profile(props) {
                   </Placeholder>
                 </Tab>
                 <Tab label="My Favorite Foods">
-                  <FavoriteFoodList />
+                  <FavoriteFoodList username={username} />
                 </Tab>
               </Tabs>
               <ColoredLine />

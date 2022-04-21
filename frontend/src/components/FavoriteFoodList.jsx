@@ -6,7 +6,7 @@
  * @author Arjan Mobin
  */
 
-import { Container, Form } from "react-bootstrap";
+import { Button, Container, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import BootstrapTable from "react-bootstrap-table-next";
 
@@ -39,8 +39,9 @@ function FavoriteFoodList(props) {
     setLoading(true);
     try {
       const { data: response } = await axios.get(
-        "http://localhost:3001/api/meal-plans"
+        "http://localhost:3001/api/users/favorites/" + props.username
       );
+      console.log(response);
       setFavoriteFoods(response);
       setLoading(false);
     } catch (err) {
@@ -52,10 +53,21 @@ function FavoriteFoodList(props) {
   function foodNameFormatter(cell, row) {
     if (row.name) {
       console.log((row.name).replace(" ", "_"))
-      return <Link to={`/food?name=${row.name}`}>{cell}</Link>;
+      return <div><Link to={`/food?name=${row.name}`}>{cell}</Link> <p>      </p><Button onClick={(x) => {removeFromFavorites(row.name)}}>Remove</Button> </div>;
     }
   }
 
+  function removeFromFavorites(name) {
+    console.log(name);
+    axios.delete(`http://localhost:3001/api/users/favorites/remove/${props.username}/${name}`)
+    .then(res => {
+      console.log(res);
+      setFavoriteFoods(favoriteFoods.filter(x => x.name !== name));
+    })
+    .catch(err => {
+      console.error(err);
+    });
+  }
   // Returns caret that points in direction of
   // desc/asc for sorting columns
   function getCaret(direction) {
