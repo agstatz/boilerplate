@@ -29,6 +29,7 @@ exports.registerUser = (req, res) => {
     intakePlans: [],
     mealPlans: [],
     locationsVisited: [],
+    favoriteFoods: []
   });
   user.save((err, user) => {
     if (err) {
@@ -163,6 +164,29 @@ exports.editUser = (req, res) => {
   });
 };
 
+exports.addFavorite = (req, res) => {
+console.log(req.body)
+  User.updateOne(
+    { username: req.body.data.user },
+    {
+      $push: { "favoriteFoods": String(req.body.data.food) },
+    },
+  ).exec((err, user) => {
+    if (err) {
+      console.log(err)
+      res.status(500).send({ message: err });
+      return;
+    }
+    if (!user) {
+      return res.status(404).send({ message: "User Not found" });
+    }
+    res.status(200).send({
+      message: "Favorite food added successfully",
+    });
+    console.log(User.findOne({ username: req.body.user }))
+  });
+}
+
 exports.get_user_info = (req, res) => {
   User.findOne({
     username: req.body.data.username,
@@ -215,6 +239,7 @@ exports.resetUser = (req, res) => {
       intakePlans: [],
       mealPlans: [],
       locationsVisited: [],
+      favoriteFoods: []
     }
   ).exec((err, user) => {
     if (err) {

@@ -22,8 +22,10 @@ import {
   RecommendedFood,
   MealPlanList,
   RecommendedDiningCourtList,
-  DietaryInfo
+  DietaryInfo,
 } from "../components";
+
+import FavoriteFoodList from "../components/FavoriteFoodList";
 
 
 import { PageNotFound } from "./";
@@ -252,6 +254,9 @@ function Profile(props) {
                     <Placeholder xs={6} />{' '}
                     <Placeholder xs={8} />
                   </Placeholder>
+                </Tab>
+                <Tab label="My Favorite Foods">
+                  <FavoriteFoodList />
                 </Tab>
               </Tabs>
               <ColoredLine />

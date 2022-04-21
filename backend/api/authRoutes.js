@@ -27,6 +27,7 @@ module.exports = function (app) {
   app.post("/api/signinuser", bodyParser.json(), controller.signinUser);
   app.post("/api/editUser", bodyParser.json(), controller.editUser);
   app.post("/api/resetUser", bodyParser.json(), controller.resetUser);
+  app.post("/api/user/add_favorite", bodyParser.json(), controller.addFavorite);
   app.post(
     "/api/editUserPreferences",
     bodyParser.json(),
