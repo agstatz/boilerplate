@@ -97,9 +97,14 @@ export default class Food extends React.Component {
       } else {
         if (admin) {
           this.state.adminhtml.push(
-            <Link to={"edit_food?name=" + this.state.queries.name}>
-              <Button type="button">Edit This Food</Button>
-            </Link>
+            <div>
+               <Link to={"edit_food?name=" + this.state.queries.name}>
+                <Button type="button">Edit This Food</Button>
+              </Link>
+              <br></br> <br></br>
+              
+            </div>
+             
           );
         }
         this.setState({ data: response.data[0] });
@@ -646,6 +651,21 @@ export default class Food extends React.Component {
             <div className="pt-1 pb-2 p-3 my-4 mx-4 bg-light border rounded w-100">
                 <UserTags />
                 <Button className="mx-auto btn btn-secondary" hidden={this.state.isNotGuest !== true} onClick={this.handleOpen}>Add food tag</Button>
+                <Button onClick={(x) => {
+                console.log(x)
+                console.log(this.state);
+                axios.post("http://localhost:3001/api/user/add_favorite", 
+                  
+                  { 
+                   data: {
+                     user: this.state.username,
+                     food: this.state.queries.name
+                   }
+                     
+                  }
+                );
+
+              }}>Add to favorites</Button>
                 {loggedInItems}
             </div>
             <Container style={{ paddingRight: '115vh'}}>
