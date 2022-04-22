@@ -49,6 +49,8 @@ import {
     DiningLocationsSelection,
     AddLocation,
     EditFood,
+    Friend,
+    PostFriend,
 } from './pages';
 import { Footer } from './components';
 //import Scheduler from './pages/Scheduler';
@@ -252,6 +254,7 @@ function App() {
                         component={PostFoodUpdate}
                     />
                     <Route path='/post_tried' component={PostTried} />
+                    <Route path='/post_friend' component={PostFriend} />
                     <Route
                         path='/foods_need_update'
                         component={FoodsNeedUpdate}
@@ -267,6 +270,7 @@ function App() {
                         component={DiningLocationsSelection}
                     />
                     <Route path='/edit-location' component={EditLocation} />
+                    <Route path='/friend' component={Friend} />
                     <Route path='/add-location' component={AddLocation} />
                     <Route path='/admin-panel' component={AdminPanel} />
                     <Route path='/search' component={Search} />
