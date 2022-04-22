@@ -6,6 +6,10 @@ import { StarRating } from "../components/";
 import { Stack, Container, Placeholder, Button, Modal, Form } from "react-bootstrap";
 import { store, ClearForm, UpdateForm } from "../store/store";
 import UserTags from "../components/UserTags";
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
+
+
 const url = 'http://localhost:3001/';
 
 var ress;
@@ -664,10 +668,17 @@ export default class Food extends React.Component {
                      
                   }
                 );
+                console.log('ntif')
+                NotificationManager.success(`Added ${this.state.queries.name.replaceAll('_', " ")} to favorites`, 'Success', 3000);
+                setTimeout(() => {
+                  NotificationManager.info(`${this.state.queries.name.replaceAll('_', " ")} is available this week on the menu!`, 'Favorite Available', 3000);
+                }, 1000)
+
 
               }}>Add to favorites</Button>
                 {loggedInItems}
             </div>
+            <NotificationContainer/>
             <Container style={{ paddingRight: '115vh'}}>
                 <Stack>
 
