@@ -11,9 +11,11 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { store } from '../store/store.js';
 import { SchedulerMealDay } from '../components';
+import { useHistory } from 'react-router-dom';
 import GuestUserRedirect from '../components/GuestUserRedirect';
 
 function Scheduler() {
+    const history = useHistory();
     const [mealPlan, setMealPlan] = useState([]);
     const [success, setSuccess] = useState(false);
 
@@ -65,6 +67,7 @@ function Scheduler() {
             .post('http://localhost:3001/api/meal-plans', mealPlan)
             .then((res) => {
                 setSuccess(true);
+                history.push('/meal-plans');
             })
             .catch((err) => {
                 console.error(err);

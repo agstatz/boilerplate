@@ -8,17 +8,19 @@
 import { Container, Form, Row, Col, Button, Accordion } from 'react-bootstrap';
 import { SchedulerMealDay } from '../components/';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { store } from '../store/store';
 import axios from 'axios';
 
 function MealPlanIndividual() {
     const { id } = useParams();
+    const history = useHistory();
     const username = store.getState().app.username;
     const [mealPlan, setMealPlan] = useState([{}]);
     const [tmpMealPlan, setTmpMealPlan] = useState([{}]);
     const [loading, setLoading] = useState(true);
     const [editable, setEditable] = useState(false);
+    const [liked, setLiked] = useState(false);
 
     const DAYS = [
         'Monday',
@@ -60,6 +62,17 @@ function MealPlanIndividual() {
         setMealPlan(currentMealPlan);
     }
 
+    function deletePlan() {
+        axios
+            .delete(`http://localhost:3001/api/meal-plans/${id}`)
+            .then(function (response) {
+                history.push('/meal-plans');
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
     const handleEditButton = () => {
         setTmpMealPlan(mealPlan);
         setEditable(true);
@@ -71,7 +84,6 @@ function MealPlanIndividual() {
     };
 
     const submitPlanChanges = () => {
-        console.log(mealPlan);
         axios
             .put(`http://localhost:3001/api/meal-plans/${id}`, {
                 _id: mealPlan._id,
@@ -82,7 +94,6 @@ function MealPlanIndividual() {
                 private: mealPlan.private,
             })
             .then(function (response) {
-                console.log(response);
                 setEditable(false);
             })
             .catch(function (error) {
@@ -106,6 +117,22 @@ function MealPlanIndividual() {
                 private: e.target.checked,
             });
         }
+    }
+
+    function LikeButton() {
+        return (
+            <h3 style={{ cursor: 'pointer' }} onClick={handleLikeButton}>
+                {liked ? (
+                    <i className='bi bi-hand-thumbs-up-fill'></i>
+                ) : (
+                    <i className='bi bi-hand-thumbs-up'></i>
+                )}
+            </h3>
+        );
+    }
+
+    function handleLikeButton() {
+        setLiked(!liked);
     }
 
     return (
@@ -186,15 +213,25 @@ function MealPlanIndividual() {
                             </Row>
                         ) : username === mealPlan.owner ? (
                             <Row className='mt-3'>
-                                <Col md={7}></Col>
+                                <Col md={5}></Col>
                                 <Col md={2}>
                                     <Button
-                                        variant='danger'
+                                        variant='secondary'
                                         type='Button'
                                         className='btn-block'
                                         onClick={handleCancelButton}
                                     >
                                         Cancel
+                                    </Button>
+                                </Col>
+                                <Col md={2}>
+                                    <Button
+                                        variant='danger'
+                                        type='Button'
+                                        className='btn-block'
+                                        onClick={deletePlan}
+                                    >
+                                        Delete
                                     </Button>
                                 </Col>
                                 <Col md={3}>
@@ -215,6 +252,20 @@ function MealPlanIndividual() {
                     </Container>
                 </Container>
             </div>
+            {username !== undefined ? (
+                <div className='p-3 my-4 mx-4 bg-light border rounded'>
+                    <h5>
+                        {mealPlan.likes === 0
+                            ? 'No one has liked this meal plan.'
+                            : mealPlan.likes === 1
+                            ? '1 person liked this meal plan.'
+                            : mealPlan.likes + ' liked this meal plan'}
+                    </h5>
+                    <LikeButton liked={false} />
+                </div>
+            ) : (
+                <></>
+            )}
         </Container>
     );
 }

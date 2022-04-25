@@ -121,4 +121,34 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// @route   delete api/meal-plans/:id
+// @desc    delete an existing meal plan by id
+// @access  Public
+router.delete("/:id", async (req, res) => {
+    try {
+      const mealplan = await Meal_Plan.findById(req.params.id);
+      if (!mealplan)
+        return res.status(400).json({ msg: "Meal Plan does not exist" });
+  
+      const filter = { _id: req.params.id };
+  
+      const updateDoc = {
+        $set: {
+          name: req.body.name,
+          private: req.body.private,
+          owner: req.body.owner,
+          likes: req.body.likes,
+          meals: req.body.meals,
+        },
+      };
+  
+      const result = await Meal_Plan.deleteOne(filter, updateDoc);
+      res.send({ message: "Updated successfully." });
+
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server error");
+    }
+  });
+
 module.exports = router;
