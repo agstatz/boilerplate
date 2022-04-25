@@ -51,6 +51,7 @@ import {
     EditFood,
     MotDEditor,
 } from './pages';
+import CommentReports from './pages/CommentReports';
 import { Footer } from './components';
 //import Scheduler from './pages/Scheduler';
 
@@ -239,6 +240,7 @@ function App() {
                         path='/preference-quiz'
                         component={PreferenceQuiz}
                     />
+                    <Route path='/admin-panel/reports' component={CommentReports} />
                     <Route path='/profile/:id' component={Profile} />
                     <Route path='/profile/' exact component={PageNotFound} />
                     <Route path='/register' component={RegisterForm} />

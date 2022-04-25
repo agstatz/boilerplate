@@ -1,5 +1,6 @@
 import axios from "axios";
 import React from "react";
+import { store } from "../../store/store";
 
 import CommentForm from "./CommentForm";
 
@@ -33,7 +34,14 @@ const Comment = (props) => {
 
   const reportComment = (commentID) => {
     console.log('reporting comment', commentID);
-    axios.post('http://localhost:3001/api/reportComment', { data: {commentID} });
+
+    axios.post('http://localhost:3001/api/reportComment', { data: {
+      commentID: comment.id,
+      text: comment.body,
+      reportedBy: store.getState().app.username,
+      writtenAt: comment.createdAt,
+      author: comment.username
+    } });
   }
 
   return (

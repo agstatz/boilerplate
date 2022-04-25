@@ -76,6 +76,23 @@ class AdminPanel extends React.Component {
             <Container
               className="d-flex justify-content-center"
               style={{
+                paddingTop: "1vh",
+                paddingLeft: "24vh",
+                paddingRight: "24vh",
+              }}
+            >
+              <Stack spacing={4}>
+                <Button
+                  className="mb-2 mt-3 btn btn-primary btn-sm"
+                  href={motdEditUrl}
+                >
+                  View Reported Comments
+                </Button>
+              </Stack>
+            </Container>
+            <Container
+              className="d-flex justify-content-center"
+              style={{
                 paddingTop: "2vh",
                 paddingLeft: "6vh",
                 paddingRight: "6vh",

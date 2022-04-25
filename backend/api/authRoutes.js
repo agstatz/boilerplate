@@ -26,8 +26,13 @@ module.exports = function (app) {
     foodController.addUserCreatedTag
   );
   app.post("/api/reportComment", bodyParser.json(), (req, res) => {
+    console.log(req.body.data)
     const commentReport = new CommentReport({
-      commentId: req.body.data.commentID,
+      commentID: req.body.data.commentID,
+      reportedBy: req.body.data.reportedBy,
+      text: req.body.data.text,
+      writtenAt: req.body.data.writtenAt,
+      author: req.body.data.author,
       
     });
     commentReport.save((err, commentReport) => {
@@ -41,6 +46,30 @@ module.exports = function (app) {
     console.log('comment reported')
 
   });
+
+  app.post('/api/allowcomment', bodyParser.json(), (req, res) => {
+    console.log(req.body.data)
+    CommentReport.findOneAndDelete({ _id: req.body.data._id }, (err, commentReport) => {
+      if (err) {
+        console.log(err)
+        res.status(500).send({ message: err });
+        return;
+      }
+      res.send({ message: "Comment reported successfully!" });
+    });
+  })
+
+  app.get("/api/getcommentreports", (req, res) => {
+    CommentReport.find({}, (err, commentReports) => {
+      if (err) {
+        console.log(err)
+        res.status(500).send({ message: err });
+        return;
+      }
+      res.send(commentReports );
+    });
+  });
+
   app.post("/api/signinuser", bodyParser.json(), controller.signinUser);
   app.post("/api/editUser", bodyParser.json(), controller.editUser);
   app.post("/api/resetUser", bodyParser.json(), controller.resetUser);
