@@ -37,6 +37,16 @@ export default class Friend extends React.Component {
   componentDidMount() {
     this.callAPI();
   }
+  submitButton = (event) => {
+    console.log(event.target.value)
+    let string =
+        "/Post_Friend?request=accept&add=" +
+        event.target.value +
+        "&username=" +
+        this.state.username
+    this.state.html.push(<Redirect to={string} />);
+    this.forceUpdate();
+  };
 
   async callAPI() {
     this.setState({ loading: true });
@@ -71,6 +81,10 @@ export default class Friend extends React.Component {
               </Link>
           );
         }
+        if (response.data[0][0].length === 0 ) {
+          this.state.html.push(<ColoredLine id={"fline"} color="grey"/>);
+          this.state.html.push(<a>You do not have any friends.</a>)
+        }
         if (response.data[0][1] == null || response.data[0][1] === "undefined" || response.data[0][1] === "") {
           response.data[0][1] = [];
         }
@@ -84,6 +98,13 @@ export default class Friend extends React.Component {
                 {response.data[0][1][i]}
               </Link>
           );
+          this.state.html2.push(
+              <Button value={response.data[0][1][i]} onClick={this.submitButton}>Accept</Button>
+          )
+        }
+        if (response.data[0][1].length === 0 ) {
+          this.state.html2.push(<ColoredLine id={"fline"} color="grey"/>);
+          this.state.html2.push(<a>You do not have any friend requests.</a>)
         }
         if (this.state.queries.message != null && this.state.queries.message !== "undefined" && this.state.queries.message !== "") {
           this.state.html3.push(
@@ -103,6 +124,7 @@ export default class Friend extends React.Component {
     }
   }
 
+
   render() {
     if (this.state.loading) {
       return (
@@ -120,6 +142,8 @@ export default class Friend extends React.Component {
         style={d.props.style}
         color={d.props.color}
         className={d.props.className}
+        onClick={d.props.onClick}
+        value={d.props.value}
       >
         {d.props.children}
       </d.type>
@@ -132,6 +156,8 @@ export default class Friend extends React.Component {
             style={d.props.style}
             color={d.props.color}
             className={d.props.className}
+            onClick={d.props.onClick}
+            value={d.props.value}
         >
           {d.props.children}
         </d.type>
@@ -144,6 +170,8 @@ export default class Friend extends React.Component {
             style={d.props.style}
             color={d.props.color}
             className={d.props.className}
+            onClick={d.props.onClick}
+            value={d.props.value}
         >
           {d.props.children}
         </d.type>

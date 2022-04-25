@@ -200,6 +200,7 @@ function App() {
                         <Nav.Link href='/search'>
                             <i class='bi bi-search'></i> Search
                         </Nav.Link>
+
                         <Nav.Link href='/login' hidden={isNotGuest === true}>
                             Login
                         </Nav.Link>
@@ -212,6 +213,16 @@ function App() {
                             hidden={isNotGuest !== true}
                         >
                             <i class='bi bi-person-fill'></i> Profile
+                        </Nav.Link>
+                        <Nav.Link
+                            href={
+                                isNotGuest === true
+                                    ? `/Friend`
+                                    : '/'
+                            }
+                            hidden={isNotGuest !== true}
+                        >
+                            <i class='bi bi-person-fill'></i> Friends
                         </Nav.Link>
                         <Nav.Link
                             href={isAdmin === true ? `/admin-panel` : '/'}

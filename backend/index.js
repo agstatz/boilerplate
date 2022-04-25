@@ -558,7 +558,7 @@ app.get("/Cuisine", (req, res) => {
     if (err) throw err;
     let db = dbt.db("boilerplate");
     db.collection("filters")
-      .find({ username: "cuisines" })
+      .find({ name: "cuisines" })
       .toArray(function (err, result) {
         if (err) throw err;
         result = result.map((a) => a.list); //filters only the names of foods
@@ -858,62 +858,143 @@ app.post("/Add_Friend", (req, res) => {
     console.log("Adding friend");
     console.log(req.query);
     let db = dbt.db("boilerplate");
+    if (req.query.username === req.query.friend) {
+      res.send("You cannot send a friend request to yourself.")
+    } else {
+      db.collection("users")
+          .find({username: req.query.username})
+          .toArray(function (err, result) {
+            if (err) throw err;
+            if (result.length === 0) {
+              res.send("User does not exist.");
+            } else {
+              db.collection("users")
+                  .find({username: req.query.friend})
+                  .toArray(function (err, result) {
+                    if (result.length === 0) {
+                      res.send("User " + req.query.friend + " does not exist.");
+                    } else {
+                      let friend = result[0].friends
+                      let request = result[0].friendRequests
+                      console.log(friend)
+                      console.log(request)
 
+                      if (
+                          friend == null ||
+                          friend === "undefined" ||
+                          friend === ""
+                      ) {
+                        friend = [];
+                      }
+                      if (
+                          request == null ||
+                          request === "undefined" ||
+                          request === ""
+                      ) {
+                        request = [];
+                      }
+                      if (request.includes(req.query.username)) {
+                        res.send("You have already sent a friend request to " + req.query.friend + ".");
+                      } else {
+                        if (friend.includes(req.query.username)) {
+                          res.send(req.query.friend + " is already your friend.")
+                        } else {
+                          request.push(req.query.username);
+                          const updateDoc = {
+                            $set: {
+                              friendRequests: request,
+                            },
+                          };
+                          ret = db
+                              .collection("users")
+                              .updateOne({username: req.query.friend}, updateDoc);
+                          res.send("Friend request was sent successfully.");
+                        }
+                      }
+                    }
+                  });
+            }
+          });
+    }
+  });
+});
+
+app.post("/Accept_Friend", (req, res) => {
+  MongoClient.connect(url, function (err, dbt) {
+    console.log("Accepting friend");
+    console.log(req.query);
+    let db = dbt.db("boilerplate");
     db.collection("users")
-        .find({ username: req.query.username })
+        .find({username: req.query.username})
         .toArray(function (err, result) {
           if (err) throw err;
           if (result.length === 0) {
             res.send("User does not exist.");
           } else {
-            db.collection("users")
-                .find({ username: req.query.friend })
-                .toArray(function (err, result) {
-                  if (result.length === 0) {
-                    res.send("User does not exist.");
-                  } else {
-                    let friend = result.map((a) => a.friends);
-                    let request = result.map((a) => a.friendRequests);
-                    if (
-                        friend == null ||
-                        friend === "undefined" ||
-                        friend === ""
-                    ) {
-                      friend = [];
-                    }
-                    if (
-                        request == null ||
-                        request === "undefined" ||
-                        request === ""
-                    ) {
-                      request = [];
-                    }
-
-                      if (request.includes(req.query.username)) {
-                      res.send("You have already sent a friend request to that user.");
-                    } else {
-                      if (friend.includes(req.query.username)) {
-                        res.send("You are already that user's friend.")
-                      } else {
-                        request.push(req.query.username);
-                        const updateDoc = {
-                          $set: {
-                            friendRequests: request,
-                          },
-                        };
-                        ret = db
-                            .collection("users")
-                            .updateOne({username: req.query.username}, updateDoc);
-                        res.send("Friend request was sent successfully.");
+            let friend = result[0].friends
+            let request = result[0].friendRequests
+            if (
+                friend == null ||
+                friend === "undefined" ||
+                friend === ""
+            ) {
+              friend = [];
+            }
+            if (
+                request == null ||
+                request === "undefined" ||
+                request === ""
+            ) {
+              request = [];
+            }
+            if (!request.includes(req.query.friend)) {
+              res.send(req.query.friend + " has not sent you any friend request.");
+            } else {
+              if (friend.includes(req.query.friend)) {
+                res.send(req.query.friend + " is already your friend.");
+              } else {
+                friend.push(req.query.friend);
+                request = request.filter(e => e !== req.query.friend);
+                const updateDoc = {
+                  $set: {
+                    friendRequests: request,
+                    friends: friend,
+                  },
+                };
+                ret = db
+                    .collection("users")
+                    .updateOne({username: req.query.username}, updateDoc);
+                db.collection("users")
+                    .find({username: req.query.friend})
+                    .toArray(function (err, result) {
+                      if (result.length === 0) {
+                        res.send("User " + req.query.friend + " does not exist.");
                       }
-                    }
-                  }
-                });
+                      let friend = result[0].friends
+                      if (
+                          friend == null ||
+                          friend === "undefined" ||
+                          friend === ""
+                      ) {
+                        friend = [];
+                      }
+                      friend.push(req.query.username);
+                      const updateDoc = {
+                        $set: {
+                          friends: friend,
+                        },
+                      };
+                      ret = db
+                          .collection("users")
+                          .updateOne({username: req.query.friend}, updateDoc);
+                      res.send("Friend request was accepted successfully.");
+                    });
+              }
+            }
           }
         });
   });
 });
-
 
 // Ensure database exists
 try {

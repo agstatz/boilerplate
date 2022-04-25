@@ -31,52 +31,63 @@ export default class PostFriend extends React.Component {
   }
 
   componentDidMount() {
-    // this.callAPI();
+    this.callAPI();
   }
 
   async callAPI() {
     this.setState({ loading: true });
     let response;
+    console.log(this.state.username)
     if (
       this.state.username != null &&
       this.state.username !== "undefined" &&
       this.state.username !== ""
     ) {
-      try {
-        console.log("posting");
-        response = await axios.post(
-          url +
-            `Tried_Food?` +
-            "name=" +
-            this.state.queries.name +
-            "&username=" +
-            this.state.username +
-            "&changeFrom=" +
-            this.state.queries.changeFrom +
-            ""
-        );
-      } catch (error) {
-        console.log("error");
-      } finally {
-        console.log(response);
-        console.log(
-          url +
-            `Tried_Food?` +
-            "name=" +
-            this.state.queries.name +
-            "&username=" +
-            this.state.username +
-            "&changeFrom=" +
-            this.state.queries.changeFrom +
-            ""
-        );
-        let link = "/Food?name=" + this.state.queries.name;
-        this.state.html.push(<Redirect to={link} />);
-        this.setState({ loading: false });
-        this.forceUpdate();
+      if (this.state.queries.request === "accept") {
+        try {
+          console.log("posting");
+          response = await axios.post(
+              url +
+              "Accept_Friend?" +
+              "username=" +
+              this.state.username +
+              "&friend=" +
+              this.state.queries.add +
+              ""
+          );
+        } catch (error) {
+          console.log("error");
+        } finally {
+          console.log(response.data);
+          let link = "/friend?message=" + response.data;
+          this.state.html.push(<Redirect to={link}/>);
+          this.setState({loading: false});
+          this.forceUpdate();
+        }
+      } else {
+        try {
+          console.log("posting");
+          response = await axios.post(
+              url +
+              "Add_Friend?" +
+              "username=" +
+              this.state.username +
+              "&friend=" +
+              this.state.queries.add +
+              ""
+          );
+        } catch (error) {
+          console.log("error");
+        } finally {
+          console.log(response.data);
+          let link = "/friend?message=" + response.data;
+          this.state.html.push(<Redirect to={link}/>);
+          this.setState({loading: false});
+          this.forceUpdate();
+        }
       }
     } else {
-      let link = "/Food?name=" + this.state.queries.name;
+      let link = "/"
       this.state.html.push(<Redirect to={link} />);
       this.setState({ loading: false });
       this.forceUpdate();

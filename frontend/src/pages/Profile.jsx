@@ -213,9 +213,22 @@ function Profile(props) {
                     >
                       Reset Account
                     </Button>
+                    <Button
+                        href={'/Foods_Tried'}
+                        className="btn-sm"
+                        variant="outline-primary"
+                    >
+                      Foods that I have tried
+                    </Button>
                   </Stack>
                 ) : (
-                  <></>
+                    <Button
+                        href={'/Foods_Tried?user=' + id}
+                        className="btn-sm"
+                        variant="outline-primary"
+                    >
+                      Foods that {id} has tried
+                    </Button>
                 )}
                 <Row className="mt-3">
                   <Col className="text-center">
