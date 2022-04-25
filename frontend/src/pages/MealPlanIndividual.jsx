@@ -45,7 +45,6 @@ function MealPlanIndividual() {
     function submitDay(meals, day) {
         let index = DAYS.indexOf(day);
         let currentMealPlan = mealPlan.meals;
-        console.log(currentMealPlan);
         if (currentMealPlan.length === 0) {
             for (var i = 0; i < DAYS.length; i++) {
                 currentMealPlan.push([]);
@@ -185,7 +184,7 @@ function MealPlanIndividual() {
                                     </Button>
                                 </Col>
                             </Row>
-                        ) : (
+                        ) : username === mealPlan.owner ? (
                             <Row className='mt-3'>
                                 <Col md={7}></Col>
                                 <Col md={2}>
@@ -210,6 +209,8 @@ function MealPlanIndividual() {
                                     </Button>
                                 </Col>
                             </Row>
+                        ) : (
+                            <></>
                         )}
                     </Container>
                 </Container>

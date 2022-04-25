@@ -3,7 +3,7 @@ import { Link, Redirect } from "react-router-dom";
 import queryString from "query-string";
 
 import { StarRating } from "../components/";
-import { Stack, Container, Placeholder, Button, Modal, Form } from "react-bootstrap";
+import { Stack, Row, Col, Container, Placeholder, Button, Modal, Form } from "react-bootstrap";
 import { store, ClearForm, UpdateForm } from "../store/store";
 import UserTags from "../components/UserTags";
 const url = 'http://localhost:3001/';
@@ -646,27 +646,6 @@ export default class Food extends React.Component {
                       {adminItems}
                   </Stack>
               </Container>
-
-            </div>
-            <div className="pt-1 pb-2 p-3 my-4 mx-4 bg-light border rounded w-100">
-                <UserTags />
-                <Button className="mx-auto btn btn-secondary" hidden={this.state.isNotGuest !== true} onClick={this.handleOpen}>Add food tag</Button>
-                <Button onClick={(x) => {
-                console.log(x)
-                console.log(this.state);
-                axios.post("http://localhost:3001/api/user/add_favorite", 
-                  
-                  { 
-                   data: {
-                     user: this.state.username,
-                     food: this.state.queries.name
-                   }
-                     
-                  }
-                );
-
-              }}>Add to favorites</Button>
-                {loggedInItems}
             </div>
             <Container style={{ paddingRight: '115vh'}}>
                 <Stack>
@@ -678,6 +657,29 @@ export default class Food extends React.Component {
             </div>
             {
               this.username !== undefined ? (
+                  <>
+                  
+                  <div className="p-3 my-4 mx-4 bg-light border rounded">
+                  <UserTags />
+                    <Button className="mx-auto btn btn-secondary" hidden={this.state.isNotGuest !== true} onClick={this.handleOpen}>Add food tag</Button>
+                    {' '}
+                    <Button onClick={(x) => {
+                    console.log(x)
+                    console.log(this.state);
+                    axios.post("http://localhost:3001/api/user/add_favorite", 
+                        
+                        { 
+                        data: {
+                            user: this.state.username,
+                            food: this.state.queries.name
+                        }
+                            
+                        }
+                        );
+
+                    }}>Add to favorites</Button>
+                        {loggedInItems}
+                </div>
                 <div className="p-3 my-4 mx-4 bg-light border rounded">
                   <h3>
                     Give {this.state.queries.name.replaceAll("_", " ")} a
@@ -688,6 +690,7 @@ export default class Food extends React.Component {
                     updateFunction={this.updateRating}
                   />
                 </div>
+                </>
               ) : (
                 <></>
               ) /* only display in the case that user is logged in */
@@ -707,8 +710,10 @@ export default class Food extends React.Component {
                         {this.state.message}
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="primary" onClick={this.handleSubmitTag}>Add tag</Button>
-                        <Button variant="secondary" onClick={this.handleClose}>Cancel</Button>
+                        <Row>
+                            <Col><Button variant="primary" onClick={this.handleSubmitTag}>Add tag</Button></Col>
+                            <Col><Button variant="secondary" onClick={this.handleClose}>Cancel</Button></Col>
+                        </Row>
                     </Modal.Footer>
                 </Modal>
             </Form>

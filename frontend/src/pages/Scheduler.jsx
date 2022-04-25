@@ -64,7 +64,6 @@ function Scheduler() {
         axios
             .post('http://localhost:3001/api/meal-plans', mealPlan)
             .then((res) => {
-                console.log(res);
                 setSuccess(true);
             })
             .catch((err) => {
