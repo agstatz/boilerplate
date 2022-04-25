@@ -179,10 +179,10 @@ function App() {
                 <Container className='justify-content-end'>
                     <Nav className='nav-text'>
                         <Nav.Link href='/'>
-                            <i class='bi bi-house-door-fill'></i> Home
+                            <i className='bi bi-house-door-fill'></i> Home
                         </Nav.Link>
                         <Nav.Link href='/popular'>
-                            <i class='bi bi-graph-up'></i> Popular
+                            <i className='bi bi-graph-up'></i> Popular
                         </Nav.Link>
                         <NavDropdown title='Meal Plans'>
                             <NavDropdown.Item href='/meal-plans'>
@@ -193,10 +193,10 @@ function App() {
                             </NavDropdown.Item>
                         </NavDropdown>
                         <Nav.Link href='/map'>
-                            <i class='bi bi-geo-alt-fill'></i> Map
+                            <i className='bi bi-geo-alt-fill'></i> Map
                         </Nav.Link>
                         <Nav.Link href='/search'>
-                            <i class='bi bi-search'></i> Search
+                            <i className='bi bi-search'></i> Search
                         </Nav.Link>
                         <Nav.Link href='/login' hidden={isNotGuest === true}>
                             Login
@@ -209,13 +209,13 @@ function App() {
                             }
                             hidden={isNotGuest !== true}
                         >
-                            <i class='bi bi-person-fill'></i> Profile
+                            <i className='bi bi-person-fill'></i> Profile
                         </Nav.Link>
                         <Nav.Link
                             href={isAdmin === true ? `/admin-panel` : '/'}
                             hidden={isAdmin !== true}
                         >
-                            <i class='bi bi-gear-fill'></i> Admin Panel
+                            <i className='bi bi-gear-fill'></i> Admin Panel
                         </Nav.Link>
                     </Nav>
                 </Container>

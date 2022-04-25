@@ -102,7 +102,7 @@ router.put("/:id", async (req, res) => {
         private: req.body.private,
         owner: req.body.owner,
         likes: req.body.likes,
-        meals: [],
+        meals: req.body.meals,
       },
     };
 
