@@ -15,3 +15,4 @@ export { default as FoodRatingList } from "./FoodRatingList";
 export { default as SchedulerMealDay } from "./SchedulerMealDay";
 export { default as SchedulerMealIndividual } from "./SchedulerMealIndividual";
 export { default as SchedulerFoodIndividual } from "./SchedulerFoodIndividual";
+export { default as MotD } from "./MotD";

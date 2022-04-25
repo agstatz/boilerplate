@@ -9,12 +9,14 @@
 import background_image from "../assets/header_image.jpg";
 import ford_picture from "../assets/ford_dining_hall.jpg";
 import { Stack, Container } from "react-bootstrap";
+import { MotD } from "../components";
 
 function Home() {
   return (
     <>
       <img src={background_image} width="100%"></img>
       <Container style={{ paddingBottom: "4vh" }}>
+        <MotD/>
         <div className="p-3 my-4 mx-4 bg-light border rounded">
           <Stack gap={2}>
             <h1>
