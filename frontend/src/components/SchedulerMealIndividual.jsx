@@ -10,7 +10,6 @@ import { SchedulerFoodIndividual } from './';
 import { useState, useEffect, useReducer } from 'react';
 import Select from 'react-select';
 import axios from 'axios';
-import { prototype } from 'events';
 
 function SchedulerMealIndividual(props) {
     const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
@@ -19,16 +18,26 @@ function SchedulerMealIndividual(props) {
     const [location, setLocation] = useState('');
     const [foodList, setFoodList] = useState([]);
     const [locations, setLocations] = useState([]);
-    const [isFinished, setIsFinished] = useState(false);
 
     useEffect(async () => {
-        try {
-            const { data: response } = await axios.get(
-                'http://localhost:3001/Dining_Courts'
-            );
-            setLocations(response);
-        } catch (err) {
-            console.error(err);
+        if (props.editable) {
+            try {
+                const { data: response } = await axios.get(
+                    'http://localhost:3001/Dining_Courts'
+                );
+                setLocations(response);
+            } catch (err) {
+                console.error(err);
+            }
+        } else {
+            if (props.mealData !== undefined) {
+                // load data in from the parent component
+                setFoodList(props.mealData.foods);
+                setName(props.mealData.name);
+                setLocation(props.mealData.location);
+                setFoodListLength(props.mealData.foods.length);
+                forceUpdate();
+            }
         }
     }, []);
 
@@ -69,11 +78,12 @@ function SchedulerMealIndividual(props) {
     }
 
     function handleFinishMeal() {
-        setIsFinished(true);
+        props.updateFinished(props.mealData.key, true);
     }
 
     function handleEditMeal() {
-        setIsFinished(false);
+        props.updateFinished(props.mealData.key, false);
+        props.setSubmitted(false);
     }
 
     function handleRemoveMeal() {
@@ -92,7 +102,7 @@ function SchedulerMealIndividual(props) {
                 className='mx-2'
                 onClick={handleAddFood}
             >
-                <i class='bi bi-plus-lg'></i>
+                <i className='bi bi-plus-lg'></i>
             </Button>
         );
     }
@@ -128,7 +138,7 @@ function SchedulerMealIndividual(props) {
     return (
         <Container className='px-3 py-1'>
             <div className='p-4 border rounded'>
-                {!isFinished ? (
+                {!props.finished && props.editable ? (
                     <Stack gap={2}>
                         <Row className='px-2'>
                             <Col>
@@ -182,7 +192,7 @@ function SchedulerMealIndividual(props) {
                                         Food Item Name
                                     </Col>
                                 </Row>
-                                {props.mealData.foods.map((item) => (
+                                {props.mealData.foods.map((item, i) => (
                                     <SchedulerFoodIndividual
                                         key={item.key}
                                         id={item.key}
@@ -192,13 +202,17 @@ function SchedulerMealIndividual(props) {
                                         label={item.name}
                                         value={item.key}
                                         qty={item.food_qty}
+                                        editable={props.editable}
+                                        food={props.mealData.foods[i]}
                                     />
                                 ))}
                             </>
                         ) : (
                             <div className='px-2'>No foods selected</div>
                         )}
-                        {foodListLength === 0 ? (
+                        {!props.editable ? (
+                            <></>
+                        ) : foodListLength === 0 ? (
                             <AddFoodButton />
                         ) : foodListLength < 5 ? (
                             <AddFoodButton />
@@ -206,14 +220,18 @@ function SchedulerMealIndividual(props) {
                             <></>
                         )}
                         <br />
-                        <Row className='px-2'>
-                            <Col>
-                                <FinishButton />
-                            </Col>
-                            <Col>
-                                <RemoveButton />
-                            </Col>
-                        </Row>
+                        {props.editable ? (
+                            <Row className='px-2'>
+                                <Col>
+                                    <FinishButton />
+                                </Col>
+                                <Col>
+                                    <RemoveButton />
+                                </Col>
+                            </Row>
+                        ) : (
+                            <></>
+                        )}
                     </Stack>
                 ) : (
                     <Stack gap={2}>
@@ -240,14 +258,18 @@ function SchedulerMealIndividual(props) {
                                   ))}
                         </div>
                         <br />
-                        <Row className='px-2'>
-                            <Col>
-                                <EditButton />
-                            </Col>
-                            <Col>
-                                <RemoveButton />
-                            </Col>
-                        </Row>
+                        {props.editable ? (
+                            <Row className='px-2'>
+                                <Col>
+                                    <EditButton />
+                                </Col>
+                                <Col>
+                                    <RemoveButton />
+                                </Col>
+                            </Row>
+                        ) : (
+                            <></>
+                        )}
                     </Stack>
                 )}
             </div>

@@ -16,18 +16,23 @@ function SchedulerFoodIndividual(props) {
     const [quantity, setQuantity] = useState(1);
 
     useEffect(async () => {
-        try {
-            const { data: response } = await axios.get(
-                'http://localhost:3001/api/foods'
-            );
-            setFoods(response);
-            setSelectedFood({
-                label: props.label,
-                value: props.value,
-            });
-            setQuantity(props.qty);
-        } catch (err) {
-            console.error(err);
+        if (props.editable) {
+            try {
+                const { data: response } = await axios.get(
+                    'http://localhost:3001/api/foods'
+                );
+                setFoods(response);
+                setSelectedFood({
+                    label: props.label,
+                    value: props.value,
+                });
+                setQuantity(props.qty);
+            } catch (err) {
+                console.error(err);
+            }
+        } else {
+            setSelectedFood({ label: props.food });
+            setQuantity(props.quantity);
         }
     }, []);
 

@@ -6,14 +6,27 @@
  * @author Ashton Statz
  */
 
-import { Stack, Container, Button, Accordion } from 'react-bootstrap';
-import { useState, useReducer } from 'react';
+import { Stack, Button, Accordion, Badge } from 'react-bootstrap';
+import { useState, useEffect, useReducer } from 'react';
 import { SchedulerMealIndividual } from '.';
 
 function SchedulerMealDay(props) {
     const [mealList, setMealList] = useState([]);
+    const [finishedArr, setFinishedArr] = useState([]);
+    const [submitted, setSubmitted] = useState(false);
     const [mealListLength, setMealListLength] = useState(0);
     const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
+
+    useEffect(async () => {
+        if (!props.editable) {
+            //load and populate all values as this is not an
+            //editable meal schedule
+            if (props.mealList !== undefined) {
+                setMealList(props.mealList);
+                setMealListLength(props.mealList.length);
+            }
+        }
+    }, []);
 
     function handleUpdateMeal(key, meal_name, meal_location) {
         let list = mealList;
@@ -43,6 +56,13 @@ function SchedulerMealDay(props) {
         setMealList(list);
     }
 
+    function handleUpdateFinished(index, finishedValue) {
+        let finishedList = finishedArr;
+        finishedList[index] = finishedValue;
+        setFinishedArr(finishedList);
+        forceUpdate();
+    }
+
     function handleAddMeal() {
         setMealListLength(mealListLength + 1);
         let list = mealList;
@@ -52,6 +72,11 @@ function SchedulerMealDay(props) {
             location: '',
             foods: [],
         });
+
+        let finishedList = finishedArr;
+        finishedList.push(false);
+        setSubmitted(false);
+        setFinishedArr(finishedList);
         setMealList(list);
     }
 
@@ -64,6 +89,12 @@ function SchedulerMealDay(props) {
         }
         setMealList(list);
         setMealListLength(mealListLength - 1);
+
+        let finishedList = finishedArr;
+        finishedList.splice(key, 1);
+        setFinishedArr(finishedList);
+        setSubmitted(false);
+
         forceUpdate();
         return list;
     }
@@ -121,6 +152,14 @@ function SchedulerMealDay(props) {
         return list[meal_key].foods;
     }
 
+    function handleSubmitDay() {
+        props.submitDay(mealList, props.day);
+        for (var i = 0; i < mealListLength; i++) {
+            handleUpdateFinished(i, true);
+        }
+        setSubmitted(true);
+    }
+
     // Button to add a meal to list of meals
     function AddMealButton() {
         return (
@@ -130,14 +169,36 @@ function SchedulerMealDay(props) {
         );
     }
 
+    function SubmitDayButton() {
+        return (
+            <Button onClick={handleSubmitDay}>
+                {submitted ? 'Resubmit' : 'Submit'} Meals for {props.day}
+            </Button>
+        );
+    }
+
     return (
-        <Accordion.Item eventKey={props.index}>
+        <Accordion.Item eventKey={props.index} id={props.id}>
             <Accordion.Header>
-                <h5>Meals for {props.day}</h5>
+                <h5>
+                    Meals for {props.day}{' '}
+                    {!props.editable ? (
+                        <></>
+                    ) : submitted ? (
+                        <Badge pill>
+                            Submitted {mealListLength}{' '}
+                            {mealListLength === 1 ? 'meal' : 'meals'}
+                        </Badge>
+                    ) : (
+                        <Badge bg='secondary' pill>
+                            Meals not saved
+                        </Badge>
+                    )}
+                </h5>
             </Accordion.Header>
             <Accordion.Body>
                 <Stack gap={4}>
-                    {mealList.map((item) => (
+                    {mealList.map((item, i) => (
                         <SchedulerMealIndividual
                             key={item.key}
                             mealData={item}
@@ -146,17 +207,30 @@ function SchedulerMealDay(props) {
                             updateFoodHandler={handleUpdateFood}
                             updateMealHandler={handleUpdateMeal}
                             removeMealHandler={handleRemoveMeal}
+                            setSubmitted={setSubmitted}
+                            updateFinished={handleUpdateFinished}
+                            finished={finishedArr[i]}
+                            editable={props.editable}
                         />
                     ))}
                     {mealListLength === 0 ? (
                         <>
                             <h4 className='text-center'>No meals scheduled.</h4>
-                            <AddMealButton />
+                            {!props.editable ? <></> : <AddMealButton />}
                         </>
                     ) : mealListLength < 3 ? (
-                        <AddMealButton />
+                        <>
+                            {!props.editable ? (
+                                <></>
+                            ) : (
+                                <>
+                                    <AddMealButton />
+                                    <SubmitDayButton />
+                                </>
+                            )}
+                        </>
                     ) : (
-                        <></>
+                        <>{!props.editable ? <></> : <SubmitDayButton />}</>
                     )}
                 </Stack>
             </Accordion.Body>
