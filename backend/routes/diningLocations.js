@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 
 const Dining_Location = require("../models/DiningLocation");
+const Dining_Courts = require("../models/DiningCourt");
 
 // @route   GET /api/dining-locations
 // @desc    Get all dining-locations from collection
@@ -29,6 +30,25 @@ router.get("/:name", async (req, res) => {
     if (!dining_location)
       return res.status(400).json({ msg: "Dining Location does not exist" });
     res.json(dining_location);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
+// @route   GET /api/dining-locations/v2/onthego
+// @desc    Get all on the go locations
+// @access  Public
+router.get("/v2/onthego", async (req, res) => {
+  try {
+    var retarr = [];
+    const dining_locations = await Dining_Courts.find();
+      dining_locations.forEach((dcourt) => {
+        if (dcourt.name.includes("On-the-GO")) {
+          retarr.push(dcourt);
+        }
+      })
+    res.json(retarr);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");

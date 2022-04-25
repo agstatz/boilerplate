@@ -103,6 +103,12 @@ const User = mongoose.model(
         ref: "user_tags",
       },
     ],
+    favoriteFoods: [
+      {
+        type: mongoose.Schema.Types.String,
+        ref: "favoriteFoods",
+      },
+    ],
     locationsVisited: [locationsVisitedSchema],
   })
 );

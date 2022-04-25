@@ -21,6 +21,7 @@ const FoodSchema = mongoose.Schema({
   iron: String,
   dietaryTags: [String],
   ingredients: String,
+  aggregateRating: Number,
   userTags: [
     {
       type: mongoose.Schema.Types.ObjectId,

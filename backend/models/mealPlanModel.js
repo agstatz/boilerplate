@@ -17,13 +17,20 @@ const Meal_Plan = mongoose.model(
     owner: String,
     likes: Number,
     meals: [
-      {
-        food: {
-          name: String,
-          id: String,
-        },
-        day: String,
-      },
+        [
+            {
+                foods: [
+                    {
+                        key: Number,
+                        name: String,
+                        food_qty: Number,
+                    }
+                ],
+                key: Number,
+                location: String,
+                name: String,
+              },
+        ],
     ],
   })
 );

@@ -49,6 +49,7 @@ app.use("/api/foods", require("./routes/foods"));
 app.use("/api/meal-plans", require("./routes/mealplans"));
 app.use("/api/dining-locations", require("./routes/diningLocations"));
 app.use("/api/users", require("./routes/users"));
+app.use("/api/motd", require("./routes/motd"));
 
 // allows requests from host
 app.use(function (req, res, next) {
@@ -77,6 +78,8 @@ app.get("/Foods", (req, res) => {
   let diets = req.query.diets;
   let groups = req.query.groups;
   let cuisine = req.query.cuisine;
+
+  console.log("in foods here");
 
   if (search == null || search === "undefined") {
     search = "";
@@ -327,6 +330,26 @@ app.get("/Foods", (req, res) => {
       });
   });
   console.log("/foods sent");
+});
+
+app.get("/Foods_Rating_Data", (req, res) => {
+
+    MongoClient.connect(url, function (err, dbt) {
+    let db = dbt.db("boilerplate");
+    db.collection("foods")
+      .find({})
+      .toArray(function (err, result) {
+        if (err) throw err;
+        
+        result = result.map((a) => [
+            a._id,
+            a.name,
+            a.aggregateRating,
+        ]);
+        res.send(result);
+       });
+       
+    });
 });
 
 app.get("/Foods_Need_Update", (req, res) => {

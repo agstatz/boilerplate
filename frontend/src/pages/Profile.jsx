@@ -22,8 +22,10 @@ import {
   RecommendedFood,
   MealPlanList,
   RecommendedDiningCourtList,
-  DietaryInfo
+  DietaryInfo,
 } from "../components";
+
+import FavoriteFoodList from "../components/FavoriteFoodList";
 
 
 import { PageNotFound } from "./";
@@ -40,8 +42,8 @@ function Profile(props) {
 
   const { id } = useParams();
   const username = store.getState().app.username;
-  const mealSwipes = store.getState().app.mealSwipes;
   const [foods, setFoods] = useState([{}]);
+  const [mealSwipes, setMealSwipes] = useState(0);
 
   const handleLogout = () => {
     try {
@@ -114,6 +116,13 @@ function Profile(props) {
       "http://localhost:3001/api/foods/recommendations"
     );
     setFoods(response);
+
+    const { data: response2 } = await axios.get(
+      "http://localhost:3001/api/users/dietary/" + username
+    );
+    setMealSwipes(response2.mealSwipes);
+
+
 
     const getProfile = async () => {
       try {
@@ -245,6 +254,9 @@ function Profile(props) {
                     <Placeholder xs={6} />{' '}
                     <Placeholder xs={8} />
                   </Placeholder>
+                </Tab>
+                <Tab label="My Favorite Foods">
+                  <FavoriteFoodList username={username} />
                 </Tab>
               </Tabs>
               <ColoredLine />

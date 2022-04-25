@@ -134,23 +134,28 @@ function DietaryInfo(props) {
 
   return (
     <Container>
-      <div className="p-3 my-1 mx-4">
-        <h1>
+        <h1 className="px-4 py-3">
           <strong>Dietary Info</strong>
         </h1>
+      <div className="p-3 my-1 mx-4 border rounded" 
+        scrollable={true} 
+        style={{maxHeight: "calc(100vh - 200px)",
+                overflowY: "scroll",
+                overflowX: "hidden",
+                backgroundColor: "white"}}>
+        
         <br />
         <div>
           <Form>
             <Form.Group
               as={Row}
-              className="mb-3"
               controlId="formHorizontalEmail"
             >
               <Form.Label column sm={12}>
                 <h3>Restrictions:</h3>
               </Form.Label>
             </Form.Group>
-            <div className="p-3 my-4 mx-4 bg-light border rounded">
+            <div className="p-3 my-4 mx-4 bg-light border rounded" style={{maxWidth: "calc(100vw - 250px)"}}>
               <Stack gap={2}>
                 <h4>Dietary</h4>
               </Stack>
@@ -185,7 +190,7 @@ function DietaryInfo(props) {
                 />
               </Stack>
             </div>
-            <div className="p-3 my-4 mx-4 bg-light border rounded">
+            <div className="p-3 my-4 mx-4 bg-light border rounded" style={{maxWidth: "calc(100vw - 250px)"}}>
               <Stack gap={2}>
                 <h4>Dairy Allergy</h4>
               </Stack>
@@ -206,7 +211,7 @@ function DietaryInfo(props) {
                 />
               </Stack>
             </div>
-            <div className="p-3 my-4 mx-4 bg-light border rounded">
+            <div className="p-3 my-4 mx-4 bg-light border rounded" style={{maxWidth: "calc(100vw - 250px)"}}>
               <Stack gap={2}>
                 <h4>Gluten Allergy</h4>
               </Stack>
@@ -227,7 +232,7 @@ function DietaryInfo(props) {
                 />
               </Stack>
             </div>
-            <div className="p-3 my-4 mx-4 bg-light border rounded">
+            <div className="p-3 my-4 mx-4 bg-light border rounded" style={{maxWidth: "calc(100vw - 250px)"}}>
               <Stack gap={2}>
                 <h4>Nut Allergy</h4>
               </Stack>
@@ -248,7 +253,7 @@ function DietaryInfo(props) {
                 />
               </Stack>
             </div>
-            <div className="p-3 my-4 mx-4 bg-light border rounded">
+            <div className="p-3 my-4 mx-4 bg-light border rounded" style={{maxWidth: "calc(100vw - 250px)"}}>
               <Stack gap={2}>
                 <h4>Religious Restrictions</h4>
                 <Stack className="p-1 d-flex justify-content-center">
@@ -279,13 +284,12 @@ function DietaryInfo(props) {
             </div>
             <Form.Group
               as={Row}
-              className="mb-3"
               controlId="formHorizontalEmail"
             >
               <Form.Label column sm={12}>
                 <h3>Meal Plan Info:</h3>
               </Form.Label>
-            <div className="p-3 my-4 mx-4 bg-light border rounded">
+            <div className="p-3 my-4 mx-4 bg-light border rounded" style={{maxWidth: "calc(53vw - 250px)"}}>
               <Stack gap={2}>
                 <h4>Meal Swipes</h4>
                 <p>How many meal swipes do you have available per week?</p>
@@ -303,9 +307,9 @@ function DietaryInfo(props) {
               </Stack>
             </div>
             <Form.Label column sm={12}>
-                <h3>Cuisine Preferences:</h3>
+                <h3>Diet Preferences:</h3>
             </Form.Label>
-            <div className="p-3 my-4 mx-4 bg-light border rounded">
+            <div className="p-3 my-4 mx-4 bg-light border rounded" style={{maxWidth: "calc(53vw - 250px)"}}>
                 <h4>Select the types of cuisine you enjoy eating</h4>
                 <Stack gap={2}>
                     {cuisineList.map((listItem) => {
@@ -323,11 +327,16 @@ function DietaryInfo(props) {
                     
                 </Stack>
             </div>
-            <div className="p-3 my-4 mx-4 bg-light border rounded">
+            <div className="p-3 my-4 mx-4 bg-light border rounded" style={{maxWidth: "calc(53vw - 250px)"}}>
                 <h4>Favorite Dietary Tags</h4>
                 <Stack gap={2}>
-                    
-                    
+                    <p>No tag data available...</p>
+                </Stack>
+            </div>
+            <div className="p-3 my-4 mx-4 bg-light border rounded" style={{maxWidth: "calc(53vw - 250px)"}}>
+                <h4>Favorite Food Groups</h4>
+                <Stack gap={2}>
+                    <p>No food group data available...</p>
                 </Stack>
             </div>
             </Form.Group>

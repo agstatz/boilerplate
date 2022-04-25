@@ -14,6 +14,7 @@ import { store } from "../store/store.js";
 import UnauthorizedAccess from "../components/UnauthorizedAccess";
 const url = "http://localhost:3000/";
 const diningLocationSelectionUrl = url.concat("dining-location-selection");
+const motdEditUrl = url.concat("motd-edit");
 
 
 class AdminPanel extends React.Component {
@@ -52,6 +53,23 @@ class AdminPanel extends React.Component {
                   href={diningLocationSelectionUrl}
                 >
                   Edit Dining Locations
+                </Button>
+              </Stack>
+            </Container>
+            <Container
+              className="d-flex justify-content-center"
+              style={{
+                paddingTop: "1vh",
+                paddingLeft: "24vh",
+                paddingRight: "24vh",
+              }}
+            >
+              <Stack spacing={4}>
+                <Button
+                  className="mb-2 mt-3 btn btn-primary btn-sm"
+                  href={motdEditUrl}
+                >
+                  Edit Message of the Day
                 </Button>
               </Stack>
             </Container>

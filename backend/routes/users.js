@@ -25,4 +25,36 @@ router.get("/dietary/:username", async (req, res) => {
   }
 });
 
+router.get('/favorites/:username', async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.params.username });
+    
+    if (!user) return res.status(400).json({ msg: "User does not exist" });
+    if (user.favoriteFoods) {
+      let send = [];
+      for (food of user.favoriteFoods) {
+        send.push({name: food});
+      }
+      res.json(send);
+    } else {
+      res.json([]);
+    }  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+})
+
+router.delete('/favorites/remove/:username/:food', async (req, res) => {
+  try {
+    // let food_ = req.params.food.replace("_", " ");  // replace underscores with spaces
+    const user = await User.updateOne({ username: req.params.username }, { $pull: { favoriteFoods: req.params.food } });
+    if (!user) return res.status(400).json({ msg: "User does not exist" });
+    } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+})
+
+
+
 module.exports = router;
