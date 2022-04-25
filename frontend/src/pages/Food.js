@@ -6,6 +6,10 @@ import { StarRating } from "../components/";
 import { Stack, Row, Col, Container, Placeholder, Button, Modal, Form } from "react-bootstrap";
 import { store, ClearForm, UpdateForm } from "../store/store";
 import UserTags from "../components/UserTags";
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
+
+
 const url = 'http://localhost:3001/';
 
 var ress;
@@ -646,7 +650,35 @@ export default class Food extends React.Component {
                       {adminItems}
                   </Stack>
               </Container>
+
             </div>
+            <div className="pt-1 pb-2 p-3 my-4 mx-4 bg-light border rounded w-100">
+                <UserTags />
+                <Button className="mx-auto btn btn-secondary" hidden={this.state.isNotGuest !== true} onClick={this.handleOpen}>Add food tag</Button>
+                <Button onClick={(x) => {
+                console.log(x)
+                console.log(this.state);
+                axios.post("http://localhost:3001/api/user/add_favorite", 
+                  
+                  { 
+                   data: {
+                     user: this.state.username,
+                     food: this.state.queries.name
+                   }
+                     
+                  }
+                );
+                console.log('ntif')
+                NotificationManager.success(`Added ${this.state.queries.name.replaceAll('_', " ")} to favorites`, 'Success', 3000);
+                setTimeout(() => {
+                  NotificationManager.info(`${this.state.queries.name.replaceAll('_', " ")} is available this week on the menu!`, 'Favorite Available', 3000);
+                }, 1000)
+
+
+              }}>Add to favorites</Button>
+                {loggedInItems}
+            </div>
+            <NotificationContainer/>
             <Container style={{ paddingRight: '115vh'}}>
                 <Stack>
 
