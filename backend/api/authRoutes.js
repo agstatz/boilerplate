@@ -3,6 +3,7 @@ const { checkTagNotExists } = require("../middleware/tagChecking");
 const controller = require("../controllers/authController");
 const foodController = require("../controllers/foodController");
 const bodyParser = require("body-parser");
+const CommentReport = require("../models/commentReportModel");
 
 module.exports = function (app) {
   app.use(function (req, res, next) {
@@ -24,6 +25,22 @@ module.exports = function (app) {
     bodyParser.json(),
     foodController.addUserCreatedTag
   );
+  app.post("/api/reportComment", bodyParser.json(), (req, res) => {
+    const commentReport = new CommentReport({
+      commentId: req.body.data.commentID,
+      
+    });
+    commentReport.save((err, commentReport) => {
+      if (err) {
+        console.log(err)
+        res.status(500).send({ message: err });
+        return;
+      }
+      res.send({ message: "Comment reported successfully!" });
+    });
+    console.log('comment reported')
+
+  });
   app.post("/api/signinuser", bodyParser.json(), controller.signinUser);
   app.post("/api/editUser", bodyParser.json(), controller.editUser);
   app.post("/api/resetUser", bodyParser.json(), controller.resetUser);

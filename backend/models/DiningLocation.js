@@ -37,4 +37,5 @@ const DiningLocationSchema = mongoose.Schema({
   courses: [coursesSchema],
 });
 
+
 module.exports = mongoose.model("locations", DiningLocationSchema);

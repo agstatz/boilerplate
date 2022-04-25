@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 
 import CommentForm from "./CommentForm";
@@ -29,6 +30,11 @@ const Comment = (props) => {
     activeComment.id === comment.id;
 
   const replyID = parentID ? parentID : comment.id;
+
+  const reportComment = (commentID) => {
+    console.log('reporting comment', commentID);
+    axios.post('http://localhost:3001/api/reportComment', { data: {commentID} });
+  }
 
   return (
     <div className="comment">
@@ -78,6 +84,20 @@ const Comment = (props) => {
               onClick={() => deleteComment(comment.id)}
             >
               Delete
+            </div>
+          )}
+          {(
+            <div
+              className="comment-action"
+              onClick={() =>{
+                // console.log(comment.id, userID)
+                reportComment(comment.id, userID);
+                
+              }
+                
+              }
+            >
+              Report
             </div>
           )}
         </div>

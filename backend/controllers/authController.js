@@ -1,11 +1,15 @@
 const dbm = require("../models");
 const User = require("../models/userModel");
+const CommentReport = require("../models/commentReportModel");
 const Food_Tag = require("../models/foodTagsModel");
 const Food_Tag_Type = require("../models/foodTagTypeModel");
 const config = require("../config/authConfig.js");
 const PrivilegeClass = dbm.privilege_classes;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
+
+
+  
 
 // create a new user
 exports.registerUser = (req, res) => {
@@ -163,6 +167,10 @@ exports.editUser = (req, res) => {
     });
   });
 };
+
+exports.reportComment = (req, res) => {
+
+}
 
 exports.addFavorite = (req, res) => {
 console.log(req.body)
