@@ -49,6 +49,7 @@ import {
     DiningLocationsSelection,
     AddLocation,
     EditFood,
+    MotDEditor,
 } from './pages';
 import { Footer } from './components';
 //import Scheduler from './pages/Scheduler';
@@ -247,6 +248,7 @@ function App() {
                     <Route path='/food' component={Food} />
                     <Route path='/dining_courts' component={Dining_Courts} />
                     <Route path='/edit_food' component={EditFood} />
+                    <Route path='/motd-edit' component={MotDEditor} />
                     <Route
                         path='/post_food_update'
                         component={PostFoodUpdate}
