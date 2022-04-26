@@ -37,7 +37,19 @@ function MealPlanIndividual() {
             const { data: response } = await axios.get(
                 `http://localhost:3001/api/meal-plans/${id}`
             );
+
             setMealPlan(response);
+
+            if (username) {
+                const { data: response } = await axios.get(
+                    'http://localhost:3001/api/meal-plan-like?mealplan=' +
+                        id +
+                        '&user=' +
+                        username
+                );
+
+                setLiked(response.like);
+            }
             setLoading(false);
         } catch (err) {
             console.error(err);
@@ -101,6 +113,24 @@ function MealPlanIndividual() {
             });
     };
 
+    const updateLikes = (newLikesValue) => {
+        axios
+            .put(`http://localhost:3001/api/meal-plans/${id}`, {
+                _id: mealPlan._id,
+                name: mealPlan.name,
+                owner: mealPlan.owner,
+                meals: mealPlan.meals,
+                likes: newLikesValue,
+                private: mealPlan.private,
+            })
+            .then(function (response) {
+                setEditable(false);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
     function handleMealScheduleChange(e) {
         if (editable) {
             setMealPlan({
@@ -121,17 +151,53 @@ function MealPlanIndividual() {
 
     function LikeButton() {
         return (
-            <h3 style={{ cursor: 'pointer' }} onClick={handleLikeButton}>
+            <h3>
                 {liked ? (
-                    <i className='bi bi-hand-thumbs-up-fill'></i>
+                    <i
+                        className='bi bi-hand-thumbs-up-fill'
+                        style={{ cursor: 'pointer' }}
+                        onClick={handleLikeButton}
+                    ></i>
                 ) : (
-                    <i className='bi bi-hand-thumbs-up'></i>
+                    <i
+                        className='bi bi-hand-thumbs-up'
+                        style={{ cursor: 'pointer' }}
+                        onClick={handleLikeButton}
+                    ></i>
                 )}
             </h3>
         );
     }
 
     function handleLikeButton() {
+        let newLikeQuantity = mealPlan.likes;
+
+        if (!liked) {
+            newLikeQuantity++;
+        } else {
+            newLikeQuantity--;
+        }
+
+        setMealPlan({
+            ...mealPlan,
+            likes: newLikeQuantity,
+        });
+
+        console.log('changing like to ' + !liked);
+
+        const { data: response } = axios.put(
+            'http://localhost:3001/api/meal-plan-like?mealplan=' +
+                id +
+                '&user=' +
+                username +
+                '&like=' +
+                !liked
+        );
+
+        console.log(response);
+
+        updateLikes(newLikeQuantity);
+
         setLiked(!liked);
     }
 
@@ -259,9 +325,9 @@ function MealPlanIndividual() {
                             ? 'No one has liked this meal plan.'
                             : mealPlan.likes === 1
                             ? '1 person liked this meal plan.'
-                            : mealPlan.likes + ' liked this meal plan'}
+                            : mealPlan.likes + ' likes'}
                     </h5>
-                    <LikeButton liked={false} />
+                    <LikeButton />
                 </div>
             ) : (
                 <></>

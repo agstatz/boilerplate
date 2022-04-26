@@ -47,6 +47,7 @@ app.use(express.urlencoded({ extended: true }));
 // Food route
 app.use("/api/foods", require("./routes/foods"));
 app.use("/api/meal-plans", require("./routes/mealplans"));
+app.use("/api/meal-plan-like", require("./routes/mealplanlikes"));
 app.use("/api/dining-locations", require("./routes/diningLocations"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/motd", require("./routes/motd"));
@@ -845,10 +846,12 @@ try {
       db.createCollection("users", function (err, res) {});
       db.createCollection("privilege_classes", function (err, res) {});
       db.createCollection("foods", function (err, res) {});
+      db.createCollection("food_ratings", function (err, res) {});
       db.createCollection("food_categories", function (err, res) {});
       db.createCollection("visits", function (err, res) {});
       db.createCollection("intake_plans", function (err, res) {});
       db.createCollection("meal_plans", function (err, res) {});
+      db.createCollection("meal_plan_like", function (err, res) {});
       db.createCollection("universities", function (err, res) {});
       db.createCollection("locations", function (err, res) {});
       db.createCollection("course_schedules", function (err, res) {});

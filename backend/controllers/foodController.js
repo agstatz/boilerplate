@@ -234,7 +234,6 @@ exports.getFoodRating = async (req, res) => {
           return;
         }
         if (!foodRating) {
-          console.log("eror1");
           FoodRating.create(
             { ownerName: queryUser, food: queryFood, rating: 0 },
             function (err, newFoodRating) {
