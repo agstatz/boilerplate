@@ -6,7 +6,7 @@
  */
 
 import { Container, Form, Row, Col, Button, Accordion } from 'react-bootstrap';
-import { SchedulerMealDay } from '../components/';
+import { SchedulerMealDay } from '../components/Scheduler/';
 import { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { store } from '../store/store';

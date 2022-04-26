@@ -10,7 +10,7 @@ import { Container, Button, Row, Col, Form, Accordion } from 'react-bootstrap';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { store } from '../store/store.js';
-import { SchedulerMealDay } from '../components';
+import { SchedulerMealDay } from '../components/Scheduler';
 import { useHistory } from 'react-router-dom';
 import GuestUserRedirect from '../components/GuestUserRedirect';
 

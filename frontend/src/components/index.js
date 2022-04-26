@@ -12,7 +12,7 @@ export { default as UserTags } from "./UserTags";
 export { default as UserTagsList } from "./UserTagsList";
 export { default as DietaryInfo } from "./DietaryInfo";
 export { default as FoodRatingList } from "./FoodRatingList";
-export { default as SchedulerMealDay } from "./SchedulerMealDay";
-export { default as SchedulerMealIndividual } from "./SchedulerMealIndividual";
-export { default as SchedulerFoodIndividual } from "./SchedulerFoodIndividual";
+/*export { default as SchedulerMealDay } from "./Scheduler/SchedulerMealDay";
+export { default as SchedulerMealIndividual } from "./Scheduler/SchedulerMealIndividual";
+export { default as SchedulerFoodIndividual } from "./Scheduler/SchedulerFoodIndividual";*/
 export { default as MotD } from "./MotD";
