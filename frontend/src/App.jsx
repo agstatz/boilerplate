@@ -49,6 +49,8 @@ import {
     DiningLocationsSelection,
     AddLocation,
     EditFood,
+    Friend,
+    PostFriend,
     MotDEditor,
 } from './pages';
 import CommentReports from './pages/CommentReports';
@@ -181,10 +183,10 @@ function App() {
                 <Container className='justify-content-end'>
                     <Nav className='nav-text'>
                         <Nav.Link href='/'>
-                            <i className='bi bi-house-door-fill'></i> Home
+                            <i class='bi bi-house-door-fill'></i> Home
                         </Nav.Link>
                         <Nav.Link href='/popular'>
-                            <i className='bi bi-graph-up'></i> Popular
+                            <i class='bi bi-graph-up'></i> Popular
                         </Nav.Link>
                         <NavDropdown title='Meal Plans'>
                             <NavDropdown.Item href='/meal-plans'>
@@ -211,6 +213,17 @@ function App() {
                             }
                             hidden={isNotGuest !== true}
                         >
+                            <i class='bi bi-person-fill'></i> Profile
+                        </Nav.Link>
+                        <Nav.Link
+                            href={
+                                isNotGuest === true
+                                    ? `/Friend`
+                                    : '/'
+                            }
+                            hidden={isNotGuest !== true}
+                        >
+                            <i class='bi bi-person-fill'></i> Friends
                             <i className='bi bi-person-fill'></i> Profile
                         </Nav.Link>
                         <Nav.Link
@@ -256,6 +269,7 @@ function App() {
                         component={PostFoodUpdate}
                     />
                     <Route path='/post_tried' component={PostTried} />
+                    <Route path='/post_friend' component={PostFriend} />
                     <Route
                         path='/foods_need_update'
                         component={FoodsNeedUpdate}
@@ -271,6 +285,7 @@ function App() {
                         component={DiningLocationsSelection}
                     />
                     <Route path='/edit-location' component={EditLocation} />
+                    <Route path='/friend' component={Friend} />
                     <Route path='/add-location' component={AddLocation} />
                     <Route path='/admin-panel' component={AdminPanel} />
                     <Route path='/search' component={Search} />

@@ -43,13 +43,42 @@ export default class FoodsTried extends React.Component {
       this.state.username !== ""
     ) {
       try {
+        let user = this.state.username;
+        if (this.state.queries.user != null && this.state.queries.user !== "undefined" && this.state.queries.user !== "") {
+          user = this.state.queries.user;
+        }
         response = await axios.get(
-          url + "Foods_Tried?username=" + this.state.username
+          url + "Foods_Tried?requester=" +
+            this.state.queries.user +
+            "&username=" +
+            user
         );
       } catch (error) {
         console.log("error");
       } finally {
-        console.log(response.data[0]);
+        if (response.data[0] == null || response.data[0] === "undefined" || response.data[0] === "") {
+          response.data[0] = [];
+        }
+        let name = ""
+        if (
+            this.state.queries.user != null &&
+            this.state.queries.user !== "undefined" &&
+            this.state.queries.user !== "" &&
+            this.state.queries.user !== this.state.username
+        ) {
+          name = this.state.queries.user + " Has"
+        } else {
+          name = "You Have"
+        }
+
+        this.state.html.push(
+          <h1
+          className="App-title"
+          style={{ textAlignVertical: "center", textAlign: "center" }}>
+            <strong>Foods That {name} Tried</strong>
+          </h1>
+        )
+
         for (let i = 0; i < response.data[0].length; i++) {
           this.state.html.push(<ColoredLine id={"line" + i} color="grey" />);
           this.state.html.push(
@@ -112,12 +141,6 @@ export default class FoodsTried extends React.Component {
       <div className="App">
         <Container style={{ paddingTop: "18vh", paddingBottom: "18vh" }}>
           <header className="App-header p-3 my-4 mx-4 bg-light border rounded">
-            <h1
-              className="App-title"
-              style={{ textAlignVertical: "center", textAlign: "center" }}
-            >
-              <strong>Foods That You Have Tried</strong>
-            </h1>
             {listItems}
           </header>
         </Container>

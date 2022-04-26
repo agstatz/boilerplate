@@ -145,6 +145,7 @@ function Profile(props) {
     ));
   }
 
+
   function likeDislike(liked) {
     const radios = [
       { name: "Like", value: "1" },
@@ -192,7 +193,7 @@ function Profile(props) {
                 <h5>
                   <strong>{id ? id : "username"}</strong>
                 </h5>
-                {username === id ? (
+                {username === id ? (//For user
                   <Stack gap="3">
                     <Button
                       href={`/edit/${id}`}
@@ -215,9 +216,22 @@ function Profile(props) {
                     >
                       Reset Account
                     </Button>
+                    <Button
+                        href={'/Foods_Tried'}
+                        className="btn-sm"
+                        variant="outline-primary"
+                    >
+                      Foods that I have tried
+                    </Button>
                   </Stack>
-                ) : (
-                  <></>
+                ) : (//For friends
+                    <Button
+                        href={'/Foods_Tried?user=' + id}
+                        className="btn-sm"
+                        variant="outline-primary"
+                    >
+                      Foods that {id} has tried
+                    </Button>
                 )}
                 <Row className="mt-3">
                   <Col className="text-center">
@@ -241,12 +255,21 @@ function Profile(props) {
           <Card className="my-3" bg="light">
             <Card.Body>
               <Tabs className="mx-3">
-                <Tab label="My Meal Plans">
-                  <MealPlanList filterValue={id} />
-                </Tab>
-                <Tab label="My Dietary Info">
-                  <DietaryInfo />
-                </Tab>
+                {username === id ? (//For user
+                    <Tab label="My Meal Plans">
+                      <MealPlanList filterValue={id} />
+                    </Tab>
+                ) : (//For friend
+                    <Tab label={id + "'s Meal Plans"}>
+                      <MealPlanList filterValue={id} />
+                    </Tab>)
+                }
+                {username === id ? (//friends are unable to see this section
+                    <Tab label="My Dietary Info">
+                      <DietaryInfo />
+                    </Tab>
+                ) : (<></>)
+                }
                 <Tab label="Meal History">
                   <Placeholder animation="glow" size="lg">
                     <Placeholder xs={4} />{' '}
@@ -295,48 +318,51 @@ function Profile(props) {
             </Card.Body>
           </Card>
         </Col>
-        <Col sm={12}>
-          <Card className="my-3" bg="light">
-            <Card.Header className="h5">
-              <strong>Recommended</strong>
-            </Card.Header>
-            <Card.Body>
-              <Card.Text>
-                Here are some recommendations based on your history and
-                feedback:
-              </Card.Text>
-              <Row>
-                <Col>
-                  <Card.Text>Food Items:</Card.Text>
-                  <Container>
-                    <Stack gap={2}>{foodItems()}</Stack>
-                  </Container>{" "}
-                </Col>
+        {username === id ? (//friends are unable to see this section
+          <Col sm={12}>
+            <Card className="my-3" bg="light">
+              <Card.Header className="h5">
+                <strong>Recommended</strong>
+              </Card.Header>
+              <Card.Body>
+                <Card.Text>
+                  Here are some recommendations based on your history and
+                  feedback:
+                </Card.Text>
+                <Row>
+                  <Col>
+                    <Card.Text>Food Items:</Card.Text>
+                    <Container>
+                      <Stack gap={2}>{foodItems()}</Stack>
+                    </Container>{" "}
+                  </Col>
 
-                <Col>
-                  <Card.Text>Dining Courts:</Card.Text>
-                  <RecommendedDiningCourtList />
-                </Col>
-              </Row>
-              <br />
-              <Container className="d-flex justify-content-center">
-                <Button
-                  className="mx-2"
-                  onClick={async () => {
-                    fetch(`http://localhost:3001/api/foods/recommendations`)
-                      .then((res) => res.json())
-                      .then((data) => {
-                        setFoods(data);
-                      });
-                  }}
-                >
-                  Generate Recommendations{" "}
-                  <i className="bi bi-chevron-right"></i>
-                </Button>
-              </Container>
-            </Card.Body>
-          </Card>
-        </Col>
+                  <Col>
+                    <Card.Text>Dining Courts:</Card.Text>
+                    <RecommendedDiningCourtList />
+                  </Col>
+                </Row>
+                <br />
+                <Container className="d-flex justify-content-center">
+                  <Button
+                    className="mx-2"
+                    onClick={async () => {
+                      fetch(`http://localhost:3001/api/foods/recommendations`)
+                        .then((res) => res.json())
+                        .then((data) => {
+                          setFoods(data);
+                        });
+                    }}
+                  >
+                    Generate Recommendations{" "}
+                    <i className="bi bi-chevron-right"></i>
+                  </Button>
+                </Container>
+              </Card.Body>
+            </Card>
+          </Col>
+        ) : (<></>)
+        }
       </Row>
     </Container>
   );

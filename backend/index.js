@@ -836,6 +836,276 @@ app.post("/Tried_Food", (req, res) => {
   });
 });
 
+app.get("/Friends", (req, res) => {
+  MongoClient.connect(url, function (err, dbt) {
+    if (err) throw err;
+    let db = dbt.db("boilerplate");
+    db.collection("users")
+        .find({ username: req.query.username })
+        .toArray(async function (err, result) {
+          console.log(req.query.username)
+          if (err) throw err;
+          result = result.map((a) => [a.friends, a.friendRequests]); //filters only the names of foods
+          result = result.sort((a, b) => a.localeCompare(b)); //sorts names alphabetically
+          result[2] = await getEatings(db, result[0][0])
+          console.log(result);
+          res.send(result);
+          console.log("/Friends sent");
+        });
+  });
+});
+
+app.get("/Eating_At", (req, res) => {
+  MongoClient.connect(url, function (err, dbt) {
+    if (err) throw err;
+    let db = dbt.db("boilerplate");
+    db.collection("users")
+        .find({ username: req.query.username })
+        .toArray(async function (err, result) {
+          console.log(req.query.username)
+          if (err) throw err;
+          if (result.length !== 0 ) {
+            result = result[0].eatingAt;
+            console.log(result)
+            res.send(result);
+          } else {
+            res.send("")
+          }
+          console.log("/Eating_At sent");
+        });
+  });
+});
+
+async function getEatings(db, users) {
+  result = []
+  for (let i = 0; i < users.length; i++) {
+    let b = await getEating(db, users[i])
+    result.push(b)
+  }
+  return result;
+}
+
+async function getEating(db, user) {
+  console.log("geteating:" + user)
+  let ret = await getResults(db, user);
+  ret = ret[0].eatingAt;
+  if (ret == null || ret === "undefined") {
+    ret = ""
+  }
+  return ret
+}
+async function getResults(db, user) {
+  return db.collection("users")
+      .find({ username: user })
+      .toArray();
+}
+
+app.post("/Add_Friend", (req, res) => {
+  MongoClient.connect(url, function (err, dbt) {
+    console.log("Adding friend");
+    console.log(req.query);
+    let db = dbt.db("boilerplate");
+    if (req.query.username === req.query.friend) {
+      res.send("You cannot send a friend request to yourself.")
+    } else {
+      db.collection("users")
+          .find({username: req.query.username})
+          .toArray(function (err, result) {
+            if (err) throw err;
+            if (result.length === 0) {
+              res.send("User does not exist.");
+            } else {
+              db.collection("users")
+                  .find({username: req.query.friend})
+                  .toArray(function (err, result) {
+                    if (result.length === 0) {
+                      res.send("User " + req.query.friend + " does not exist.");
+                    } else {
+                      let friend = result[0].friends
+                      let request = result[0].friendRequests
+                      console.log(friend)
+                      console.log(request)
+
+                      if (
+                          friend == null ||
+                          friend === "undefined" ||
+                          friend === ""
+                      ) {
+                        friend = [];
+                      }
+                      if (
+                          request == null ||
+                          request === "undefined" ||
+                          request === ""
+                      ) {
+                        request = [];
+                      }
+                      if (request.includes(req.query.username)) {
+                        res.send("You have already sent a friend request to " + req.query.friend + ".");
+                      } else {
+                        if (friend.includes(req.query.username)) {
+                          res.send(req.query.friend + " is already your friend.")
+                        } else {
+                          request.push(req.query.username);
+                          const updateDoc = {
+                            $set: {
+                              friendRequests: request,
+                            },
+                          };
+                          ret = db
+                              .collection("users")
+                              .updateOne({username: req.query.friend}, updateDoc);
+                          res.send("Friend request was sent successfully.");
+                        }
+                      }
+                    }
+                  });
+            }
+          });
+    }
+  });
+});
+
+app.post("/Accept_Friend", (req, res) => {
+  MongoClient.connect(url, function (err, dbt) {
+    console.log("Accepting friend");
+    console.log(req.query);
+    let db = dbt.db("boilerplate");
+    db.collection("users")
+        .find({username: req.query.username})
+        .toArray(function (err, result) {
+          if (err) throw err;
+          if (result.length === 0) {
+            res.send("User does not exist.");
+          } else {
+            let friend = result[0].friends
+            let request = result[0].friendRequests
+            if (
+                friend == null ||
+                friend === "undefined" ||
+                friend === ""
+            ) {
+              friend = [];
+            }
+            if (
+                request == null ||
+                request === "undefined" ||
+                request === ""
+            ) {
+              request = [];
+            }
+            if (!request.includes(req.query.friend)) {
+              res.send(req.query.friend + " has not sent you any friend request.");
+            } else {
+              if (friend.includes(req.query.friend)) {
+                res.send(req.query.friend + " is already your friend.");
+              } else {
+                friend.push(req.query.friend);
+                request = request.filter(e => e !== req.query.friend);
+                const updateDoc = {
+                  $set: {
+                    friendRequests: request,
+                    friends: friend,
+                  },
+                };
+                ret = db
+                    .collection("users")
+                    .updateOne({username: req.query.username}, updateDoc);
+                db.collection("users")
+                    .find({username: req.query.friend})
+                    .toArray(function (err, result) {
+                      if (result.length === 0) {
+                        res.send("User " + req.query.friend + " does not exist.");
+                      }
+                      let friend = result[0].friends
+                      if (
+                          friend == null ||
+                          friend === "undefined" ||
+                          friend === ""
+                      ) {
+                        friend = [];
+                      }
+                      friend.push(req.query.username);
+                      const updateDoc = {
+                        $set: {
+                          friends: friend,
+                        },
+                      };
+                      ret = db
+                          .collection("users")
+                          .updateOne({username: req.query.friend}, updateDoc);
+                      res.send("Friend request was accepted successfully.");
+                    });
+              }
+            }
+          }
+        });
+  });
+});
+
+app.post("/Remove_Friend", (req, res) => {
+  MongoClient.connect(url, function (err, dbt) {
+    console.log("Removing friend");
+    console.log(req.query);
+    let db = dbt.db("boilerplate");
+    db.collection("users")
+        .find({username: req.query.username})
+        .toArray(function (err, result) {
+          if (err) throw err;
+          if (result.length === 0) {
+            res.send("User does not exist.");
+          } else {
+            let friend = result[0].friends
+            if (
+                friend == null ||
+                friend === "undefined" ||
+                friend === ""
+            ) {
+              friend = [];
+            }
+            if (!friend.includes(req.query.friend)) {
+              res.send(req.query.friend + " is not your friend.");
+            } else {
+              friend = friend.filter(e => e !== req.query.friend);
+              const updateDoc = {
+                $set: {
+                  friends: friend,
+                },
+              };
+              ret = db
+                  .collection("users")
+                  .updateOne({username: req.query.username}, updateDoc);
+              db.collection("users")
+                  .find({username: req.query.friend})
+                  .toArray(function (err, result) {
+                    if (result.length === 0) {
+                      res.send("User " + req.query.friend + " does not exist.");
+                    }
+                    let friend = result[0].friends
+                    if (
+                        friend == null ||
+                        friend === "undefined" ||
+                        friend === ""
+                    ) {
+                      friend = [];
+                    }
+                    friend = friend.filter(e => e !== req.query.username);
+                    const updateDoc = {
+                      $set: {
+                        friends: friend,
+                      },
+                    };
+                    ret = db
+                        .collection("users")
+                        .updateOne({username: req.query.friend}, updateDoc);
+                    res.send("Friend was removed successfully.");
+                  });
+            }
+          }
+        });
+  });
+});
+
 // Ensure database exists
 try {
   if (requireDatabase) {
