@@ -3,6 +3,8 @@ import React from "react";
 import { store } from "../../store/store";
 
 import CommentForm from "./CommentForm";
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+
 
 const Comment = (props) => {
   const {
@@ -46,6 +48,8 @@ const Comment = (props) => {
 
   return (
     <div className="comment">
+      <NotificationContainer/>
+
       <div className="comment-image-container">
         <img src="/boilerplate_icon_small.png" />
       </div>
@@ -100,6 +104,7 @@ const Comment = (props) => {
               onClick={() =>{
                 // console.log(comment.id, userID)
                 reportComment(comment.id, userID);
+                NotificationManager.success('Comment reported!', 'Success', 3000);
                 
               }
                 

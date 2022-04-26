@@ -84,7 +84,7 @@ class AdminPanel extends React.Component {
               <Stack spacing={4}>
                 <Button
                   className="mb-2 mt-3 btn btn-primary btn-sm"
-                  href={motdEditUrl}
+                  href="/admin-panel/reports"
                 >
                   View Reported Comments
                 </Button>
