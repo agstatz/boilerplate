@@ -254,22 +254,14 @@ function Profile(props) {
         <Col xs={6} sm={7} md={8} lg={9} xl={9}>
           <Card className="my-3" bg="light">
             <Card.Body>
+              {username === id ? (//For user
               <Tabs className="mx-3">
-                {username === id ? (//For user
-                    <Tab label="My Meal Plans">
-                      <MealPlanList filterValue={id} />
-                    </Tab>
-                ) : (//For friend
-                    <Tab label={id + "'s Meal Plans"}>
-                      <MealPlanList filterValue={id} />
-                    </Tab>)
-                }
-                {username === id ? (//friends are unable to see this section
-                    <Tab label="My Dietary Info">
-                      <DietaryInfo />
-                    </Tab>
-                ) : (<></>)
-                }
+                <Tab label="My Meal Plans">
+                  <MealPlanList filterValue={id} />
+                </Tab>
+                <Tab label="My Dietary Info">
+                  <DietaryInfo />
+                </Tab>
                 <Tab label="Meal History">
                   <Placeholder animation="glow" size="lg">
                     <Placeholder xs={4} />{' '}
@@ -282,6 +274,24 @@ function Profile(props) {
                   <FavoriteFoodList username={username} />
                 </Tab>
               </Tabs>
+              ) : (//For other users
+                  <Tabs className="mx-3">
+                    <Tab label={id + "'s Meal Plans"}>
+                      <MealPlanList filterValue={id} />
+                    </Tab>
+                    <Tab label="Meal History">
+                      <Placeholder animation="glow" size="lg">
+                        <Placeholder xs={4} />{' '}
+                        <Placeholder xs={2} />{' '}<Placeholder xs={4} />
+                        <Placeholder xs={6} />{' '}
+                        <Placeholder xs={8} />
+                      </Placeholder>
+                    </Tab>
+                    <Tab label="id + 's Favorite Foods">
+                      <FavoriteFoodList username={username} />
+                    </Tab>
+                  </Tabs>
+              )}
               <ColoredLine />
               <Row className="mt-3">
                 <Col className="text-center">

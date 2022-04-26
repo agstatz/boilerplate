@@ -224,7 +224,6 @@ function App() {
                             hidden={isNotGuest !== true}
                         >
                             <i class='bi bi-person-fill'></i> Friends
-                            <i className='bi bi-person-fill'></i> Profile
                         </Nav.Link>
                         <Nav.Link
                             href={isAdmin === true ? `/admin-panel` : '/'}
