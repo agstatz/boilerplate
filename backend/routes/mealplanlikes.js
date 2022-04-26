@@ -13,26 +13,42 @@ router.get("/", async (req, res) => {
     try {
       const queryMealPlan = req.query.mealplan;
       const queryUser = req.query.user;
-  
-      Meal_Plan_Like.findOne({ownerName: queryUser, mealPlan: queryMealPlan}).exec((err, mealPlanLike) => {
-          if (err) {
-            Meal_Plan_Like.create({
-                ownerName: queryUser,
-                mealPlan: queryMealPlan,
-                like: false,
-            });
-          }
 
-          if (!mealPlanLike) {
+      if (queryMealPlan && queryUser) {
+          // get a specific meal plan like
+        Meal_Plan_Like.findOne({ownerName: queryUser, mealPlan: queryMealPlan}).exec((err, mealPlanLike) => {
+            if (err) {
               Meal_Plan_Like.create({
                   ownerName: queryUser,
                   mealPlan: queryMealPlan,
                   like: false,
               });
-          }
+            }
+  
+            if (!mealPlanLike) {
+                Meal_Plan_Like.create({
+                    ownerName: queryUser,
+                    mealPlan: queryMealPlan,
+                    like: false,
+                });
+            }
+  
+            res.status(200).send(mealPlanLike);
+        });
+      } else {
+        // get a group of meal plan likes
+        if (queryUser) {
+            Meal_Plan_Like.find({ownerName: queryUser}).exec((err, mealPlanLike) => {
+                if (err) {
+                    res.status(500).send("Server error");
+                }
 
-          res.status(200).send(mealPlanLike);
-      });
+                res.status(200).send(mealPlanLike);
+            });
+        } 
+      }
+  
+      
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server error");
