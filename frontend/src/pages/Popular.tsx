@@ -44,7 +44,7 @@ function Popular() {
       <div className="p-3 my-4 mx-4 bg-light border rounded">
         <Stack gap={2}>
             <h1><strong>Popular - Meal Plans</strong></h1>
-            <MealPlanList defaultSorted={"likes"} />
+            <MealPlanList defaultSorted={"likes"} filterValue="private" />
         </Stack>
       </div>
     </Container>
