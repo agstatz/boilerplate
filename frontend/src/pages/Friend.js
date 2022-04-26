@@ -38,9 +38,17 @@ export default class Friend extends React.Component {
     this.callAPI();
   }
   submitButton = (event) => {
-    console.log(event.target.value)
     let string =
         "/Post_Friend?request=accept&add=" +
+        event.target.value +
+        "&username=" +
+        this.state.username
+    this.state.html.push(<Redirect to={string} />);
+    this.forceUpdate();
+  };
+  removeButton = (event) => {
+    let string =
+        "/Post_Friend?request=remove&add=" +
         event.target.value +
         "&username=" +
         this.state.username
@@ -69,7 +77,7 @@ export default class Friend extends React.Component {
       } catch (error) {
         console.log("error");
       } finally {
-        console.log(response.data[0][0])
+        console.log(response.data)
         for (let i = 0; i < response.data[0][0].length; i++) {
           this.state.html.push(<ColoredLine id={"line" + i} color="grey"/>);
           this.state.html.push(
@@ -80,6 +88,12 @@ export default class Friend extends React.Component {
                 {response.data[0][0][i]}
               </Link>
           );
+          this.state.html.push(
+              <Button className="float-end btn-sm" value={response.data[0][0][i]} onClick={this.removeButton}>Remove Friend</Button>
+          )
+          if (response.data[2][i] !== "") {
+            this.state.html.push(<a><br></br>Currently eating at: {response.data[2][i]}</a>)
+          }
         }
         if (response.data[0][0].length === 0 ) {
           this.state.html.push(<ColoredLine id={"fline"} color="grey"/>);
@@ -99,7 +113,7 @@ export default class Friend extends React.Component {
               </Link>
           );
           this.state.html2.push(
-              <Button value={response.data[0][1][i]} onClick={this.submitButton}>Accept</Button>
+              <Button className="float-end btn-sm" value={response.data[0][1][i]} onClick={this.submitButton}>Accept</Button>
           )
         }
         if (response.data[0][1].length === 0 ) {

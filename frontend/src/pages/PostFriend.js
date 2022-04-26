@@ -64,6 +64,27 @@ export default class PostFriend extends React.Component {
           this.setState({loading: false});
           this.forceUpdate();
         }
+      } else if (this.state.queries.request === "remove"){
+        try {
+          console.log("posting");
+          response = await axios.post(
+              url +
+              "Remove_Friend?" +
+              "username=" +
+              this.state.username +
+              "&friend=" +
+              this.state.queries.add +
+              ""
+          );
+        } catch (error) {
+          console.log("error");
+        } finally {
+          console.log(response.data);
+          let link = "/friend?message=" + response.data;
+          this.state.html.push(<Redirect to={link}/>);
+          this.setState({loading: false});
+          this.forceUpdate();
+        }
       } else {
         try {
           console.log("posting");
