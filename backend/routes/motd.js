@@ -9,7 +9,6 @@ const mongoose = require("mongoose");
 router.get("/main", async (req, res) => {
   try {
     const motd = await MotD.findOne( { name: "main" } );
-    console.log(motd);
     res.json(motd);
   } catch (err) {
     console.error(err.message);
@@ -21,8 +20,6 @@ router.get("/main", async (req, res) => {
 // @desc    update main motd
 // @access  Public
 router.post("/main", async (req, res) => {
-  console.log("got:\n");
-  console.log(req.body);
   const motd_id = new mongoose.Types.ObjectId();
   try {
     const motd = new MotD({
@@ -50,7 +47,6 @@ router.post("/main", async (req, res) => {
 // @access  Public
 router.put("/main", async (req, res) => {
   try {
-    console.log(req.body);
     const motd = await MotD.findOne( { name: "main" } );
     if (!motd)
       return res.status(400).json({ msg: "MotD not found." });

@@ -72,22 +72,40 @@ export default class LoginForm extends React.Component {
                     data: userInfo,
                 })
                 .then((res) => {
-                    console.log(res.data);
-                    store.dispatch(UpdateForm('password', this.state.password));
-                    store.dispatch(UpdateForm('username', this.state.username));
-                    store.dispatch(UpdateForm('isAdmin', res.data.admin));
-                    store.dispatch(UpdateForm('isNotGuest', true));
-                    store.dispatch(
-                        UpdateForm('isModerator', res.data.moderator)
-                    );
-                    store.dispatch(
-                        UpdateForm('isDiningStaff', res.data.diningStaff)
-                    );
-                    const { history } = this.props;
-                    if (history) {
-                        history.push(`/profile/${this.state.username}`);
-                        window.location.reload();
-                    }
+                    var userRes = res;
+                    axios
+                        .get("http://localhost:3001/api/users/isbanned/" + this.state.username)
+                        .then((res2) => {
+                            console.log(res2.data);
+                            if (res2.data.isBanned) {
+                                var temp = "This account has been banned. Reason given: " + res2.data.reason;
+                                this.setState({
+                                    message: temp
+                                });
+                            }
+                            else {
+                                store.dispatch(UpdateForm('password', this.state.password));
+                                store.dispatch(UpdateForm('username', this.state.username));
+                                store.dispatch(UpdateForm('isAdmin', userRes.data.admin));
+                                store.dispatch(UpdateForm('isNotGuest', true));
+                                store.dispatch(
+                                    UpdateForm('isModerator', userRes.data.moderator)
+                                );
+                                store.dispatch(
+                                    UpdateForm('isDiningStaff', userRes.data.diningStaff)
+                                );
+                                const { history } = this.props;
+                                if (history) {
+                                    history.push(`/profile/${this.state.username}`);
+                                    window.location.reload();
+                                }
+                            }
+                        })
+                        .catch((err) => {
+                            this.setState({
+                                message: 'Your password or username is incorrect',
+                            });
+                        });
                 })
                 .catch((err) => {
                     this.setState({

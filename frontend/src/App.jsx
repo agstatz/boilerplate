@@ -50,6 +50,7 @@ import {
     AddLocation,
     EditFood,
     MotDEditor,
+    BanUser,
 } from './pages';
 import CommentReports from './pages/CommentReports';
 import { Footer } from './components';
@@ -272,6 +273,7 @@ function App() {
                     />
                     <Route path='/edit-location' component={EditLocation} />
                     <Route path='/add-location' component={AddLocation} />
+                    <Route path='/admin-panel/ban-user/:username' component={BanUser} />
                     <Route path='/admin-panel' component={AdminPanel} />
                     <Route path='/search' component={Search} />
                     <Route path='*' component={PageNotFound} />

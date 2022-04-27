@@ -23,6 +23,7 @@ import {
   MealPlanList,
   RecommendedDiningCourtList,
   DietaryInfo,
+  BanUserButton,
 } from "../components";
 
 import FavoriteFoodList from "../components/FavoriteFoodList";
@@ -219,6 +220,7 @@ function Profile(props) {
                 ) : (
                   <></>
                 )}
+                <BanUserButton/>
                 <Row className="mt-3">
                   <Col className="text-center">
                     <strong>40</strong>
