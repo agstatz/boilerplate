@@ -21,8 +21,10 @@ import {
     RecommendedDiningCourtList,
     DietaryInfo,
     BanUserButton,
+    FavoriteFoodList,
 } from '../components';
-import { MealPlanList } from '../components/MealPlans/';
+import { MealPlanList, MealPlanProfileView } from '../components/MealPlans/';
+import { PageNotFound } from '../pages/';
 
 // react imports
 import { useParams, useHistory } from 'react-router-dom';
