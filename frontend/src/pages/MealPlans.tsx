@@ -6,7 +6,7 @@
  */
 
 import { Container } from "react-bootstrap";
-import { MealPlanList } from "../components/";
+import { MealPlanList } from "../components/MealPlans/";
 
 function MealPlans() {
   return (

@@ -7,7 +7,8 @@
  */
 
 import { Stack, Container, Row, Col } from "react-bootstrap";
-import { FoodRatingList, MealPlanList } from "../components/";
+import { FoodRatingList } from "../components/";
+import { MealPlanList } from "../components/MealPlans/";
 
 function Popular() {
   return (
