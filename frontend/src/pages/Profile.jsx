@@ -18,11 +18,11 @@ import {
 } from 'react-bootstrap';
 import {
     RecommendedFood,
-    MealPlanList,
     RecommendedDiningCourtList,
     DietaryInfo,
     BanUserButton,
 } from '../components';
+import { MealPlanList } from '../components/MealPlans/';
 
 // react imports
 import { useParams, useHistory } from 'react-router-dom';
@@ -198,7 +198,7 @@ function Profile(props) {
                                 <h3>
                                     <strong>{id ? id : 'username'}</strong>
                                 </h3>
-
+                                <BanUserButton />
                                 <Row className='mt-3'>
                                     <Col className='text-center'>
                                         <strong>40</strong>
