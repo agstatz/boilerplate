@@ -931,16 +931,39 @@ app.get("/Eating_At", (req, res) => {
     db.collection("users")
         .find({ username: req.query.username })
         .toArray(async function (err, result) {
-          console.log(req.query.username)
           if (err) throw err;
           if (result.length !== 0 ) {
             result = result[0].eatingAt;
-            console.log(result)
             res.send(result);
           } else {
             res.send("")
           }
           console.log("/Eating_At sent");
+        });
+  });
+});
+
+app.get("/Profile_Info", (req, res) => {
+  MongoClient.connect(url, function (err, dbt) {
+    if (err) throw err;
+    let db = dbt.db("boilerplate");
+    db.collection("users")
+        .find({ username: req.query.username })
+        .toArray(function (err, result) {
+          console.log(req.query.username)
+          if (err) throw err;
+          if (result.length !== 0 ) {
+            result = [result[0].eatingAt, result[0].friends.length, result[0].tried.length];
+            for (let i = 0; i < result.length; i++) {
+              if (result[i] == null || result[i] === "undefined") {
+                result[i] = ""
+              }
+            }
+            res.send(result);
+          } else {
+            res.send("")
+          }
+          console.log("/Profile_Info sent");
         });
   });
 });

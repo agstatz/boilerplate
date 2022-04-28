@@ -44,6 +44,8 @@ function Profile(props) {
   const username = store.getState().app.username;
   const [foods, setFoods] = useState([{}]);
   const [mealSwipes, setMealSwipes] = useState(0);
+  const [triedCount, setTriedCount] = useState(0);
+  const [friendCount, setFriendCount] = useState(0);
   const [eatingAt, setEatingAt] = useState("");
 
   const handleLogout = () => {
@@ -122,12 +124,23 @@ function Profile(props) {
     );
     setFoods(response);
     const { data: response3 } = await axios.get(
-        "http://localhost:3001/Eating_At?username=" + id
+        "http://localhost:3001/Profile_Info?username=" + id
     );
-    if (response3 === "") {
+    console.log(response3)
+    if (response3[0] === "") {
       setEatingAt("Currently not eating");
     } else {
-      setEatingAt("Currently eating at:\n" + response3);
+      setEatingAt("Currently eating at:\n" + response3[0]);
+    }
+    if (response3[1] === "") {
+        setFriendCount(0)
+    } else {
+        setFriendCount(response3[1])
+    }
+    if (response[2] === "") {
+        setTriedCount(0)
+    } else {
+        setTriedCount(response3[2])
     }
 
     const { data: response2 } = await axios.get(
@@ -213,12 +226,12 @@ function Profile(props) {
                   <BanUserButton />
                   <Row className='mt-3'>
                     <Col className='text-center'>
-                      <strong>40</strong>
+                      <strong>{friendCount}</strong>
                       <p>Friends</p>
                     </Col>
                     <Col className='text-center'>
-                      <strong>3</strong>
-                      <p>Favorites</p>
+                      <strong>{triedCount}</strong>
+                      <p>Items Tried</p>
                     </Col>
                   </Row>
                   {username === id ? (// For user

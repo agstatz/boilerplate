@@ -130,7 +130,7 @@ export default class Dining_Court extends React.Component {
           let list = response.data.stations;
           let k = 0;
           for (let i = 0; i < list.length; i++) {
-            let toPush = <header className="w-50 p-3 my-4 mx-4 bg-light border rounded"></header>;
+            let toPush = <header className="w-50 p-3 my-3 bg-light border border-primary rounded"></header>;
             let clonedToPush = React.cloneElement(toPush, { children: [] });
             clonedToPush.props.children.push(<h3 className={"text-center"}>{response.data.stations[i].name}</h3>)
             for (let j = 1; j < list[i].foods.length; j++) {
