@@ -31,3 +31,5 @@ export { default as AdminPanel } from "./AdminPanel";
 export { default as Scheduler } from "./Scheduler";
 export { default as DiningLocationsSelection } from "./DiningLocationsSelection";
 export { default as MotDEditor } from "./MotDEditor";
+export { default as BanUser } from "./BanUser";
+export { default as OutsideFoodMenu } from "./OutsideFoodMenu";

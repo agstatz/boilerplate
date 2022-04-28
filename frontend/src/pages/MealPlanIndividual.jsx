@@ -183,8 +183,6 @@ function MealPlanIndividual() {
             likes: newLikeQuantity,
         });
 
-        console.log('changing like to ' + !liked);
-
         const { data: response } = axios.put(
             'http://localhost:3001/api/meal-plan-like?mealplan=' +
                 id +

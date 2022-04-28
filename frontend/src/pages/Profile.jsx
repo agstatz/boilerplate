@@ -2,41 +2,41 @@
  *  Profile.jsx
  *  The profile page of a given user
  *
- * @author Ashton Statz, Gaurav Manglani
+ * @author Ashton Statz, Gaurav Manglani, Arjan Mobin
  */
 
-import axios from "axios";
+// component imports
 import {
-  Row,
-  Card,
-  Col,
-  Button,
-  Stack,
-  Container,
-  Placeholder,
-  ButtonGroup,
-  ToggleButton,
-} from "react-bootstrap";
-import { Tabs, Tab } from "react-bootstrap-tabs";
+    Row,
+    Card,
+    Col,
+    Button,
+    Stack,
+    Container,
+    ButtonGroup,
+    ToggleButton,
+} from 'react-bootstrap';
 import {
-  RecommendedFood,
-  MealPlanList,
-  RecommendedDiningCourtList,
-  DietaryInfo,
-} from "../components";
+    RecommendedFood,
+    RecommendedDiningCourtList,
+    DietaryInfo,
+    BanUserButton,
+    FavoriteFoodList,
+} from '../components';
+import { MealPlanList, MealPlanProfileView } from '../components/MealPlans/';
+import { PageNotFound } from '../pages/';
 
-import FavoriteFoodList from "../components/FavoriteFoodList";
+// react imports
+import { useParams, useHistory } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
+// external imports
+import { store, ClearForm, UpdateForm } from '../store/store';
+import { Tabs, Tab } from 'react-bootstrap-tabs';
+import axios from 'axios';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
-import { PageNotFound } from "./";
-
-import { store, ClearForm, UpdateForm } from "../store/store";
-
-import { useParams, useHistory } from "react-router-dom";
-import { useEffect, useState } from "react";
-
-import { confirmAlert } from "react-confirm-alert"; // Import
-import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 function Profile(props) {
   const history = useHistory();
 
@@ -47,77 +47,80 @@ function Profile(props) {
   const [eatingAt, setEatingAt] = useState("");
 
   const handleLogout = () => {
-    try {
-      store.dispatch(ClearForm()).then((res) => {
-          window.location.replace("/");
-        })
-        .catch((err) => {
-          window.location.replace("/");
-        });
-    } catch (err){
-      window.location.replace("/");
-    }
+      try {
+          store
+              .dispatch(ClearForm())
+              .then((res) => {
+                  window.location.replace('/');
+              })
+              .catch((err) => {
+                  window.location.replace('/');
+              });
+      } catch (err) {
+          window.location.replace('/');
+      }
   };
 
   function resetAccount() {
-    confirmAlert({
-      title: "Confirm to submit",
-      message:
-        "Are you sure to do this. This will reset all your account preferences.",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: () => {
-            axios.post("http://localhost:3001/api/resetUser", {
-              data: {
-                username: username,
+      confirmAlert({
+          title: 'Confirm to submit',
+          message:
+              'Are you sure to do this. This will reset all your account preferences.',
+          buttons: [
+              {
+                  label: 'Yes',
+                  onClick: () => {
+                      axios.post('http://localhost:3001/api/resetUser', {
+                          data: {
+                              username: username,
+                          },
+                      });
+                  },
               },
-            });
-          },
-        },
-        {
-          label: "No",
-          onClick: () => {},
-        },
-      ],
-    });
+              {
+                  label: 'No',
+                  onClick: () => {},
+              },
+          ],
+      });
   }
 
   const handleMealSwipeReset = () => {
-    const userInfo = {
-      username: username,
-      mealSwipes: 20,
-    };
+      const userInfo = {
+          username: username,
+          mealSwipes: 20,
+      };
 
-    axios
-      .post("http://localhost:3001/api/editUserPreferences", { data: userInfo })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      axios
+          .post('http://localhost:3001/api/editUserPreferences', {
+              data: userInfo,
+          })
+          .then((res) => {
+              console.log(res);
+          })
+          .catch((err) => {
+              console.log(err);
+          });
 
-    store.dispatch(UpdateForm("mealSwipes", 20));
-    window.location.reload();
+      store.dispatch(UpdateForm('mealSwipes', 20));
+      window.location.reload();
   };
 
   const ColoredLine = ({ color }) => (
-    <hr
-        style={{
-            color: color,
-            backgroundColor: color,
-            height: 2
-        }}
-    />
-);
+      <hr
+          style={{
+              color: color,
+              backgroundColor: color,
+              height: 2,
+          }}
+      />
+  );
 
   useEffect(async () => {
     const { data: response } = await axios.get(
-      "http://localhost:3001/api/foods/recommendations"
+        'http://localhost:3001/api/foods/recommendations'
     );
     setFoods(response);
-
     const { data: response3 } = await axios.get(
         "http://localhost:3001/Eating_At?username=" + id
     );
@@ -132,233 +135,219 @@ function Profile(props) {
     );
     setMealSwipes(response2.mealSwipes);
 
-
-
-
-    const getProfile = async () => {
-      try {
-        // TODO: get user based on username
-      } catch (err) {
-        return <PageNotFound />;
-      }
-    };
-    getProfile(id);
+      const getProfile = async () => {
+          try {
+              // TODO: get user based on username
+          } catch (err) {
+              return <PageNotFound />;
+          }
+      };
+      getProfile(id);
   }, []);
 
   function foodItems() {
-    return foods.map((food) => (
-      <Container>
-        <Stack gap={2}>
-          <RecommendedFood title={food.name} nutrition={food.nutrition} />
-          {likeDislike()}
-        </Stack>
-      </Container>
-    ));
+      return foods.map((food) => (
+          <Container>
+              <Stack gap={2}>
+                  <RecommendedFood
+                      title={food.name}
+                      nutrition={food.nutrition}
+                  />
+                  {likeDislike()}
+              </Stack>
+          </Container>
+      ));
   }
 
-
   function likeDislike(liked) {
-    const radios = [
-      { name: "Like", value: "1" },
-      { name: "Dislike", value: "2" },
-    ];
+      const radios = [
+          { name: 'Like', value: '1' },
+          { name: 'Dislike', value: '2' },
+      ];
 
-    return (
-      <>
-        <ButtonGroup>
-          {radios.map((radio, idx) => (
-            <ToggleButton
-              key={idx}
-              id={`radio-${idx}`}
-              type="radio"
-              variant={idx % 2 == 0 ? "outline-success" : "outline-danger"}
-              name="radio"
-              value={radio.value}
-              checked={liked == radio.value}
-              onChange={(e) => 1}
-            >
-              {radio.name}
-            </ToggleButton>
-          ))}
-        </ButtonGroup>
-      </>
-    );
+      return (
+          <>
+              <ButtonGroup>
+                  {radios.map((radio, idx) => (
+                      <ToggleButton
+                          key={idx}
+                          id={`radio-${idx}`}
+                          type='radio'
+                          variant={
+                              idx % 2 == 0
+                                  ? 'outline-success'
+                                  : 'outline-danger'
+                          }
+                          name='radio'
+                          value={radio.value}
+                          checked={liked == radio.value}
+                          onChange={(e) => 1}
+                      >
+                          {radio.name}
+                      </ToggleButton>
+                  ))}
+              </ButtonGroup>
+          </>
+      );
   }
 
   return (
-    <Container style={{ paddingTop: "12vh" }}>
-      <Row>
-        <Col xs={6} sm={5} md={4} lg={3} xl={3}>
-          <Card
-            className="my-3"
-            bg="light"
-            style={{ maxWidth: "200px", minWidth: "200px" }}
-          >
-            <img
-              alt="Profile"
-              height="200"
-              src="https://i.stack.imgur.com/l60Hf.png"
-            ></img>
-            <Card.Body>
-              <div>
-                <h5>
-                  <strong>{id ? id : "username"}</strong>
-                </h5>
-                {username === id ? (//For user
-                  <Stack gap="3">
-                    <Button
-                      href={`/edit/${id}`}
-                      className="btn-sm"
-                      variant="outline-primary"
-                    >
-                      Edit Account
-                    </Button>
-                    <Button
-                      onClick={handleLogout}
-                      className="btn-sm"
-                      variant="outline-primary"
-                    >
-                      Sign Out
-                    </Button>
-                    <Button
-                      onClick={resetAccount}
-                      className="btn-sm"
-                      variant="outline-primary"
-                    >
-                      Reset Account
-                    </Button>
-                    <Button
-                        href={'/Foods_Tried'}
-                        className="btn-sm"
-                        variant="outline-primary"
-                    >
-                      Foods that I have tried
-                    </Button>
-                  </Stack>
-                ) : (//For friends
-                    <Button
-                        href={'/Foods_Tried?user=' + id}
-                        className="btn-sm"
-                        variant="outline-primary"
-                    >
-                      Foods that {id} has tried
-                    </Button>
-                )}
-                <a>
-                  {eatingAt}
-                </a>
-                <Row className="mt-3">
-                  <Col className="text-center">
-                    <strong>40</strong>
-                    <p>Friends</p>
+      <Container style={{ paddingTop: '12vh' }}>
+        <Row>
+          <Col xs={6} sm={5} md={4} lg={3} xl={3}>
+            <Card
+                className='my-3'
+                bg='light'
+                style={{ maxWidth: '200px', minWidth: '200px' }}
+            >
+              <img
+                  alt='Profile'
+                  height='200'
+                  src='https://i.stack.imgur.com/l60Hf.png'
+              ></img>
+              <Card.Body>
+                <div>
+                  <h3>
+                    <strong>{id ? id : 'username'}</strong>
+                  </h3>
+                  <BanUserButton />
+                  <Row className='mt-3'>
+                    <Col className='text-center'>
+                      <strong>40</strong>
+                      <p>Friends</p>
+                    </Col>
+                    <Col className='text-center'>
+                      <strong>3</strong>
+                      <p>Favorites</p>
+                    </Col>
+                  </Row>
+                  {username === id ? (
+                      <Stack gap='1'>
+                        <Button
+                            href={`/edit/${id}`}
+                            className='btn-sm'
+                            variant='outline-primary'
+                        >
+                          Edit Account
+                        </Button>
+                        <Button
+                            onClick={handleLogout}
+                            className='btn-sm'
+                            variant='outline-primary'
+                        >
+                          Sign Out
+                        </Button>
+                        <Button
+                            onClick={resetAccount}
+                            className='btn-sm'
+                            variant='outline-primary'
+                        >
+                          Reset Account
+                        </Button>
+                      </Stack>
+                  ) : (
+                      <></>
+                  )}
+                  <Card.Text></Card.Text>
+                </div>
+              </Card.Body>
+              <Card.Footer>
+                <small className='text-muted'>
+                  Last updated 3 mins ago
+                </small>
+              </Card.Footer>
+            </Card>
+          </Col>
+          <Col xs={6} sm={7} md={8} lg={9} xl={9}>
+            <Card className='my-3' bg='light'>
+              <Card.Body>
+                <Tabs
+                    className='mx-3'
+                    style={{ cursor: 'pointer' }}
+                >
+                  <Tab
+                      label='My Meal Plans'
+                      style={{ cursor: 'auto' }}
+                  >
+                    <MealPlanList
+                        filterValue={id}
+                        username={username}
+                    />
+                  </Tab>
+                  <Tab
+                      label='Current Meal Plan'
+                      style={{ cursor: 'auto' }}
+                  >
+                    <MealPlanProfileView
+                        store={store}
+                        urlUsername={id}
+                    />
+                  </Tab>
+                  <Tab
+                      label='My Dietary Info'
+                      style={{ cursor: 'auto' }}
+                  >
+                    <DietaryInfo />
+                  </Tab>
+                  <Tab
+                      label='My Favorite Foods'
+                      style={{ cursor: 'auto' }}
+                  >
+                    <FavoriteFoodList username={username} />
+                  </Tab>
+                </Tabs>
+                <ColoredLine />
+                <Row className='mt-3'>
+                  <Col className='text-center'>
+                    <strong>{mealSwipes}</strong>
+                    <p>Meal Swipes Left</p>
                   </Col>
-                  <Col className="text-center">
-                    <strong>3</strong>
-                    <p>Favorites</p>
+                  <Col className='text-center'>
+                    <Button
+                        onClick={handleMealSwipeReset}
+                        className='btn-sm'
+                        variant='outline-primary'
+                    >
+                      Reset Week
+                    </Button>
                   </Col>
                 </Row>
-                <Card.Text></Card.Text>
-              </div>
-            </Card.Body>
-            <Card.Footer>
-              <small className="text-muted">Last updated 3 mins ago</small>
-            </Card.Footer>
-          </Card>
-        </Col>
-        <Col xs={6} sm={7} md={8} lg={9} xl={9}>
-          <Card className="my-3" bg="light">
-            <Card.Body>
-              {username === id ? (//For user
-              <Tabs className="mx-3">
-                <Tab label="My Meal Plans">
-                  <MealPlanList filterValue={id} />
-                </Tab>
-                <Tab label="My Dietary Info">
-                  <DietaryInfo />
-                </Tab>
-                <Tab label="Meal History">
-                  <Placeholder animation="glow" size="lg">
-                    <Placeholder xs={4} />{' '}
-                    <Placeholder xs={2} />{' '}<Placeholder xs={4} />
-                    <Placeholder xs={6} />{' '}
-                    <Placeholder xs={8} />
-                  </Placeholder>
-                </Tab>
-                <Tab label="My Favorite Foods">
-                  <FavoriteFoodList username={username} />
-                </Tab>
-              </Tabs>
-              ) : (//For other users
-                  <Tabs className="mx-3">
-                    <Tab label={id + "'s Meal Plans"}>
-                      <MealPlanList filterValue={id} />
-                    </Tab>
-                    <Tab label="Meal History">
-                      <Placeholder animation="glow" size="lg">
-                        <Placeholder xs={4} />{' '}
-                        <Placeholder xs={2} />{' '}<Placeholder xs={4} />
-                        <Placeholder xs={6} />{' '}
-                        <Placeholder xs={8} />
-                      </Placeholder>
-                    </Tab>
-                    <Tab label="id + 's Favorite Foods">
-                      <FavoriteFoodList username={username} />
-                    </Tab>
-                  </Tabs>
-              )}
-              <ColoredLine />
-              <Row className="mt-3">
-                <Col className="text-center">
-                  <strong>{mealSwipes}</strong>
-                  <p>Meal Swipes Left</p>
-                </Col>
-                <Col className="text-center">
-                  <Button
-                    onClick={handleMealSwipeReset}
-                    className="btn-sm"
-                    variant="outline-primary"
-                  >
-                    Reset Week
-                  </Button>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col sm={12}>
-          <Card className="my-3" bg="light">
-            <Card.Header className="h5">
-              <strong>Favorites</strong>
-            </Card.Header>
-            <Card.Body>
-              <Card.Text>
-                Chicken Parmesan
-                <br />
-                Stir Fry
-                <br />
-                Waffle Fries
-                <br />
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-        {username === id ? (//friends are unable to see this section
+              </Card.Body>
+            </Card>
+          </Col>
           <Col sm={12}>
-            <Card className="my-3" bg="light">
-              <Card.Header className="h5">
+            <Card className='my-3' bg='light'>
+              <Card.Header className='h5'>
+                <strong>Favorites</strong>
+              </Card.Header>
+              <Card.Body>
+                <Card.Text>
+                  Chicken Parmesan
+                  <br />
+                  Stir Fry
+                  <br />
+                  Waffle Fries
+                  <br />
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col sm={12}>
+            <Card className='my-3 mb-5' bg='light'>
+              <Card.Header className='h5'>
                 <strong>Recommended</strong>
               </Card.Header>
               <Card.Body>
                 <Card.Text>
-                  Here are some recommendations based on your history and
-                  feedback:
+                  Here are some recommendations based on your
+                  history and feedback:
                 </Card.Text>
                 <Row>
                   <Col>
                     <Card.Text>Food Items:</Card.Text>
                     <Container>
                       <Stack gap={2}>{foodItems()}</Stack>
-                    </Container>{" "}
+                    </Container>{' '}
                   </Col>
 
                   <Col>
@@ -367,29 +356,236 @@ function Profile(props) {
                   </Col>
                 </Row>
                 <br />
-                <Container className="d-flex justify-content-center">
+                <Container className='d-flex justify-content-center'>
                   <Button
-                    className="mx-2"
-                    onClick={async () => {
-                      fetch(`http://localhost:3001/api/foods/recommendations`)
-                        .then((res) => res.json())
-                        .then((data) => {
-                          setFoods(data);
-                        });
-                    }}
+                      className='mx-2'
+                      onClick={async () => {
+                        fetch(
+                            `http://localhost:3001/api/foods/recommendations`
+                        )
+                            .then((res) => res.json())
+                            .then((data) => {
+                              setFoods(data);
+                            });
+                      }}
                   >
-                    Generate Recommendations{" "}
-                    <i className="bi bi-chevron-right"></i>
+                    Generate Recommendations{' '}
+                    <i className='bi bi-chevron-right'></i>
                   </Button>
                 </Container>
               </Card.Body>
             </Card>
           </Col>
-        ) : (<></>)
-        }
-      </Row>
-    </Container>
+        </Row>
+      </Container>
   );
 }
+
+// return (
+//     <Container style={{ paddingTop: "12vh" }}>
+//       <Row>
+//         <Col xs={6} sm={5} md={4} lg={3} xl={3}>
+//           <Card
+//               className="my-3"
+//               bg="light"
+//               style={{ maxWidth: "200px", minWidth: "200px" }}
+//           >
+//             <img
+//                 alt="Profile"
+//                 height="200"
+//                 src="https://i.stack.imgur.com/l60Hf.png"
+//             ></img>
+//             <Card.Body>
+//               <div>
+//                 <h5>
+//                   <strong>{id ? id : "username"}</strong>
+//                 </h5>
+//                 {username === id ? (//For user
+//                     <Stack gap="3">
+//                       <Button
+//                           href={`/edit/${id}`}
+//                           className="btn-sm"
+//                           variant="outline-primary"
+//                       >
+//                         Edit Account
+//                       </Button>
+//                       <Button
+//                           onClick={handleLogout}
+//                           className="btn-sm"
+//                           variant="outline-primary"
+//                       >
+//                         Sign Out
+//                       </Button>
+//                       <Button
+//                           onClick={resetAccount}
+//                           className="btn-sm"
+//                           variant="outline-primary"
+//                       >
+//                         Reset Account
+//                       </Button>
+//                       <Button
+//                           href={'/Foods_Tried'}
+//                           className="btn-sm"
+//                           variant="outline-primary"
+//                       >
+//                         Foods that I have tried
+//                       </Button>
+//                     </Stack>
+//                 ) : (//For friends
+//                     <Button
+//                         href={'/Foods_Tried?user=' + id}
+//                         className="btn-sm"
+//                         variant="outline-primary"
+//                     >
+//                       Foods that {id} has tried
+//                     </Button>
+//                 )}
+//                 <a>
+//                   {eatingAt}
+//                 </a>
+//                 <Row className="mt-3">
+//                   <Col className="text-center">
+//                     <strong>40</strong>
+//                     <p>Friends</p>
+//                   </Col>
+//                   <Col className="text-center">
+//                     <strong>3</strong>
+//                     <p>Favorites</p>
+//                   </Col>
+//                 </Row>
+//                 <Card.Text></Card.Text>
+//               </div>
+//             </Card.Body>
+//             <Card.Footer>
+//               <small className="text-muted">Last updated 3 mins ago</small>
+//             </Card.Footer>
+//           </Card>
+//         </Col>
+//         <Col xs={6} sm={7} md={8} lg={9} xl={9}>
+//           <Card className="my-3" bg="light">
+//             <Card.Body>
+//               {username === id ? (//For user
+//                   <Tabs className="mx-3">
+//                     <Tab label="My Meal Plans">
+//                       <MealPlanList filterValue={id} />
+//                     </Tab>
+//                     <Tab label="My Dietary Info">
+//                       <DietaryInfo />
+//                     </Tab>
+//                     <Tab label="Meal History">
+//                       <Placeholder animation="glow" size="lg">
+//                         <Placeholder xs={4} />{' '}
+//                         <Placeholder xs={2} />{' '}<Placeholder xs={4} />
+//                         <Placeholder xs={6} />{' '}
+//                         <Placeholder xs={8} />
+//                       </Placeholder>
+//                     </Tab>
+//                     <Tab label="My Favorite Foods">
+//                       <FavoriteFoodList username={username} />
+//                     </Tab>
+//                   </Tabs>
+//               ) : (//For other users
+//                   <Tabs className="mx-3">
+//                     <Tab label={id + "'s Meal Plans"}>
+//                       <MealPlanList filterValue={id} />
+//                     </Tab>
+//                     <Tab label="Meal History">
+//                       <Placeholder animation="glow" size="lg">
+//                         <Placeholder xs={4} />{' '}
+//                         <Placeholder xs={2} />{' '}<Placeholder xs={4} />
+//                         <Placeholder xs={6} />{' '}
+//                         <Placeholder xs={8} />
+//                       </Placeholder>
+//                     </Tab>
+//                     <Tab label="id + 's Favorite Foods">
+//                       <FavoriteFoodList username={username} />
+//                     </Tab>
+//                   </Tabs>
+//               )}
+//               <ColoredLine />
+//               <Row className="mt-3">
+//                 <Col className="text-center">
+//                   <strong>{mealSwipes}</strong>
+//                   <p>Meal Swipes Left</p>
+//                 </Col>
+//                 <Col className="text-center">
+//                   <Button
+//                       onClick={handleMealSwipeReset}
+//                       className="btn-sm"
+//                       variant="outline-primary"
+//                   >
+//                     Reset Week
+//                   </Button>
+//                 </Col>
+//               </Row>
+//             </Card.Body>
+//           </Card>
+//         </Col>
+//         <Col sm={12}>
+//           <Card className="my-3" bg="light">
+//             <Card.Header className="h5">
+//               <strong>Favorites</strong>
+//             </Card.Header>
+//             <Card.Body>
+//               <Card.Text>
+//                 Chicken Parmesan
+//                 <br />
+//                 Stir Fry
+//                 <br />
+//                 Waffle Fries
+//                 <br />
+//               </Card.Text>
+//             </Card.Body>
+//           </Card>
+//         </Col>
+//         {username === id ? (//friends are unable to see this section
+//             <Col sm={12}>
+//               <Card className="my-3" bg="light">
+//                 <Card.Header className="h5">
+//                   <strong>Recommended</strong>
+//                 </Card.Header>
+//                 <Card.Body>
+//                   <Card.Text>
+//                     Here are some recommendations based on your history and
+//                     feedback:
+//                   </Card.Text>
+//                   <Row>
+//                     <Col>
+//                       <Card.Text>Food Items:</Card.Text>
+//                       <Container>
+//                         <Stack gap={2}>{foodItems()}</Stack>
+//                       </Container>{" "}
+//                     </Col>
+//
+//                     <Col>
+//                       <Card.Text>Dining Courts:</Card.Text>
+//                       <RecommendedDiningCourtList />
+//                     </Col>
+//                   </Row>
+//                   <br />
+//                   <Container className="d-flex justify-content-center">
+//                     <Button
+//                         className="mx-2"
+//                         onClick={async () => {
+//                           fetch(`http://localhost:3001/api/foods/recommendations`)
+//                               .then((res) => res.json())
+//                               .then((data) => {
+//                                 setFoods(data);
+//                               });
+//                         }}
+//                     >
+//                       Generate Recommendations{" "}
+//                       <i className="bi bi-chevron-right"></i>
+//                     </Button>
+//                   </Container>
+//                 </Card.Body>
+//               </Card>
+//             </Col>
+//         ) : (<></>)
+//         }
+//       </Row>
+//     </Container>
+// )
+
 
 export default Profile;

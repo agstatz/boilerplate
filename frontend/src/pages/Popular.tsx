@@ -7,7 +7,8 @@
  */
 
 import { Stack, Container, Row, Col } from "react-bootstrap";
-import { FoodRatingList, MealPlanList } from "../components/";
+import { FoodRatingList } from "../components/";
+import { MealPlanList } from "../components/MealPlans/";
 
 function Popular() {
   return (
@@ -24,19 +25,18 @@ function Popular() {
             <Col md={5}>
                 <div className="p-3 my-4 mx-4 bg-light border rounded">
                     <Stack gap={2}>
-                    <h1><strong>Popular - Dining Courts/Locations</strong></h1>
-                    <div>
-                        Among the many dining options at Purdue, there are few that separate themselves from
-                        the pack. Yet, some still do, and those are forever hailed as important forums for
-                        student interaction and communion. Below are just a few of the administrator-selected
-                        most popular dining courts among attendees.
-                    </div>
-                    <Container className="px-3">
-                        <li>Wiley Dining Court</li>
-                        <li>Ford Dining Court</li>
-                        <li>McCutcheon Dining Court</li>
-                    </Container>
-                    
+                        <h1><strong>Popular - Dining Courts/Locations</strong></h1>
+                        <div>
+                            Among the many dining options at Purdue, there are few that separate themselves from
+                            the pack. Yet, some still do, and those are forever hailed as important forums for
+                            student interaction and communion. Below are just a few of the administrator-selected
+                            most popular dining courts among attendees.
+                        </div>
+                        <Container className="px-3">
+                            <li>Wiley Dining Court</li>
+                            <li>Ford Dining Court</li>
+                            <li>McCutcheon Dining Court</li>
+                        </Container>
                     </Stack>
                 </div>
             </Col>

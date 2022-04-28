@@ -92,10 +92,19 @@ function MealPlanList(props) {
                 }
             } else if (filter) {
                 // assume the user has passed a username
+
                 for (var i = 0; i < mealPlanArray.length; i++) {
                     if (mealPlanArray[i].owner !== filter) {
                         hiddenMealsArray[newArrayLength] = mealPlanArray[i]._id;
                         newArrayLength++;
+                    }
+
+                    if (mealPlanArray[i].private) {
+                        if (props.username !== filter) {
+                            hiddenMealsArray[newArrayLength] =
+                                mealPlanArray[i]._id;
+                            newArrayLength++;
+                        }
                     }
                 }
             }

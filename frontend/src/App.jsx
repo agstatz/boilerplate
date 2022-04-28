@@ -53,6 +53,8 @@ import {
     PostFriend,
     MotDEditor,
     PostEatingAt,
+    BanUser,
+    OutsideFoodMenu,
 } from './pages';
 import CommentReports from './pages/CommentReports';
 import { Footer } from './components';
@@ -184,10 +186,10 @@ function App() {
                 <Container className='justify-content-end'>
                     <Nav className='nav-text'>
                         <Nav.Link href='/'>
-                            <i class='bi bi-house-door-fill'></i> Home
+                            <i className='bi bi-house-door-fill'></i> Home
                         </Nav.Link>
                         <Nav.Link href='/popular'>
-                            <i class='bi bi-graph-up'></i> Popular
+                            <i className='bi bi-graph-up'></i> Popular
                         </Nav.Link>
                         <NavDropdown title='Meal Plans'>
                             <NavDropdown.Item href='/meal-plans'>
@@ -291,6 +293,8 @@ function App() {
                     <Route path='/edit-location' component={EditLocation} />
                     <Route path='/friend' component={Friend} />
                     <Route path='/add-location' component={AddLocation} />
+                    <Route path='/outside-food-menu/:username' component={OutsideFoodMenu} />
+                    <Route path='/admin-panel/ban-user/:username' component={BanUser} />
                     <Route path='/admin-panel' component={AdminPanel} />
                     <Route path='/search' component={Search} />
                     <Route path='*' component={PageNotFound} />
