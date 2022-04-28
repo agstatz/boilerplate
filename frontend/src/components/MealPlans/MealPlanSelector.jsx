@@ -68,8 +68,7 @@ function MealPlanSelector(props) {
                 data: selectedMealPlan,
             })
             .then((res) => {
-                console.log(res);
-                props.returnSelectedMeal(res);
+                props.returnSelectedMeal(selectedMealPlan);
             })
             .catch((err) => {
                 console.log(err);

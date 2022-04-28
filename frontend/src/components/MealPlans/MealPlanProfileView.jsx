@@ -16,7 +16,7 @@ import {
     Accordion,
 } from 'react-bootstrap';
 import { SchedulerMealDay } from '../Scheduler/';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useReducer } from 'react';
 import axios from 'axios';
 
 import { MealPlanSelector } from './';
@@ -26,6 +26,7 @@ function MealPlanProfileView(props) {
     const [mealPlan, setMealPlan] = useState(undefined);
     const [loading, setLoading] = useState(true);
     const username = props.store.getState().app.username;
+    const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
     const editable = false;
 
     const DAYS = [
@@ -61,6 +62,13 @@ function MealPlanProfileView(props) {
                         setCurrentState('none-not-owned');
                     }
                 }
+            } else {
+                if (username === props.urlUsername) {
+                    // on our own profile page
+                    setCurrentState('none');
+                } else {
+                    setCurrentState('none-not-owned');
+                }
             }
 
             setLoading(false);
@@ -73,13 +81,29 @@ function MealPlanProfileView(props) {
         setCurrentState('select');
     };
 
-    const handleFinishButton = () => {
+    const handleFinishButton = async () => {
         // delete the value stored for the meal plan of this user
+
+        if (username === props.urlUsername) {
+            setCurrentState('none');
+        } else {
+            setCurrentState('none-not-owned');
+        }
+
+        const { data: response } = await axios.delete(
+            'http://localhost:3001/api/users/mealPlan/' + props.urlUsername
+        );
     };
 
-    const handleSelectedPlan = (plan) => {
-        setMealPlan(plan);
+    const handleSelectedPlan = async (plan) => {
+        setLoading(true);
+        let id = plan._id;
+        const { data: response2 } = await axios.get(
+            'http://localhost:3001/api/meal-plans/' + id
+        );
+        setMealPlan(response2);
         setCurrentState('display-meal');
+        setLoading(false);
     };
 
     return (
@@ -106,7 +130,7 @@ function MealPlanProfileView(props) {
                 />
             ) : (
                 <Container>
-                    <div className='p-3 my-4 mx-4 bg-white rounded'>
+                    <div className='p-3 my-4 bg-white rounded'>
                         <h3>
                             <strong>{mealPlan.name}</strong>
                         </h3>
@@ -155,7 +179,8 @@ function MealPlanProfileView(props) {
                                     Meals by day:
                                 </Form.Label>
                                 <Accordion>
-                                    {!loading ? (
+                                    {!loading &&
+                                    mealPlan.meals !== undefined ? (
                                         DAYS.map((day, i) => {
                                             return (
                                                 <SchedulerMealDay
@@ -173,19 +198,23 @@ function MealPlanProfileView(props) {
                                         <></>
                                     )}
                                 </Accordion>
-                                <Row className='mt-3'>
-                                    <Col md={9} sm={8} xs={7}></Col>
-                                    <Col md={3} sm={4} xs={5}>
-                                        <Button
-                                            variant='primary'
-                                            type='Button'
-                                            className='btn-block'
-                                            onClick={handleFinishButton}
-                                        >
-                                            Finish Meal Plan
-                                        </Button>
-                                    </Col>
-                                </Row>
+                                {props.urlUsername === username ? (
+                                    <Row className='mt-3'>
+                                        <Col md={9} sm={8} xs={2}></Col>
+                                        <Col md={3} sm={4} xs={10}>
+                                            <Button
+                                                variant='primary'
+                                                type='Button'
+                                                className='btn-block'
+                                                onClick={handleFinishButton}
+                                            >
+                                                Finish Meal Plan
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                ) : (
+                                    <></>
+                                )}
                             </Container>
                         </Container>
                     </div>

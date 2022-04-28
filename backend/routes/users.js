@@ -55,7 +55,7 @@ router.put("/mealPlan/:username", async (req, res) => {
     }
 });
 
-// update mealplan that the user is currently using
+// get mealplan that the user is currently using
 router.get("/mealPlan/:username", async (req, res) => {
     try {
         const user = await User.findOne({ username: req.params.username});
@@ -66,6 +66,19 @@ router.get("/mealPlan/:username", async (req, res) => {
         res.status(500).send("Server error");
     }
 });
+
+// delete the mealplan that the user has used.
+router.delete('/mealPlan/:username', async (req, res) => {
+    try {
+      
+      const user = await User.updateOne({ username: req.params.username }, { $set: {intakePlans: null} });
+      if (!user) return res.status(400).json({ msg: "User does not exist" });
+      } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server error");
+    }
+  })
+  
 
 router.get('/favorites/:username', async (req, res) => {
   try {

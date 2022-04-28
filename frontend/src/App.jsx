@@ -183,62 +183,55 @@ function App() {
                         alt='Boilerplate'
                     ></img>
                 </Navbar.Brand>
-                <Container className='justify-content-end'>
-                    <Nav className='nav-text'>
-                        <Nav.Link href='/'>
-                            <i className='bi bi-house-door-fill'></i> Home
-                        </Nav.Link>
-                        <Nav.Link href='/popular'>
-                            <i className='bi bi-graph-up'></i> Popular
-                        </Nav.Link>
-                        <NavDropdown title='Meal Plans'>
-                            <NavDropdown.Item href='/meal-plans'>
-                                View Meal Plans
-                            </NavDropdown.Item>
-                            <NavDropdown.Item href='/schedule'>
-                                Schedule Meal Plans
-                            </NavDropdown.Item>
-                        </NavDropdown>
-                        <Nav.Link href='/map'>
-                            <i className='bi bi-geo-alt-fill'></i> Map
-                        </Nav.Link>
-                        <Nav.Link href='/dining_courts'>
-                            <i className='bi bi-building'></i> Dining Courts
-                        </Nav.Link>
-                        <Nav.Link href='/search'>
-                            <i className='bi bi-search'></i> Search
-                        </Nav.Link>
-                        <Nav.Link href='/login' hidden={isNotGuest === true}>
-                            Login
-                        </Nav.Link>
-                        <Nav.Link
-                            href={
-                                isNotGuest === true
-                                    ? `/profile/${username}`
-                                    : '/'
-                            }
-                            hidden={isNotGuest !== true}
-                        >
-                            <i class='bi bi-person-fill'></i> Profile
-                        </Nav.Link>
-                        <Nav.Link
-                            href={
-                                isNotGuest === true
-                                    ? `/Friend`
-                                    : '/'
-                            }
-                            hidden={isNotGuest !== true}
-                        >
-                            <i class='bi bi-people-fill'></i> Friends
-                        </Nav.Link>
-                        <Nav.Link
-                            href={isAdmin === true ? `/admin-panel` : '/'}
-                            hidden={isAdmin !== true}
-                        >
-                            <i className='bi bi-gear-fill'></i> Admin Panel
-                        </Nav.Link>
-                    </Nav>
-                </Container>
+
+                <Nav className='nav-text justify-content-end'>
+                    <Nav.Link href='/'>
+                        <i className='bi bi-house-door-fill'></i> Home
+                    </Nav.Link>
+                    <Nav.Link href='/popular'>
+                        <i className='bi bi-graph-up'></i> Popular
+                    </Nav.Link>
+                    <NavDropdown title='Meal Plans'>
+                        <NavDropdown.Item href='/meal-plans'>
+                            View Meal Plans
+                        </NavDropdown.Item>
+                        <NavDropdown.Item href='/schedule'>
+                            Schedule Meal Plans
+                        </NavDropdown.Item>
+                    </NavDropdown>
+                    <Nav.Link href='/map'>
+                        <i className='bi bi-geo-alt-fill'></i> Map
+                    </Nav.Link>
+                    <Nav.Link href='/dining_courts'>
+                        <i className='bi bi-building'></i> Dining Courts
+                    </Nav.Link>
+                    <Nav.Link href='/search'>
+                        <i className='bi bi-search'></i> Search
+                    </Nav.Link>
+                    <Nav.Link href='/login' hidden={isNotGuest === true}>
+                        Login
+                    </Nav.Link>
+                    <Nav.Link
+                        href={
+                            isNotGuest === true ? `/profile/${username}` : '/'
+                        }
+                        hidden={isNotGuest !== true}
+                    >
+                        <i class='bi bi-person-fill'></i> Profile
+                    </Nav.Link>
+                    <Nav.Link
+                        href={isNotGuest === true ? `/Friend` : '/'}
+                        hidden={isNotGuest !== true}
+                    >
+                        <i class='bi bi-people-fill'></i> Friends
+                    </Nav.Link>
+                    <Nav.Link
+                        href={isAdmin === true ? `/admin-panel` : '/'}
+                        hidden={isAdmin !== true}
+                    >
+                        <i className='bi bi-gear-fill'></i> Admin Panel
+                    </Nav.Link>
+                </Nav>
             </Navbar>
             <BrowserRouter>
                 <Switch>
@@ -258,7 +251,10 @@ function App() {
                         path='/preference-quiz'
                         component={PreferenceQuiz}
                     />
-                    <Route path='/admin-panel/reports' component={CommentReports} />
+                    <Route
+                        path='/admin-panel/reports'
+                        component={CommentReports}
+                    />
                     <Route path='/profile/:id' component={Profile} />
                     <Route path='/profile/' exact component={PageNotFound} />
                     <Route path='/register' component={RegisterForm} />
@@ -293,8 +289,14 @@ function App() {
                     <Route path='/edit-location' component={EditLocation} />
                     <Route path='/friend' component={Friend} />
                     <Route path='/add-location' component={AddLocation} />
-                    <Route path='/outside-food-menu/:username' component={OutsideFoodMenu} />
-                    <Route path='/admin-panel/ban-user/:username' component={BanUser} />
+                    <Route
+                        path='/outside-food-menu/:username'
+                        component={OutsideFoodMenu}
+                    />
+                    <Route
+                        path='/admin-panel/ban-user/:username'
+                        component={BanUser}
+                    />
                     <Route path='/admin-panel' component={AdminPanel} />
                     <Route path='/search' component={Search} />
                     <Route path='*' component={PageNotFound} />
