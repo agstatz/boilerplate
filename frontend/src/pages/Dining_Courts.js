@@ -19,17 +19,20 @@ const axios = require("axios");
 function getToday() {
   let date = new Date();
   let today = "";
-  today += date.getFullYear();
-  if (date.getMonth() + 1 > 9) {
-    today += date.getMonth() + 1;
-  } else {
-    today += "0" + (date.getMonth() + 1);
-  }
-  if (date.getDate() > 9) {
-    today += date.getDate();
-  } else {
-    today += "0" + date.getDate();
-  }
+  today += date.getMonth() + 1;
+  today += "-" + date.getDate()
+  // if (date.getMonth() + 1 > 9) {
+  //   today += date.getMonth() + 1;
+  // } else {
+  //   today += "0" + (date.getMonth() + 1);
+  // }
+  // today += "-"
+  // if (date.getDate() > 9) {
+  //   today += date.getDate();
+  // } else {
+  //   today += "0" + date.getDate();
+  // }
+  today += "-" + date.getFullYear();
   return today;
 }
 
@@ -42,7 +45,7 @@ function getMeal() {
   } else if (hour >= 10 && hour < 14) {
     meal = "Lunch";
   } else if (hour >= 14 && hour < 17) {
-    meal = "LateLunch";
+    meal = "Late Lunch";
   } else {
     meal = "Dinner";
   }

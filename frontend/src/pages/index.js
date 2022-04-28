@@ -20,6 +20,7 @@ export { default as FoodsNeedUpdate } from "./FoodsNeedUpdate";
 export { default as FoodsTried } from "./FoodsTried";
 export { default as PostTried } from "./PostTried";
 export { default as PostFriend } from "./PostFriend";
+export { default as PostEatingAt } from "./PostEatingAt";
 export { default as Search } from "./Search";
 export { default as MealPlanIndividual } from "./MealPlanIndividual";
 export { default as DiningIndividual } from "./DiningIndividual";

@@ -612,37 +612,72 @@ app.get("/Dining_Courts", (req, res) => {
 
 app.get("/Dining_Court", (req, res) => {
   let name = req.query.name;
-  let date = req.query.date;
+  let date = req.query.date.split('-').join("/");
   let meal = req.query.meal;
 
   MongoClient.connect(url, function (err, dbt) {
     if (err) throw err;
     let db = dbt.db("boilerplate");
-    db.listCollections({ name: name + "_Schedule" }).next(function (
-      err,
-      collinfo
-    ) {
-      if (collinfo) {
-        //Dining court exists
-        console.log(date + "_" + meal);
-        db.collection(name + "_Schedule")
-          .find({ name: date + "_" + meal })
-          .toArray(function (err, result) {
-            if (err) throw err;
-            if (result.length === 0) {
-              //schedule does not exist
-              res.status(404).send("Schedule does not exist");
-            } else {
-              res.send(result);
+    db.collection("diningcourts")
+        .find({name: name.split('_').join(" ")})
+        .toArray(function (err, result) {
+          if (err) throw err;
+          if (result.length === 0) {
+            res.status(404).send("Dining court" + name.split('_').join(" ") + "does not exist")
+          } else {
+            let schedule = result[0].schedule;
+            let arrayOne = -1
+            let arrayTwo = -1
+            for (let i = 0; i < schedule.length; i++) {
+              if (schedule[i].date === date) {
+                for (let j = 0; j < schedule[i].menus.length; j++) {
+                  if (schedule[i].menus[j].menuType === meal) {
+                    arrayOne = i
+                    arrayTwo = j
+                  }
+                }
+              }
             }
-          });
-      } else {
-        //Dining court does not exist
-        res.status(404).send("Dining court " + name + "does not exist");
-      }
-    });
+            if (arrayOne !== -1 && arrayTwo !== -1) {
+              let ret = schedule[arrayOne].menus[arrayTwo]
+              db.collection("foods").find().toArray(function(err, result) {
+                console.log("-----------res: --------------")
+                console.log(result[0])
+                for (let i = 0; i < ret.stations.length; i++) {
+                  for (let j = 0; j < ret.stations[i].foods.length; j++) {
+                    let name = ""
+                    for (let k = 0; k < result.length; k++) {
+                      if (result[k]._id.toString() === ret.stations[i].foods[j].toString()) {
+                        name = result[k].name
+                        break;
+                      }
+                    }
+                    ret.stations[i].foods[j] = name
+                  }
+                }
+                console.log("/Dining_Court sent");
+                res.send(ret)
+              });
+            } else {
+              console.log("/Dining_Court sent");
+              res.send([])
+            }
+          }
+        });
   });
-  console.log("/Dining_Courts sent");
+});
+
+app.get("/Foodname", (req, res) => {
+  MongoClient.connect(url, function (err, dbt) {
+    if (err) throw err;
+    let db = dbt.db("boilerplate");
+    let food
+    db.collection("foods").findOne({_id: req.query.id}, async function (err, result) {
+      food = result
+    });
+    console.log(food)
+    res.send("a")
+  });
 });
 
 app.get("/Picture", (req, res) => {
@@ -833,6 +868,40 @@ app.post("/Tried_Food", (req, res) => {
             });
         }
       });
+  });
+});
+
+app.post("/Post_Eating_At", (req, res) => {
+  MongoClient.connect(url, function (err, dbt) {
+    let db = dbt.db("boilerplate");
+    console.log("post eating at")
+    db.collection("users")
+        .find({ username: req.query.username })
+        .toArray(function (err, result) {
+          if (err) throw err;
+          if (result.length === 0) {
+            res.send("User does not exist");
+          } else {
+            let at = result[0].eatingAt
+            if (at == null || at === "undefined") {
+              at = ""
+            }
+            if (at === req.query.location) {
+              at = ""
+            } else {
+              at = req.query.location
+            }
+            const updateDoc = {
+              $set: {
+                eatingAt: at,
+              },
+            };
+            ret = db
+                .collection("users")
+                .updateOne({ username: req.query.username }, updateDoc);
+            res.send("Eating at updated successfully.");
+          }
+        });
   });
 });
 

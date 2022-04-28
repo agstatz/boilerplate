@@ -44,6 +44,7 @@ function Profile(props) {
   const username = store.getState().app.username;
   const [foods, setFoods] = useState([{}]);
   const [mealSwipes, setMealSwipes] = useState(0);
+  const [eatingAt, setEatingAt] = useState("");
 
   const handleLogout = () => {
     try {
@@ -117,10 +118,20 @@ function Profile(props) {
     );
     setFoods(response);
 
+    const { data: response3 } = await axios.get(
+        "http://localhost:3001/Eating_At?username=" + id
+    );
+    if (response3 === "") {
+      setEatingAt("Currently not eating");
+    } else {
+      setEatingAt("Currently eating at:\n" + response3);
+    }
+
     const { data: response2 } = await axios.get(
       "http://localhost:3001/api/users/dietary/" + username
     );
     setMealSwipes(response2.mealSwipes);
+
 
 
 
@@ -233,6 +244,9 @@ function Profile(props) {
                       Foods that {id} has tried
                     </Button>
                 )}
+                <a>
+                  {eatingAt}
+                </a>
                 <Row className="mt-3">
                   <Col className="text-center">
                     <strong>40</strong>

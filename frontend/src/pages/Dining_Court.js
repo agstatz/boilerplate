@@ -1,9 +1,10 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
-import { Container } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 
 // Import comments
 import Comments from "../components/Comments/Comments";
+import {store} from "../store/store";
 
 const ColoredLine = ({ color }) => (
   <hr
@@ -18,17 +19,20 @@ const ColoredLine = ({ color }) => (
 function getToday() {
   let date = new Date();
   let today = "";
-  today += date.getFullYear();
-  if (date.getMonth() + 1 > 9) {
-    today += date.getMonth() + 1;
-  } else {
-    today += "0" + (date.getMonth() + 1);
-  }
-  if (date.getDate() > 9) {
-    today += date.getDate();
-  } else {
-    today += "0" + date.getDate();
-  }
+  today += date.getMonth() + 1;
+  today += "-" + date.getDate()
+  // if (date.getMonth() + 1 > 9) {
+  //   today += date.getMonth() + 1;
+  // } else {
+  //   today += "0" + (date.getMonth() + 1);
+  // }
+  // today += "-"
+  // if (date.getDate() > 9) {
+  //   today += date.getDate();
+  // } else {
+  //   today += "0" + date.getDate();
+  // }
+  today += "-" + date.getFullYear();
   return today;
 }
 function getMeal() {
@@ -40,7 +44,7 @@ function getMeal() {
   } else if (hour >= 10 && hour < 14) {
     meal = "Lunch";
   } else if (hour >= 14 && hour < 17) {
-    meal = "LateLunch";
+    meal = "Late Lunch";
   } else {
     meal = "Dinner";
   }
@@ -56,7 +60,9 @@ export default class Dining_Court extends React.Component {
     super();
     this.state = {
       res: "",
+      username: store.getState().app.username,
       html: [],
+      html2: [],
       loading: true,
       queries: [],
       error: false,
@@ -66,7 +72,6 @@ export default class Dining_Court extends React.Component {
     if (this.state.queries.date == null) {
       this.state.queries.date = getToday();
     }
-    //TODO: input check for date
 
     if (this.state.queries.meal == null) {
       this.state.queries.meal = getMeal();
@@ -84,6 +89,18 @@ export default class Dining_Court extends React.Component {
     //window.removeEventListener('resize', this.updateDimensions);
   }
 
+  submitButton = (event) => {
+    let string =
+        "/Post_Eating_At?location=" +
+        this.state.queries.name +
+        "&date=" +
+        this.state.queries.date +
+        "&meal=" +
+        this.state.queries.meal
+    this.state.html.push(<Redirect to={string} />);
+    this.forceUpdate();
+  };
+
   async callAPI() {
     this.state.loading = true;
     let response;
@@ -98,40 +115,60 @@ export default class Dining_Court extends React.Component {
           this.state.queries.meal
       );
     } catch (error) {
-      console.log("error");
+      console.log("error")
+      console.log(error);
       this.setState({ error: true });
     } finally {
       console.log(response);
       console.log(this.state.error);
       if (this.state.error) {
-        this.state.html.push(<h1>Error: Page not found</h1>);
+        this.state.html.push(<h1>Error: Dining Court not found</h1>);
       } else {
-        console.log("a");
-        this.state.html.push(
-          <h1 style={{ textAlignVertical: "center", textAlign: "center" }}>
-            {this.state.queries.name.split("_").join(" ")}
-          </h1>
-        );
-        let list = response.data[0];
-        let k = 0;
-        for (let i = 0; i < list.length; i++) {
-          this.state.html.push(<ColoredLine color="grey" />);
-          this.state.html.push(<h3>{list[i][0]}</h3>);
-          for (let j = 1; j < list[i].length; j++) {
-            this.state.html.push(
-              <Link id={"food" + k++} to={"/food?name=" + list[i][j]}>
-                {list[i][j]}
-                <br></br>
-              </Link>
-            );
+        this.state.html.push(<h1 className={"text-center"}>{this.state.queries.name.split("_").join(" ")}</h1>)
+        if (response.data.length !== 0) {
+          console.log(response.data)
+          let list = response.data.stations;
+          let k = 0;
+          for (let i = 0; i < list.length; i++) {
+            let toPush = <header className="w-50 p-3 my-4 mx-4 bg-light border rounded"></header>;
+            let clonedToPush = React.cloneElement(toPush, { children: [] });
+            clonedToPush.props.children.push(<h3 className={"text-center"}>{response.data.stations[i].name}</h3>)
+            for (let j = 1; j < list[i].foods.length; j++) {
+              clonedToPush.props.children.push(
+                  <Link id={"food" + k++} to={"/food?name=" + list[i].foods[j]}>
+                    {list[i].foods[j]}
+                    <br></br>
+                  </Link>
+              );
+            }
+            this.state.html.push(clonedToPush)
           }
-          this.state.html.push(
-            <a>
-              <br></br>
-            </a>
-          );
+        } else {
+          this.state.html.push(<h2><br></br>Dining schedule is not available for {this.state.queries.meal} on {this.state.queries.date}</h2>)
         }
-        // this.state.html.push(<a>{response.data[0][0]}</a>)
+        console.log(this.state.username)
+        if (
+            this.state.username != null &
+            this.state.username !== "undefined" &&
+            this.state.username !== ""
+        ) {
+          try {
+            response = await axios.get(
+                url +
+                `Eating_At?username=` +
+                this.state.username
+            );
+          } catch (error) {
+            console.log(error)
+          } finally {
+            console.log("eatingat = " + response.data)
+            if (response.data === this.state.queries.name.split("_").join(" ")) {
+              this.state.html2.push(<Button onClick={this.submitButton} className="float-end btn-sm">I am no longer eating here</Button>)
+            } else {
+              this.state.html2.push(<Button onClick={this.submitButton} className="float-end btn-sm">I am eating here</Button>)
+            }
+          }
+        }
       }
       this.state.loading = false;
       this.forceUpdate();
@@ -140,7 +177,7 @@ export default class Dining_Court extends React.Component {
 
   render() {
     if (this.state.queries.name == null) {
-      return <Redirect to="/dining-courts" push />;
+      return <Redirect to="/dining_courts" push />;
     }
 
     if (this.state.loading) {
@@ -164,14 +201,36 @@ export default class Dining_Court extends React.Component {
         color={d.props.color}
         height={d.props.height}
         width={d.props.height}
+        onClick={d.props.onClick}
+        className={d.props.className}
       >
         {d.props.children}
       </d.type>
     ));
+    const listItems2 = this.state.html2.map((d) => (
+        <d.type
+            key={"list" + i++}
+            src={d.props.src}
+            alt={d.props.name}
+            to={d.props.to}
+            id={d.key}
+            style={d.props.style}
+            color={d.props.color}
+            height={d.props.height}
+            width={d.props.height}
+            onClick={d.props.onClick}
+            className={d.props.className}
+        >
+          {d.props.children}
+        </d.type>
+    ));
+    const buttonText = "ab"
     return (
       <div className="App">
         <Container style={{ paddingTop: "18vh", paddingBottom: "18vh" }}>
           <header className="p-3 my-4 mx-4 bg-light border rounded">
+            {listItems2}
+            <br></br>
             {listItems}
           </header>
         </Container>

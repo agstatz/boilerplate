@@ -52,6 +52,7 @@ import {
     Friend,
     PostFriend,
     MotDEditor,
+    PostEatingAt,
 } from './pages';
 import CommentReports from './pages/CommentReports';
 import { Footer } from './components';
@@ -199,6 +200,9 @@ function App() {
                         <Nav.Link href='/map'>
                             <i className='bi bi-geo-alt-fill'></i> Map
                         </Nav.Link>
+                        <Nav.Link href='/dining_courts'>
+                            <i className='bi bi-building'></i> Dining Courts
+                        </Nav.Link>
                         <Nav.Link href='/search'>
                             <i className='bi bi-search'></i> Search
                         </Nav.Link>
@@ -223,7 +227,7 @@ function App() {
                             }
                             hidden={isNotGuest !== true}
                         >
-                            <i class='bi bi-person-fill'></i> Friends
+                            <i class='bi bi-people-fill'></i> Friends
                         </Nav.Link>
                         <Nav.Link
                             href={isAdmin === true ? `/admin-panel` : '/'}
@@ -269,6 +273,7 @@ function App() {
                     />
                     <Route path='/post_tried' component={PostTried} />
                     <Route path='/post_friend' component={PostFriend} />
+                    <Route path='/post_eating_at' component={PostEatingAt} />
                     <Route
                         path='/foods_need_update'
                         component={FoodsNeedUpdate}
