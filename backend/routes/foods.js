@@ -3,6 +3,9 @@ const router = express.Router();
 const Food = require("../models/Food");
 const Food_Tag = require("../models/foodTagsModel");
 const User_Tag = require("../models/userTagModel");
+const User_Created_Food = require("../models/userCreatedFood");
+const mongoose = require("mongoose");
+
 
 // @route   GET api/foods
 // @desc    Get all food items from collection.
@@ -150,6 +153,75 @@ router.get("/searchtags/:name", async (req, res) => {
       return res.status(400).json({ msg: "Food item does not exist" });
 
     res.json(food_tag);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
+router.get("/outsidesource/:username", async (req, res) => {
+  try {
+    const foods = await User_Created_Food.find({
+      username: req.params.username
+    });
+    if (!foods)
+      return res.status(400).json({ msg: "No foods found" });
+
+    res.json(foods);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
+router.post("/outsidesource", async (req, res) => {
+  const food_id = new mongoose.Types.ObjectId();
+  const match = await User_Created_Food.findOne({ username: req.body.data.username, name: req.body.data.name });
+  if (match) {
+    return res.status(400).json({ msg: "You arleady have a food item with that name." });
+  }
+  try {
+    const food = new User_Created_Food({
+      _id: food_id,
+      username: req.body.data.username,
+      name: req.body.data.name,
+      servingSize: req.body.data.servingSize,
+      calories: req.body.data.calories,
+      totalFat: req.body.data.totalFat,
+      saturatedFat: req.body.data.saturatedFat,
+      cholesterol: req.body.data.cholesterol,
+      sodium: req.body.data.sodium,
+      totalCarbohydrate: req.body.data.totalCarbohydrate,
+      sugar: req.body.data.sugar,
+      addedSugar: req.body.data.addedSugar,
+      dietaryFiber: req.body.data.dietaryFiber,
+      protein: req.body.data.protein,
+      calcium: req.body.data.calcium,
+      iron: req.body.data.iron,
+    });
+    food.save((err, user) => {
+      if (err) {
+        console.error(err.message);
+        res.status(500).send({ message: err });
+      }
+      res.send({ message: "Updated successfully." });
+      console.log("saved");
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
+router.delete("/outsidesource", async (req, res) => {
+  console.log(req.body);
+  try {
+    const food = await User_Created_Food.deleteOne({
+      name: req.body.name, username: req.body.username
+    });
+    if (!food)
+      return res.status(400).json({ msg: "Delete successful" });
+    res.send({ message: "Deleted successfully." });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
