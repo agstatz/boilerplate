@@ -251,17 +251,38 @@ function Profile(props) {
                 <Col xs={6} sm={7} md={8} lg={9} xl={9}>
                     <Card className='my-3' bg='light'>
                         <Card.Body>
-                            <Tabs className='mx-3'>
-                                <Tab label='My Meal Plans'>
-                                    <MealPlanList filterValue={id} />
+                            <Tabs
+                                className='mx-3'
+                                style={{ cursor: 'pointer' }}
+                            >
+                                <Tab
+                                    label='My Meal Plans'
+                                    style={{ cursor: 'auto' }}
+                                >
+                                    <MealPlanList
+                                        filterValue={id}
+                                        username={username}
+                                    />
                                 </Tab>
-                                <Tab label='Current Meal Plan'>
-                                    <MealPlanProfileView store={store} />
+                                <Tab
+                                    label='Current Meal Plan'
+                                    style={{ cursor: 'auto' }}
+                                >
+                                    <MealPlanProfileView
+                                        store={store}
+                                        urlUsername={id}
+                                    />
                                 </Tab>
-                                <Tab label='My Dietary Info'>
+                                <Tab
+                                    label='My Dietary Info'
+                                    style={{ cursor: 'auto' }}
+                                >
                                     <DietaryInfo />
                                 </Tab>
-                                <Tab label='My Favorite Foods'>
+                                <Tab
+                                    label='My Favorite Foods'
+                                    style={{ cursor: 'auto' }}
+                                >
                                     <FavoriteFoodList username={username} />
                                 </Tab>
                             </Tabs>

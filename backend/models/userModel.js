@@ -79,12 +79,29 @@ const User = mongoose.model(
         ref: "foods",
       },
     ],
-    intakePlans: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "intake_plans",
-      },
-    ],
+    intakePlans: {
+        _id: String,
+          name: String,
+          private: Boolean,
+          owner: String,
+          likes: Number,
+          meals: [
+              [
+                  {
+                      foods: [
+                          {
+                              key: Number,
+                              name: String,
+                              food_qty: Number,
+                          }
+                      ],
+                      key: Number,
+                      location: String,
+                      name: String,
+                    },
+              ],
+          ],
+    },
     mealPlans: [
       {
         type: mongoose.Schema.Types.ObjectId,

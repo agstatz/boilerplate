@@ -5,34 +5,35 @@
  * @author Ashton Statz
  */
 
-import { Container, Stack, Button } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
+import { useState } from 'react';
 
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+function MealPlanIndividualView(props) {
+    const [hover, setHover] = useState(false);
 
-function MealPlanSelector(props) {
-    const [mealPlans, setMealPlans] = useState();
-    const [currentState, setCurrentState] = useState('none');
-    const [loading, setLoading] = useState(false);
-    const username = props.store.getState().app.username;
+    const handleSetSelected = (e) => {
+        props.selectMealPlan(props.mealPlan);
+    };
 
     return (
-        <Container>
-            <div className='p-5 text-center'>
-                {loading ? (
-                    <Stack>
-                        <h4>Loading</h4>
-                    </Stack>
-                ) : (
-                    <>
-                        <Stack>
-                            <h4>Meal Plans</h4>
-                        </Stack>
-                    </>
-                )}
-            </div>
-        </Container>
+        <Row
+            className={`py-2 my-1 rounded meal-plan-view ${
+                hover || props.isSelected ? 'bg-white fw-bold' : ''
+            }`}
+            style={{ cursor: 'pointer' }}
+            onMouseEnter={() => {
+                setHover(true);
+            }}
+            onMouseLeave={() => {
+                setHover(false);
+            }}
+            onClick={handleSetSelected}
+        >
+            <Col id={props.mealPlan._id}>{props.mealPlan.name}</Col>
+            <Col id={props.mealPlan._id}>{props.mealPlan.owner}</Col>
+            <Col id={props.mealPlan._id}>{props.mealPlan.likes}</Col>
+        </Row>
     );
 }
 
-export default MealPlanSelector;
+export default MealPlanIndividualView;

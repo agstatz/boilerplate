@@ -27,6 +27,46 @@ router.get("/dietary/:username", async (req, res) => {
   }
 });
 
+// update mealplan that the user is currently using
+router.put("/mealPlan/:username", async (req, res) => {
+    try {
+        const user = await User.findOne({ username: req.params.username});
+        const filter = {username: req.params.username};
+        const mealPlanList = req.body.data;
+        const updateDoc = {
+            $set: {
+                intakePlans: mealPlanList,
+            }
+        };
+
+        const result = await User.updateOne(filter, updateDoc);
+        //res.send({message: "Updated successfully."});
+        user.save((err, user1) => {
+            /*if (err) {
+                console.error(err.message);
+                res.status(500).send({message: err});
+            }*/
+            res.send({message: "Updated successfully."});
+        })
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server error");
+    }
+});
+
+// update mealplan that the user is currently using
+router.get("/mealPlan/:username", async (req, res) => {
+    try {
+        const user = await User.findOne({ username: req.params.username});
+
+        res.json(user.intakePlans);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server error");
+    }
+});
+
 router.get('/favorites/:username', async (req, res) => {
   try {
     const user = await User.findOne({ username: req.params.username });

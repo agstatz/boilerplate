@@ -5,14 +5,15 @@
  * @author Ashton Statz
  */
 
-import { Container, Stack, Button } from 'react-bootstrap';
-
+import { Container, Stack, Row, Col, Button } from 'react-bootstrap';
+import { MealPlanIndividualView } from './';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function MealPlanSelector(props) {
     const [mealPlans, setMealPlans] = useState();
-    const [currentState, setCurrentState] = useState('none');
+    const [selectedMealPlan, setSelectedMealPlan] = useState({});
+    const [mealPlanList, setMealPlanList] = useState([]);
     const [loading, setLoading] = useState(false);
     const username = props.store.getState().app.username;
 
@@ -36,7 +37,11 @@ function MealPlanSelector(props) {
                 }
             }
             setMealPlans(list);
-            console.log(list);
+
+            let listOfMealPlans = [];
+            for (var i = 0; i < list.length; i++) {
+                listOfMealPlans.push(false);
+            }
 
             setLoading(false);
         } catch (err) {
@@ -45,6 +50,31 @@ function MealPlanSelector(props) {
 
         setLoading(false);
     }, []);
+
+    function handleSelectMealPlan(mealPlan) {
+        setSelectedMealPlan(mealPlan);
+        var index = mealPlans.indexOf(mealPlan);
+        var list = mealPlanList;
+        for (var i = 0; i < list.length; i++) {
+            list[i] = false;
+        }
+        list[index] = true;
+    }
+
+    function handleSubmit() {
+        // call API to make this a meal plan registered to a user
+        axios
+            .put('http://localhost:3001/api/users/mealPlan/' + username, {
+                data: selectedMealPlan,
+            })
+            .then((res) => {
+                console.log(res);
+                props.returnSelectedMeal(res);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
     return (
         <Container>
@@ -56,14 +86,35 @@ function MealPlanSelector(props) {
                 ) : (
                     <>
                         <Stack>
-                            <h4>Meal Plans</h4>
+                            <h4>
+                                <strong>Select a Meal Plan</strong>
+                            </h4>
+                            <Row>
+                                <Col>
+                                    <strong>Name</strong>
+                                </Col>
+                                <Col>
+                                    <strong>Owner</strong>
+                                </Col>
+                                <Col>
+                                    <strong>Likes</strong>
+                                </Col>
+                            </Row>
                             {mealPlans ? (
-                                mealPlans.map((item) => {
-                                    <li>{item.name}</li>;
-                                })
+                                mealPlans.map((item, i) => (
+                                    <MealPlanIndividualView
+                                        key={item._id}
+                                        mealPlan={item}
+                                        selectMealPlan={handleSelectMealPlan}
+                                        isSelected={mealPlanList[i]}
+                                    />
+                                ))
                             ) : (
                                 <></>
                             )}
+                            <Button onClick={handleSubmit} className='mt-2'>
+                                Submit <i className='bi bi-chevron-right'></i>
+                            </Button>
                         </Stack>
                     </>
                 )}
