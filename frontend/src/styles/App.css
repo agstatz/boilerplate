@@ -95,9 +95,7 @@ hr.class-2 {
   border-radius: 6px;
 }
 
-.nav-text {
-  font-size: 14px;
-}
+
 
 .nav-alterations {
   border-top-right-radius: 0;
@@ -106,4 +104,26 @@ hr.class-2 {
 
 html {
     font-size: small;
+}
+
+@media (min-width: 1000px){
+    
+    .nav-text {
+        font-size: 14px;
+        display: auto !important;
+      }
+    
+    .mobile-menu {
+        display: none !important;
+    };
+}
+
+@media (max-width: 1000px){
+    .mobile-menu {
+        display:inline-block !important;
+        font-size: 36px !important;
+    }
+    .nav-text {
+        display: none !important;
+    }
 }

@@ -16,7 +16,13 @@ import logo_light from './assets/boilerplate_logo_light_gray_1.png';
 
 // Component imports
 import { useState, useEffect } from 'react';
-import { Container, Navbar, Nav, NavDropdown, Toast } from 'react-bootstrap';
+import {
+    Container,
+    Navbar,
+    Nav,
+    NavDropdown,
+    Offcanvas,
+} from 'react-bootstrap';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import {
     Home,
@@ -64,10 +70,12 @@ function App() {
     const username = store.getState().app.username;
     const isAdmin = store.getState().app.isAdmin;
     const isNotGuest = store.getState().app.isNotGuest;
+    const [showOffCanvas, setShowOffCanvas] = useState(false);
+    const handleClose = () => setShowOffCanvas(false);
+    const handleShow = () => setShowOffCanvas(true);
     const defaultDark = window.matchMedia(
         '(prefers-color-scheme: dark)'
     ).matches;
-
     const [theme, setTheme] = useState(defaultDark ? 'dark' : 'light');
 
     // handles toggling the values that keep track of the current theme
@@ -186,7 +194,7 @@ function App() {
                 <Container className='justify-content-end'>
                     <Nav className='nav-text'>
                         <Nav.Link href='/'>
-                            <i className='bi bi-house-door-fill'></i> Home
+                            <i className='bi bi-house-door-fill w-nav'></i> Home
                         </Nav.Link>
                         <Nav.Link href='/popular'>
                             <i className='bi bi-graph-up'></i> Popular
@@ -219,13 +227,13 @@ function App() {
                             }
                             hidden={isNotGuest !== true}
                         >
-                            <i class='bi bi-person-fill'></i> Profile
+                            <i className='bi bi-person-fill'></i> Profile
                         </Nav.Link>
                         <Nav.Link
                             href={isNotGuest === true ? `/Friend` : '/'}
                             hidden={isNotGuest !== true}
                         >
-                            <i class='bi bi-people-fill'></i> Friends
+                            <i className='bi bi-people-fill'></i> Friends
                         </Nav.Link>
                         <Nav.Link
                             href={isAdmin === true ? `/admin-panel` : '/'}
@@ -234,6 +242,74 @@ function App() {
                             <i className='bi bi-gear-fill'></i> Admin Panel
                         </Nav.Link>
                     </Nav>
+                    <div className='mobile-menu' onClick={handleShow}>
+                        <i className='bi bi-list'></i>
+                    </div>
+                    <Offcanvas
+                        show={showOffCanvas}
+                        onHide={handleClose}
+                        placement='end'
+                    >
+                        <Offcanvas.Header closeButton>
+                            <Offcanvas.Title style={{ fontSize: '24px' }}>
+                                <strong>Menu</strong>
+                            </Offcanvas.Title>
+                        </Offcanvas.Header>
+                        <Offcanvas.Body style={{ fontSize: '18px' }}>
+                            <Nav.Link href='/'>
+                                <i className='bi bi-house-door-fill w-nav'></i>{' '}
+                                Home
+                            </Nav.Link>
+                            <Nav.Link href='/popular'>
+                                <i className='bi bi-graph-up'></i> Popular
+                            </Nav.Link>
+                            <NavDropdown title='Meal Plans'>
+                                <NavDropdown.Item href='/meal-plans'>
+                                    View Meal Plans
+                                </NavDropdown.Item>
+                                <NavDropdown.Item href='/schedule'>
+                                    Schedule Meal Plans
+                                </NavDropdown.Item>
+                            </NavDropdown>
+                            <Nav.Link href='/map'>
+                                <i className='bi bi-geo-alt-fill'></i> Map
+                            </Nav.Link>
+                            <Nav.Link href='/dining_courts'>
+                                <i className='bi bi-building'></i> Dining Courts
+                            </Nav.Link>
+                            <Nav.Link href='/search'>
+                                <i className='bi bi-search'></i> Search
+                            </Nav.Link>
+                            <Nav.Link
+                                href='/login'
+                                hidden={isNotGuest === true}
+                            >
+                                Login
+                            </Nav.Link>
+                            <Nav.Link
+                                href={
+                                    isNotGuest === true
+                                        ? `/profile/${username}`
+                                        : '/'
+                                }
+                                hidden={isNotGuest !== true}
+                            >
+                                <i className='bi bi-person-fill'></i> Profile
+                            </Nav.Link>
+                            <Nav.Link
+                                href={isNotGuest === true ? `/Friend` : '/'}
+                                hidden={isNotGuest !== true}
+                            >
+                                <i className='bi bi-people-fill'></i> Friends
+                            </Nav.Link>
+                            <Nav.Link
+                                href={isAdmin === true ? `/admin-panel` : '/'}
+                                hidden={isAdmin !== true}
+                            >
+                                <i className='bi bi-gear-fill'></i> Admin Panel
+                            </Nav.Link>
+                        </Offcanvas.Body>
+                    </Offcanvas>
                 </Container>
             </Navbar>
             <BrowserRouter>
