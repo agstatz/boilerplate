@@ -88,36 +88,57 @@ router.post("/dailyvalue", async (req, res) => {
   }
   const match2 = await Daily_Values.findOne({ username: req.body.data.username });
   if (match2) {
-    res.send({ message: true });
+    return res.status(400).json({ msg: "Daily Values already exists for user" });
   }
-  try {
-    const dailyValues = new Daily_Values({
-      _id: dailyValues_id,
-      username: req.body.data.username,
-      isDefault: false,
-      calories: req.body.data.calories,
-      totalFat: req.body.data.totalFat,
-      saturatedFat: req.body.data.saturatedFat,
-      cholesterol: req.body.data.cholesterol,
-      sodium: req.body.data.sodium,
-      totalCarbohydrate: req.body.data.totalCarbohydrate,
-      addedSugar: req.body.data.addedSugar,
-      dietaryFiber: req.body.data.dietaryFiber,
-      protein: req.body.data.protein,
-      calcium: req.body.data.calcium,
-      iron: req.body.data.iron,
-    });
-    dailyValues.save((err, user) => {
-      if (err) {
-        console.error(err.message);
-        res.status(500).send({ message: err });
+  else {
+    try {
+      var dailyValues;
+      if (req.body.data.isDefault === false) {
+        dailyValues = new Daily_Values({
+          _id: dailyValues_id,
+          username: req.body.data.username,
+          isDefault: false,
+          calories: req.body.data.calories,
+          totalFat: req.body.data.totalFat,
+          saturatedFat: req.body.data.saturatedFat,
+          cholesterol: req.body.data.cholesterol,
+          sodium: req.body.data.sodium,
+          totalCarbohydrate: req.body.data.totalCarbohydrate,
+          addedSugar: req.body.data.addedSugar,
+          dietaryFiber: req.body.data.dietaryFiber,
+          protein: req.body.data.protein,
+          calcium: req.body.data.calcium,
+          iron: req.body.data.iron,
+        });
+      } else {
+        dailyValues = new Daily_Values({
+          _id: dailyValues_id,
+          username: req.body.data.username,
+          isDefault: true,
+          calories: 2000,
+          totalFat: 78,
+          saturatedFat: 20,
+          cholesterol: 300,
+          sodium: 2300,
+          totalCarbohydrate: 275,
+          addedSugar: 50,
+          dietaryFiber: 28,
+          protein: 50,
+          calcium: 1300,
+          iron: 18,
+        });
       }
-      res.send({ message: "Saved successfully." });
-      console.log("saved");
-    });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server error");
+      dailyValues.save((err, user) => {
+        if (err) {
+          console.error(err.message);
+          res.status(500).send({ message: err });
+        }
+        res.send({ message: "Saved successfully." });
+      });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server error");
+    }
   }
 });
 
@@ -129,59 +150,61 @@ router.put("/dailyvalue", async (req, res) => {
       return res.status(400).json({ msg: "User not found" });
     }
     const match2 = await Daily_Values.findOne({ username: req.body.data.username });
-    if (match2) {
-      res.send({ message: true });
-    }
-
-    const filter = { username: req.body.data.username };
-
-    var updateDoc;
-    if (req.body.data.isDefault) {
-        updateDoc = {
-            $set: {
-                isDefault: true,
-                calories: 2000,
-                totalFat: 78,
-                saturatedFat: 20,
-                cholesterol: 300,
-                sodium: 2300,
-                totalCarbohydrate: 275,
-                addedSugar: 50,
-                dietaryFiber: 28,
-                protein: 50,
-                calcium: 1300,
-                iron: 18,
-            },
-          };
+    if (!match2) {
+      return res.status(400).json({ msg: "Daily Values not found for user" });
     }
     else {
-        updateDoc = {
-            $set: {
-              isDefault: false,
-              calories: req.body.data.calories,
-              totalFat: req.body.data.totalFat,
-              saturatedFat: req.body.data.saturatedFat,
-              cholesterol: req.body.data.cholesterol,
-              sodium: req.body.data.sodium,
-              totalCarbohydrate: req.body.data.totalCarbohydrate,
-              addedSugar: req.body.data.addedSugar,
-              dietaryFiber: req.body.data.dietaryFiber,
-              protein: req.body.data.protein,
-              calcium: req.body.data.calcium,
-              iron: req.body.data.iron,
-            },
-          };
-    }
 
-    const result = await Daily_Values.updateOne(filter, updateDoc);
+      const filter = { username: req.body.data.username };
 
-    match2.save((err, motdr) => {
-      if (err) {
-        console.error(err.message);
-        res.status(500).send({ message: err });
+      var updateDoc;
+      if (req.body.data.isDefault === true) {
+          updateDoc = {
+              $set: {
+                  isDefault: true,
+                  calories: 2000,
+                  totalFat: 78,
+                  saturatedFat: 20,
+                  cholesterol: 300,
+                  sodium: 2300,
+                  totalCarbohydrate: 275,
+                  addedSugar: 50,
+                  dietaryFiber: 28,
+                  protein: 50,
+                  calcium: 1300,
+                  iron: 18,
+              },
+            };
       }
-      res.send({ message: "Updated successfully." });
-    });
+      else {
+          updateDoc = {
+              $set: {
+                isDefault: false,
+                calories: req.body.data.calories,
+                totalFat: req.body.data.totalFat,
+                saturatedFat: req.body.data.saturatedFat,
+                cholesterol: req.body.data.cholesterol,
+                sodium: req.body.data.sodium,
+                totalCarbohydrate: req.body.data.totalCarbohydrate,
+                addedSugar: req.body.data.addedSugar,
+                dietaryFiber: req.body.data.dietaryFiber,
+                protein: req.body.data.protein,
+                calcium: req.body.data.calcium,
+                iron: req.body.data.iron,
+              },
+            };
+      }
+
+      const result = await Daily_Values.updateOne(filter, updateDoc);
+
+      match2.save((err, motdr) => {
+        if (err) {
+          console.error(err.message);
+          res.status(500).send({ message: err });
+        }
+        res.send({ message: "Updated successfully." });
+      });
+  }
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
