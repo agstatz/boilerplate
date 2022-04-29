@@ -163,11 +163,13 @@ function Profile(props) {
         return foods.map((food) => (
             <Container>
                 <Stack gap={2}>
-                    <RecommendedFood
-                        title={food.name}
-                        nutrition={food.nutrition}
-                    />
-                    {likeDislike()}
+                    <div className='bg-white p-2 border rounded'>
+                        <RecommendedFood
+                            title={food.name}
+                            nutrition={food.nutrition}
+                        />
+                        {likeDislike()}
+                    </div>
                 </Stack>
             </Container>
         ));
