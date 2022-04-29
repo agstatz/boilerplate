@@ -32,7 +32,7 @@ function Footer(props: any) {
             <Stack>
               <h4 className="fw-bold mx-auto">Quick Links</h4>
               <div className="mx-auto">
-                <a href="/maps/">Maps</a>
+                <a href="/map/">Maps</a>
               </div>
               <div className="mx-auto">
                 <a href="/dining_courts/">Browse Dining Courts</a>

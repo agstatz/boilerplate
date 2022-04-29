@@ -376,23 +376,6 @@ function Profile(props) {
                         </Card.Body>
                     </Card>
                 </Col>
-                <Col sm={12}>
-                    <Card className='my-3' bg='light'>
-                        <Card.Header className='h5'>
-                            <strong>Favorites</strong>
-                        </Card.Header>
-                        <Card.Body>
-                            <Card.Text>
-                                Chicken Parmesan
-                                <br />
-                                Stir Fry
-                                <br />
-                                Waffle Fries
-                                <br />
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                </Col>
                 {username === id ? ( //friends are unable to see this section
                     <Col sm={12}>
                         <Card className='my-3 mb-5' bg='light'>
