@@ -15,6 +15,7 @@ import UnauthorizedAccess from "../components/UnauthorizedAccess";
 const url = "http://localhost:3000/";
 const diningLocationSelectionUrl = url.concat("dining-location-selection");
 const motdEditUrl = url.concat("motd-edit");
+const addFoodUrl = url.concat("outside-food-menu/").concat(store.getState().app.username);
 
 
 class AdminPanel extends React.Component {
@@ -87,6 +88,23 @@ class AdminPanel extends React.Component {
                   href="/admin-panel/reports"
                 >
                   View Reported Comments
+                </Button>
+              </Stack>
+            </Container>
+            <Container
+              className="d-flex justify-content-center"
+              style={{
+                paddingTop: "1vh",
+                paddingLeft: "24vh",
+                paddingRight: "24vh",
+              }}
+            >
+              <Stack spacing={4}>
+                <Button
+                  className="mb-2 mt-3 btn btn-primary btn-sm"
+                  href={addFoodUrl}
+                >
+                  Add outside food information
                 </Button>
               </Stack>
             </Container>

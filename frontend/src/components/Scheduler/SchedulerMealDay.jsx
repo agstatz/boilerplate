@@ -209,6 +209,7 @@ function SchedulerMealDay(props) {
             calculateDvs();
             return list[meal_key].foods;
         });
+        return list[meal_key].foods;
     }
 
     // Removing a food from a meal's list
