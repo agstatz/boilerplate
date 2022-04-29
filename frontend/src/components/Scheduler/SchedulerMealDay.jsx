@@ -111,10 +111,22 @@ function SchedulerMealDay(props) {
         setSubmitted(false);
 
         let infoList = foodInfoList;
-        list.splice(key, 1);
+        infoList.splice(key, 1);
 
         for (let i = 0; i < infoList.length; i++) {
-            infoList[i] = { ...infoList[i], key: i };
+            infoList[i] = { ...infoList[i], key: i,
+                calories: 0,
+                totalFat: 0,
+                saturatedFat: 0,
+                cholesterol: 0,
+                sodium: 0,
+                totalCarbohydrate: 0,
+                addedSugar: 0,
+                dietaryFiber: 0,
+                protein: 0,
+                calcium: 0,
+                iron: 0 
+            };
         }
         setFoodInfoList(infoList);
         calculateDvs();
@@ -215,7 +227,18 @@ function SchedulerMealDay(props) {
         infoList[meal_key].foods.splice(food_key, 1);
         for (let i = 0; i < infoList[meal_key].foods.length; i++) {
             infoList[meal_key].foods[i] = {
-                key: i
+                key: i,
+                calories: 0,
+                totalFat: 0,
+                saturatedFat: 0,
+                cholesterol: 0,
+                sodium: 0,
+                totalCarbohydrate: 0,
+                addedSugar: 0,
+                dietaryFiber: 0,
+                protein: 0,
+                calcium: 0,
+                iron: 0
             };
         }
         setFoodInfoList(infoList);

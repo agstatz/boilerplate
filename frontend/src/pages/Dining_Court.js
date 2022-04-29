@@ -267,7 +267,7 @@ export default class Dining_Court extends React.Component {
           </header>
         </Container>
         <DiningCourtPopular name={this.state.queries.name} />
-        <Comments userID="1" />
+        <Comments userID="1" diningCourt={this.state.queries.name} />
       </div>
     );
   }
