@@ -120,10 +120,6 @@ function Profile(props) {
     );
 
     useEffect(async () => {
-        const { data: response } = await axios.get(
-            'http://localhost:5000/recommendations/' + id + '/foods/'
-        );
-        setFoods(response);
         const { data: response3 } = await axios.get(
             'http://localhost:3001/Profile_Info?username=' + id
         );
@@ -138,12 +134,16 @@ function Profile(props) {
         } else {
             setFriendCount(response3[1]);
         }
-        if (response[2] === '') {
+        if (response3[2] === '') {
             setTriedCount(0);
         } else {
             setTriedCount(response3[2]);
         }
 
+        const { data: response } = await axios.get(
+            'http://localhost:5000/recommendations/' + id + '/foods/'
+        );
+        setFoods(response);
         const { data: response2 } = await axios.get(
             'http://localhost:3001/api/users/dietary/' + username
         );
