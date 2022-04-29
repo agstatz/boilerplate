@@ -5,6 +5,7 @@ import { Container, Button } from "react-bootstrap";
 // Import comments
 import Comments from "../components/Comments/Comments";
 import {store} from "../store/store";
+import DiningCourtPopular from "../components/DiningCourtPopular";
 
 const ColoredLine = ({ color }) => (
   <hr
@@ -234,6 +235,7 @@ export default class Dining_Court extends React.Component {
             {listItems}
           </header>
         </Container>
+        <DiningCourtPopular name={this.state.queries.name}/>
         <Comments userID="1" />
       </div>
     );
