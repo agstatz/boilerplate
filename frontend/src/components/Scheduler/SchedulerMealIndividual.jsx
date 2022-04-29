@@ -164,8 +164,8 @@ function SchedulerMealIndividual(props) {
                                     options={Object.keys(locations).map(
                                         (key, i) => {
                                             return {
-                                                value: locations[key]._id,
-                                                label: locations[key].name,
+                                                value: locations[key],
+                                                label: locations[key],
                                             };
                                         }
                                     )}
@@ -249,7 +249,8 @@ function SchedulerMealIndividual(props) {
                         </Row>
                         <Form.Label className='px-2'>Food Items</Form.Label>
                         <div className='px-4 pb-3'>
-                            {(foodListLength === 0 || foodListLength === undefined)
+                            {foodListLength === 0 ||
+                            foodListLength === undefined
                                 ? 'No food selected'
                                 : foodList.map((food) => (
                                       <li key={food.key}>
