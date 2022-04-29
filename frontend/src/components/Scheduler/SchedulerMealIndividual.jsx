@@ -25,7 +25,6 @@ function SchedulerMealIndividual(props) {
                 const { data: response } = await axios.get(
                     'http://localhost:3001/Dining_Courts'
                 );
-                console.log(response);
                 setLocations(response);
             } catch (err) {
                 console.error(err);
