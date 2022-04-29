@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { store } from "../../store/store";
+import axios from "axios";
 
 // Import comment components
 import Comment from "./Comment";
@@ -14,9 +16,12 @@ import {
 } from "./testAPI";
 
 const Comments = (props) => {
-  // Pull user ID from props
-  // TODO: Get this from state
-  const { userID } = props;
+  // Get dining court
+  const { diningCourt } = props;
+  console.log(diningCourt);
+
+  // Get current user ID
+  const currentUserID = store.getState().app.username;
 
   // Set up state
   const [comments, setComments] = useState([]); // Comments state
@@ -39,7 +44,7 @@ const Comments = (props) => {
   // Function to add a comment
   const addComment = (text, parentID) => {
     console.log("Adding", text, parentID);
-    apiCreateComment(text, parentID).then((c) => {
+    apiCreateComment(text, parentID, diningCourt).then((c) => {
       setComments([c, ...comments]); // Set the new comment on top
       setActiveComment(null); // Set active comment to null if this was a submit function
     });
@@ -71,7 +76,7 @@ const Comments = (props) => {
 
   // Use effect hook
   useEffect(() => {
-    apiGetComments().then((data) => {
+    apiGetComments(diningCourt).then((data) => {
       setComments(data);
     });
   }, []);
@@ -85,7 +90,6 @@ const Comments = (props) => {
           return (
             <Comment
               key={c.id}
-              userID={userID}
               comment={c}
               replies={getReplies(c.id)}
               addComment={addComment}
@@ -93,6 +97,7 @@ const Comments = (props) => {
               deleteComment={deleteComment}
               activeComment={activeComment}
               setActiveComment={setActiveComment}
+              diningCourt={diningCourt}
             />
           );
         })}

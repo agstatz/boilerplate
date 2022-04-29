@@ -4,7 +4,7 @@ import { Container, Button } from "react-bootstrap";
 
 // Import comments
 import Comments from "../components/Comments/Comments";
-import {store} from "../store/store";
+import { store } from "../store/store";
 
 const ColoredLine = ({ color }) => (
   <hr
@@ -20,7 +20,7 @@ function getToday() {
   let date = new Date();
   let today = "";
   today += date.getMonth() + 1;
-  today += "-" + date.getDate()
+  today += "-" + date.getDate();
   // if (date.getMonth() + 1 > 9) {
   //   today += date.getMonth() + 1;
   // } else {
@@ -91,12 +91,12 @@ export default class Dining_Court extends React.Component {
 
   submitButton = (event) => {
     let string =
-        "/Post_Eating_At?location=" +
-        this.state.queries.name +
-        "&date=" +
-        this.state.queries.date +
-        "&meal=" +
-        this.state.queries.meal
+      "/Post_Eating_At?location=" +
+      this.state.queries.name +
+      "&date=" +
+      this.state.queries.date +
+      "&meal=" +
+      this.state.queries.meal;
     this.state.html.push(<Redirect to={string} />);
     this.forceUpdate();
   };
@@ -115,7 +115,7 @@ export default class Dining_Court extends React.Component {
           this.state.queries.meal
       );
     } catch (error) {
-      console.log("error")
+      console.log("error");
       console.log(error);
       this.setState({ error: true });
     } finally {
@@ -124,48 +124,77 @@ export default class Dining_Court extends React.Component {
       if (this.state.error) {
         this.state.html.push(<h1>Error: Dining Court not found</h1>);
       } else {
-        this.state.html.push(<h1 className={"text-center"}>{this.state.queries.name.split("_").join(" ")}</h1>)
+        this.state.html.push(
+          <h1 className={"text-center"}>
+            {this.state.queries.name.split("_").join(" ")}
+          </h1>
+        );
         if (response.data.length !== 0) {
-          console.log(response.data)
+          console.log(response.data);
           let list = response.data.stations;
           let k = 0;
           for (let i = 0; i < list.length; i++) {
-            let toPush = <header className="w-50 p-3 my-3 bg-light border border-primary rounded"></header>;
+            let toPush = (
+              <header className="w-50 p-3 my-3 bg-light border border-primary rounded"></header>
+            );
             let clonedToPush = React.cloneElement(toPush, { children: [] });
-            clonedToPush.props.children.push(<h3 className={"text-center"}>{response.data.stations[i].name}</h3>)
+            clonedToPush.props.children.push(
+              <h3 className={"text-center"}>
+                {response.data.stations[i].name}
+              </h3>
+            );
             for (let j = 1; j < list[i].foods.length; j++) {
               clonedToPush.props.children.push(
-                  <Link id={"food" + k++} to={"/food?name=" + list[i].foods[j]}>
-                    {list[i].foods[j]}
-                    <br></br>
-                  </Link>
+                <Link id={"food" + k++} to={"/food?name=" + list[i].foods[j]}>
+                  {list[i].foods[j]}
+                  <br></br>
+                </Link>
               );
             }
-            this.state.html.push(clonedToPush)
+            this.state.html.push(clonedToPush);
           }
         } else {
-          this.state.html.push(<h2><br></br>Dining schedule is not available for {this.state.queries.meal} on {this.state.queries.date}</h2>)
+          this.state.html.push(
+            <h2>
+              <br></br>Dining schedule is not available for{" "}
+              {this.state.queries.meal} on {this.state.queries.date}
+            </h2>
+          );
         }
-        console.log(this.state.username)
+        console.log(this.state.username);
         if (
-            this.state.username != null &
-            this.state.username !== "undefined" &&
-            this.state.username !== ""
+          (this.state.username != null) &
+            (this.state.username !== "undefined") &&
+          this.state.username !== ""
         ) {
           try {
             response = await axios.get(
-                url +
-                `Eating_At?username=` +
-                this.state.username
+              url + `Eating_At?username=` + this.state.username
             );
           } catch (error) {
-            console.log(error)
+            console.log(error);
           } finally {
-            console.log("eatingat = " + response.data)
-            if (response.data === this.state.queries.name.split("_").join(" ")) {
-              this.state.html2.push(<Button onClick={this.submitButton} className="float-end btn-sm">I am no longer eating here</Button>)
+            console.log("eatingat = " + response.data);
+            if (
+              response.data === this.state.queries.name.split("_").join(" ")
+            ) {
+              this.state.html2.push(
+                <Button
+                  onClick={this.submitButton}
+                  className="float-end btn-sm"
+                >
+                  I am no longer eating here
+                </Button>
+              );
             } else {
-              this.state.html2.push(<Button onClick={this.submitButton} className="float-end btn-sm">I am eating here</Button>)
+              this.state.html2.push(
+                <Button
+                  onClick={this.submitButton}
+                  className="float-end btn-sm"
+                >
+                  I am eating here
+                </Button>
+              );
             }
           }
         }
@@ -208,23 +237,23 @@ export default class Dining_Court extends React.Component {
       </d.type>
     ));
     const listItems2 = this.state.html2.map((d) => (
-        <d.type
-            key={"list" + i++}
-            src={d.props.src}
-            alt={d.props.name}
-            to={d.props.to}
-            id={d.key}
-            style={d.props.style}
-            color={d.props.color}
-            height={d.props.height}
-            width={d.props.height}
-            onClick={d.props.onClick}
-            className={d.props.className}
-        >
-          {d.props.children}
-        </d.type>
+      <d.type
+        key={"list" + i++}
+        src={d.props.src}
+        alt={d.props.name}
+        to={d.props.to}
+        id={d.key}
+        style={d.props.style}
+        color={d.props.color}
+        height={d.props.height}
+        width={d.props.height}
+        onClick={d.props.onClick}
+        className={d.props.className}
+      >
+        {d.props.children}
+      </d.type>
     ));
-    const buttonText = "ab"
+    const buttonText = "ab";
     return (
       <div className="App">
         <Container style={{ paddingTop: "18vh", paddingBottom: "18vh" }}>
@@ -234,7 +263,7 @@ export default class Dining_Court extends React.Component {
             {listItems}
           </header>
         </Container>
-        <Comments userID="1" />
+        <Comments diningCourt={this.state.queries.name} />
       </div>
     );
   }
