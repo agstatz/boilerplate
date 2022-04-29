@@ -353,6 +353,12 @@ function Profile(props) {
                                     >
                                         <FavoriteFoodList username={id} />
                                     </Tab>
+                                    <Tab
+                                        label='Food Ratings'
+                                        style={{ cursor: 'auto' }}
+                                    >
+                                        <FoodRatingsList urlUsername={id} />
+                                    </Tab>
                                 </Tabs>
                             )}
                             <ColoredLine />
