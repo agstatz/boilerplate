@@ -127,6 +127,11 @@ const User = mongoose.model(
       },
     ],
     locationsVisited: [locationsVisitedSchema],
+    tried: [
+        {
+            type: mongoose.Schema.Types.String
+        }
+    ]
   })
 );
 module.exports = User;
