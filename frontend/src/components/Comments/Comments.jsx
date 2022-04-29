@@ -13,7 +13,7 @@ import {
   createComment as apiCreateComment,
   updateComment as apiUpdateComment,
   deleteComment as apiDeleteComment,
-} from "./testAPI";
+} from "./APIWrapper";
 
 const Comments = (props) => {
   // Get dining court
@@ -51,11 +51,11 @@ const Comments = (props) => {
   };
 
   // Function to update a comment
-  const updateComment = (text, commentID) => {
-    apiUpdateComment(text, commentID).then(() => {
+  const updateComment = (commentID, text, likes) => {
+    apiUpdateComment(commentID, text, likes).then(() => {
       const updated = comments.map((c) => {
-        if (c.id === commentID) {
-          return { ...c, body: text };
+        if (c._id === commentID) {
+          return { ...c, body: text, likes: likes };
         }
         return c;
       });
@@ -68,7 +68,7 @@ const Comments = (props) => {
   const deleteComment = (commentID) => {
     if (window.confirm("Delete comment?")) {
       apiDeleteComment(commentID).then(() => {
-        const updated = comments.filter((c) => c.id !== commentID);
+        const updated = comments.filter((c) => c._id !== commentID);
         setComments(updated);
       });
     }
@@ -89,9 +89,9 @@ const Comments = (props) => {
         {rootComments.map((c) => {
           return (
             <Comment
-              key={c.id}
+              key={c._id}
               comment={c}
-              replies={getReplies(c.id)}
+              replies={getReplies(c._id)}
               addComment={addComment}
               updateComment={updateComment}
               deleteComment={deleteComment}

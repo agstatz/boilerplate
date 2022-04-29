@@ -4,28 +4,36 @@ import { store } from "../../store/store";
 export const getComments = async (diningCourtName) => {
   const url = "http://localhost:3001/api/comments/" + diningCourtName;
   console.log(url);
-  return axios.get(url);
+  const res = await axios.get(url);
+  return res.data;
 };
 
 export const createComment = async (text, parentID = null, diningCourtName) => {
   const comment = {
-    userID: store.getState().app.username,
+    username: store.getState().app.username,
     parentID: parentID,
     diningCourtName: diningCourtName,
     body: text,
   };
-
-  const res = await axios.post("http://localhost:3001/api/comments/", comment);
+  const url = "http://localhost:3001/api/comments/" + diningCourtName;
+  const res = await axios.post(url, comment);
   console.log(res.data);
   return res.data;
 };
 
-export const updateComment = async (text) => {
-  return { text };
+export const updateComment = async (id, text = null, likes = null) => {
+  const comment = {};
+  if (text !== null) comment.body = text;
+  if (likes !== null) comment.likes = likes;
+  const url = `http://localhost:3001/api/comments/${id}`;
+  const res = await axios.put(url, comment);
+  return res.data;
 };
 
-export const deleteComment = async () => {
-  return {};
+export const deleteComment = async (id) => {
+  const url = `http://localhost:3001/api/comments/${id}`;
+  const res = await axios.delete(url);
+  return res.data;
 };
 
 const storedComments = [

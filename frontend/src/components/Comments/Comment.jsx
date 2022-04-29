@@ -26,26 +26,26 @@ const Comment = (props) => {
 
   // Flags
   const canReply = Boolean(currentUserID); // A user can reply if they are logged in.
-  const canModify = currentUserID === comment.userID; // A user can edit or delete their comment if they own it.
-  const canReport = currentUserID !== comment.userID; // A user cannot report their own comment.
+  const canModify = currentUserID === comment.username; // A user can edit or delete their comment if they own it.
+  const canReport = currentUserID !== comment.username; // A user cannot report their own comment.
 
   const isReplying =
     activeComment &&
     activeComment.type === "replying" &&
-    activeComment.id === comment.id;
+    activeComment._id === comment._id;
   const isEditing =
     activeComment &&
     activeComment.type === "editing" &&
-    activeComment.id === comment.id;
+    activeComment._id === comment._id;
 
-  const replyID = parentID ? parentID : comment.id;
+  const replyID = parentID ? parentID : comment._id;
 
   const reportComment = (commentID) => {
     console.log("reporting comment", commentID);
 
     axios.post("http://localhost:3001/api/reportComment", {
       data: {
-        commentID: comment.id,
+        commentID: comment._id,
         text: comment.body,
         reportedBy: currentUserID,
         writtenAt: comment.createdAt,
@@ -73,7 +73,7 @@ const Comment = (props) => {
             submitLabel="Update"
             hasCancelButton
             initialText={comment.body}
-            handleSubmit={(text) => updateComment(text, comment.id)}
+            handleSubmit={(text) => updateComment(comment._id, text, null)}
             handleCancel={() => setActiveComment(null)}
           />
         )}
@@ -82,7 +82,7 @@ const Comment = (props) => {
             <div
               className="comment-action"
               onClick={() =>
-                setActiveComment({ id: comment.id, type: "replying" })
+                setActiveComment({ _id: comment._id, type: "replying" })
               }
             >
               Reply
@@ -92,7 +92,7 @@ const Comment = (props) => {
             <div
               className="comment-action"
               onClick={() =>
-                setActiveComment({ id: comment.id, type: "editing" })
+                setActiveComment({ _id: comment._id, type: "editing" })
               }
             >
               Edit
@@ -101,7 +101,7 @@ const Comment = (props) => {
           {canModify && (
             <div
               className="comment-action"
-              onClick={() => deleteComment(comment.id)}
+              onClick={() => deleteComment(comment._id)}
             >
               Delete
             </div>
@@ -111,7 +111,7 @@ const Comment = (props) => {
               className="comment-action"
               onClick={() => {
                 // console.log(comment.id, userID)
-                reportComment(comment.id, currentUserID);
+                reportComment(comment._id, currentUserID);
                 NotificationManager.success(
                   "Comment reported!",
                   "Success",
@@ -128,7 +128,7 @@ const Comment = (props) => {
           <CommentForm
             submitLabel="Reply"
             hasCancelButton
-            handleSubmit={(text) => addComment(text, replyID)}
+            handleSubmit={(text) => addComment(text, replyID, diningCourt)}
             handleCancel={() => setActiveComment(null)}
           />
         )}
@@ -138,7 +138,7 @@ const Comment = (props) => {
             {replies.map((reply) => {
               return (
                 <Comment
-                  key={reply.id}
+                  key={reply._id}
                   comment={reply}
                   replies={[]}
                   addComment={addComment}
@@ -146,7 +146,7 @@ const Comment = (props) => {
                   deleteComment={deleteComment}
                   activeComment={activeComment}
                   setActiveComment={setActiveComment}
-                  parentID={comment.id}
+                  parentID={comment._id}
                   diningCourt={diningCourt}
                 />
               );
