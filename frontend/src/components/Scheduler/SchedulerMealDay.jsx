@@ -26,6 +26,7 @@ function SchedulerMealDay(props) {
     const [dvForm, setDvForm] = useState({ calories: "2000", totalFat: "78", saturatedFat: "20", cholesterol: "300",sodium: "2300", totalCarbohydrate: 275,
                                            addedSugar: "50", dietaryFiber: "28", protein: "50", calcium: "1300", iron: "18"});
     const [formMessage, setFormMessage] = useState("");
+    const [hideDVs, setHideDVs] = useState(false);
 
     useEffect(async () => {
         if (!props.editable) {
@@ -35,6 +36,9 @@ function SchedulerMealDay(props) {
                 setMealList(props.mealList);
                 setMealListLength(props.mealList.length);
             }
+        }
+        if (props.hideDVs) {
+            setHideDVs(true);
         }
     }, []);
 
@@ -111,10 +115,22 @@ function SchedulerMealDay(props) {
         setSubmitted(false);
 
         let infoList = foodInfoList;
-        list.splice(key, 1);
+        infoList.splice(key, 1);
 
         for (let i = 0; i < infoList.length; i++) {
-            infoList[i] = { ...infoList[i], key: i };
+            infoList[i] = { ...infoList[i], key: i,
+                calories: 0,
+                totalFat: 0,
+                saturatedFat: 0,
+                cholesterol: 0,
+                sodium: 0,
+                totalCarbohydrate: 0,
+                addedSugar: 0,
+                dietaryFiber: 0,
+                protein: 0,
+                calcium: 0,
+                iron: 0 
+            };
         }
         setFoodInfoList(infoList);
         calculateDvs();
@@ -197,6 +213,7 @@ function SchedulerMealDay(props) {
             calculateDvs();
             return list[meal_key].foods;
         });
+        return list[meal_key].foods;
     }
 
     // Removing a food from a meal's list
@@ -215,7 +232,18 @@ function SchedulerMealDay(props) {
         infoList[meal_key].foods.splice(food_key, 1);
         for (let i = 0; i < infoList[meal_key].foods.length; i++) {
             infoList[meal_key].foods[i] = {
-                key: i
+                key: i,
+                calories: 0,
+                totalFat: 0,
+                saturatedFat: 0,
+                cholesterol: 0,
+                sodium: 0,
+                totalCarbohydrate: 0,
+                addedSugar: 0,
+                dietaryFiber: 0,
+                protein: 0,
+                calcium: 0,
+                iron: 0
             };
         }
         setFoodInfoList(infoList);
@@ -509,6 +537,11 @@ function SchedulerMealDay(props) {
 
     function OpenDVModal() {
         var space = " "
+        if (hideDVs) {
+            return (<div></div>);
+        }
+        console.log("asdf");
+            console.log();
         return (
             <div>
                 <Button variant="secondary" className="mb-2" onClick={handleOpenDVModal}>
@@ -614,7 +647,7 @@ function SchedulerMealDay(props) {
                 </h5>
             </Accordion.Header>
             <Accordion.Body>
-                <Stack gap={4}>
+                <Stack hidden={hideDVs} gap={4}>
                     <Container className="mb-3 d-flex justify-content-center bg-light border rounded"><Row className="mt-2">
                         <Col><p style={{ maxWidth: '145px', minWidth: '145px' }}>Calories: {dvSums.calories}% DV</p></Col>
                         <Col><p style={{ maxWidth: '145px', minWidth: '145px' }}>Total Fat: {dvSums.totalFat}% DV</p></Col>

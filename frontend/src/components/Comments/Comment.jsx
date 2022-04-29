@@ -3,12 +3,13 @@ import React from "react";
 import { store } from "../../store/store";
 
 import CommentForm from "./CommentForm";
-import {NotificationContainer, NotificationManager} from 'react-notifications';
-
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
 
 const Comment = (props) => {
   const {
-    userID,
     comment,
     replies,
     addComment,
@@ -17,38 +18,45 @@ const Comment = (props) => {
     activeComment = null,
     setActiveComment,
     parentID,
+    diningCourt,
   } = props;
 
+  const currentUserID = store.getState().app.username;
+  console.log("Current user: " + currentUserID);
+
   // Flags
-  const canReply = Boolean(userID); // A user can reply if they are logged in.
-  const canModify = userID === comment.userID; // A user can edit or delete their comment if they own it.
+  const canReply = Boolean(currentUserID); // A user can reply if they are logged in.
+  const canModify = currentUserID === comment.username; // A user can edit or delete their comment if they own it.
+  const canReport = currentUserID !== comment.username; // A user cannot report their own comment.
 
   const isReplying =
     activeComment &&
     activeComment.type === "replying" &&
-    activeComment.id === comment.id;
+    activeComment._id === comment._id;
   const isEditing =
     activeComment &&
     activeComment.type === "editing" &&
-    activeComment.id === comment.id;
+    activeComment._id === comment._id;
 
-  const replyID = parentID ? parentID : comment.id;
+  const replyID = parentID ? parentID : comment._id;
 
   const reportComment = (commentID) => {
-    console.log('reporting comment', commentID);
+    console.log("reporting comment", commentID);
 
-    axios.post('http://localhost:3001/api/reportComment', { data: {
-      commentID: comment.id,
-      text: comment.body,
-      reportedBy: store.getState().app.username,
-      writtenAt: comment.createdAt,
-      author: comment.username
-    } });
-  }
+    axios.post("http://localhost:3001/api/reportComment", {
+      data: {
+        commentID: comment._id,
+        text: comment.body,
+        reportedBy: currentUserID,
+        writtenAt: comment.createdAt,
+        author: comment.username,
+      },
+    });
+  };
 
   return (
     <div className="comment">
-      <NotificationContainer/>
+      <NotificationContainer />
 
       <div className="comment-image-container">
         <img src="/boilerplate_icon_small.png" />
@@ -65,7 +73,7 @@ const Comment = (props) => {
             submitLabel="Update"
             hasCancelButton
             initialText={comment.body}
-            handleSubmit={(text) => updateComment(text, comment.id)}
+            handleSubmit={(text) => updateComment(comment._id, text, null)}
             handleCancel={() => setActiveComment(null)}
           />
         )}
@@ -74,7 +82,7 @@ const Comment = (props) => {
             <div
               className="comment-action"
               onClick={() =>
-                setActiveComment({ id: comment.id, type: "replying" })
+                setActiveComment({ _id: comment._id, type: "replying" })
               }
             >
               Reply
@@ -84,7 +92,7 @@ const Comment = (props) => {
             <div
               className="comment-action"
               onClick={() =>
-                setActiveComment({ id: comment.id, type: "editing" })
+                setActiveComment({ _id: comment._id, type: "editing" })
               }
             >
               Edit
@@ -93,22 +101,23 @@ const Comment = (props) => {
           {canModify && (
             <div
               className="comment-action"
-              onClick={() => deleteComment(comment.id)}
+              onClick={() => deleteComment(comment._id)}
             >
               Delete
             </div>
           )}
-          {(
+          {canReport && (
             <div
               className="comment-action"
-              onClick={() =>{
+              onClick={() => {
                 // console.log(comment.id, userID)
-                reportComment(comment.id, userID);
-                NotificationManager.success('Comment reported!', 'Success', 3000);
-                
-              }
-                
-              }
+                reportComment(comment._id, currentUserID);
+                NotificationManager.success(
+                  "Comment reported!",
+                  "Success",
+                  3000
+                );
+              }}
             >
               Report
             </div>
@@ -119,7 +128,7 @@ const Comment = (props) => {
           <CommentForm
             submitLabel="Reply"
             hasCancelButton
-            handleSubmit={(text) => addComment(text, replyID)}
+            handleSubmit={(text) => addComment(text, replyID, diningCourt)}
             handleCancel={() => setActiveComment(null)}
           />
         )}
@@ -129,8 +138,7 @@ const Comment = (props) => {
             {replies.map((reply) => {
               return (
                 <Comment
-                  key={reply.id}
-                  userID={userID}
+                  key={reply._id}
                   comment={reply}
                   replies={[]}
                   addComment={addComment}
@@ -138,7 +146,8 @@ const Comment = (props) => {
                   deleteComment={deleteComment}
                   activeComment={activeComment}
                   setActiveComment={setActiveComment}
-                  parentID={comment.id}
+                  parentID={comment._id}
+                  diningCourt={diningCourt}
                 />
               );
             })}

@@ -224,31 +224,49 @@ exports.editFoodRating = async (req, res) => {
 
 // Allows for getting a food rating
 exports.getFoodRating = async (req, res) => {
-  const queryFood = req.query.food.split("_").join(" ");
-  const queryUser = req.query.user;
+  
   try {
-    FoodRating.findOne({ ownerName: queryUser, food: queryFood }).exec(
-      (err, foodRating) => {
-        if (err) {
-          res.status(500).send({ message: err });
-          return;
-        }
-        if (!foodRating) {
-          FoodRating.create(
-            { ownerName: queryUser, food: queryFood, rating: 0 },
-            function (err, newFoodRating) {
-              if (err) return handleError(err);
-              // saved!
-            }
-          );
-          //res.status(404).send({ message: "not found" });
-          return;
-        }
 
-        res.status(200).send(foodRating);
-        return;
-      }
-    );
+    const queryUser = req.query.user;
+
+    if (!req.query.food) {
+        FoodRating.find({ ownerName: queryUser }).exec((err, foodRating) => {
+            if (err) {
+                res.status(500).send({message: err});
+                return;
+            }
+            res.status(200).send(foodRating);
+            return;
+        })
+    } else {
+
+        const queryFood = req.query.food.split("_").join(" ");
+      
+    
+        FoodRating.findOne({ ownerName: queryUser, food: queryFood }).exec(
+          (err, foodRating) => {
+            if (err) {
+              res.status(500).send({ message: err });
+              return;
+            }
+            if (!foodRating) {
+              FoodRating.create(
+                { ownerName: queryUser, food: queryFood, rating: 0 },
+                function (err, newFoodRating) {
+                  if (err) return handleError(err);
+                  // saved!
+                }
+              );
+              //res.status(404).send({ message: "not found" });
+              return;
+            }
+    
+            res.status(200).send(foodRating);
+            return;
+          }
+        );
+    }
+    
   } catch (err) {
     return res.status(500).send({ message: err });
   }

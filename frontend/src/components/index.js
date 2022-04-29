@@ -14,3 +14,4 @@ export { default as FoodRatingList } from "./FoodRatingList";
 export { default as MotD } from "./MotD";
 export { default as BanUserButton } from "./BanUserButton";
 export { default as FavoriteFoodList } from "./FavoriteFoodList";
+export { default as FoodRatingsList } from "./FoodRatingsList";

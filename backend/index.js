@@ -52,6 +52,7 @@ app.use("/api/dining-locations", require("./routes/diningLocations"));
 app.use("/api/food-logs", require("./routes/foodLogs"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/motd", require("./routes/motd"));
+app.use("/api/comments", require("./routes/comments"));
 
 // allows requests from host
 app.use(function (req, res, next) {
@@ -335,23 +336,17 @@ app.get("/Foods", (req, res) => {
 });
 
 app.get("/Foods_Rating_Data", (req, res) => {
-
-    MongoClient.connect(url, function (err, dbt) {
+  MongoClient.connect(url, function (err, dbt) {
     let db = dbt.db("boilerplate");
     db.collection("foods")
       .find({})
       .toArray(function (err, result) {
         if (err) throw err;
-        
-        result = result.map((a) => [
-            a._id,
-            a.name,
-            a.aggregateRating,
-        ]);
+
+        result = result.map((a) => [a._id, a.name, a.aggregateRating]);
         res.send(result);
-       });
-       
-    });
+      });
+  });
 });
 
 app.get("/Foods_Need_Update", (req, res) => {
@@ -598,12 +593,12 @@ app.get("/Dining_Courts", (req, res) => {
   MongoClient.connect(url, function (err, dbt) {
     if (err) throw err;
     let db = dbt.db("boilerplate");
-
-    db.collection("locations")
-      .find({})
+    db.collection("diningcourts")
+      .find()
       .toArray(function (err, result) {
         if (err) throw err;
-        console.log(result);
+        result = result.map((a) => a.name);
+        console.log(result)
         console.log("done");
         res.send(result);
       });
@@ -613,58 +608,67 @@ app.get("/Dining_Courts", (req, res) => {
 
 app.get("/Dining_Court", (req, res) => {
   let name = req.query.name;
-  let date = req.query.date.split('-').join("/");
+  let date = req.query.date.split("-").join("/");
   let meal = req.query.meal;
 
   MongoClient.connect(url, function (err, dbt) {
     if (err) throw err;
     let db = dbt.db("boilerplate");
     db.collection("diningcourts")
-        .find({name: name.split('_').join(" ")})
-        .toArray(function (err, result) {
-          if (err) throw err;
-          if (result.length === 0) {
-            res.status(404).send("Dining court" + name.split('_').join(" ") + "does not exist")
-          } else {
-            let schedule = result[0].schedule;
-            let arrayOne = -1
-            let arrayTwo = -1
-            for (let i = 0; i < schedule.length; i++) {
-              if (schedule[i].date === date) {
-                for (let j = 0; j < schedule[i].menus.length; j++) {
-                  if (schedule[i].menus[j].menuType === meal) {
-                    arrayOne = i
-                    arrayTwo = j
-                  }
+      .find({ name: name.split("_").join(" ") })
+      .toArray(function (err, result) {
+        if (err) throw err;
+        if (result.length === 0) {
+          res
+            .status(404)
+            .send(
+              "Dining court" + name.split("_").join(" ") + "does not exist"
+            );
+        } else {
+          let schedule = result[0].schedule;
+          let arrayOne = -1;
+          let arrayTwo = -1;
+          for (let i = 0; i < schedule.length; i++) {
+            if (schedule[i].date === date) {
+              for (let j = 0; j < schedule[i].menus.length; j++) {
+                if (schedule[i].menus[j].menuType === meal) {
+                  arrayOne = i;
+                  arrayTwo = j;
                 }
               }
             }
-            if (arrayOne !== -1 && arrayTwo !== -1) {
-              let ret = schedule[arrayOne].menus[arrayTwo]
-              db.collection("foods").find().toArray(function(err, result) {
-                console.log("-----------res: --------------")
-                console.log(result[0])
+          }
+          if (arrayOne !== -1 && arrayTwo !== -1) {
+            let ret = schedule[arrayOne].menus[arrayTwo];
+            db.collection("foods")
+              .find()
+              .toArray(function (err, result) {
+                console.log("-----------res: --------------");
+                console.log(result[0]);
                 for (let i = 0; i < ret.stations.length; i++) {
                   for (let j = 0; j < ret.stations[i].foods.length; j++) {
-                    let name = ""
+                    let name = "";
                     for (let k = 0; k < result.length; k++) {
-                      if (result[k]._id.toString() === ret.stations[i].foods[j].toString()) {
-                        name = result[k].name
+                      if (
+                        result[k]._id.toString() ===
+                        ret.stations[i].foods[j].toString()
+                      ) {
+                        name = result[k].name;
                         break;
                       }
                     }
-                    ret.stations[i].foods[j] = name
+                    ret.stations[i].foods[j] = name;
                   }
                 }
                 console.log("/Dining_Court sent");
-                res.send(ret)
+                res.send(ret);
               });
-            } else {
-              console.log("/Dining_Court sent");
-              res.send([])
-            }
+          } else {
+            console.log("/Dining_Court sent");
+            res.send([]);
           }
-        });
+        }
+      });
   });
 });
 
@@ -672,12 +676,15 @@ app.get("/Foodname", (req, res) => {
   MongoClient.connect(url, function (err, dbt) {
     if (err) throw err;
     let db = dbt.db("boilerplate");
-    let food
-    db.collection("foods").findOne({_id: req.query.id}, async function (err, result) {
-      food = result
-    });
-    console.log(food)
-    res.send("a")
+    let food;
+    db.collection("foods").findOne(
+      { _id: req.query.id },
+      async function (err, result) {
+        food = result;
+      }
+    );
+    console.log(food);
+    res.send("a");
   });
 });
 
@@ -875,34 +882,34 @@ app.post("/Tried_Food", (req, res) => {
 app.post("/Post_Eating_At", (req, res) => {
   MongoClient.connect(url, function (err, dbt) {
     let db = dbt.db("boilerplate");
-    console.log("post eating at")
+    console.log("post eating at");
     db.collection("users")
-        .find({ username: req.query.username })
-        .toArray(function (err, result) {
-          if (err) throw err;
-          if (result.length === 0) {
-            res.send("User does not exist");
-          } else {
-            let at = result[0].eatingAt
-            if (at == null || at === "undefined") {
-              at = ""
-            }
-            if (at === req.query.location) {
-              at = ""
-            } else {
-              at = req.query.location
-            }
-            const updateDoc = {
-              $set: {
-                eatingAt: at,
-              },
-            };
-            ret = db
-                .collection("users")
-                .updateOne({ username: req.query.username }, updateDoc);
-            res.send("Eating at updated successfully.");
+      .find({ username: req.query.username })
+      .toArray(function (err, result) {
+        if (err) throw err;
+        if (result.length === 0) {
+          res.send("User does not exist");
+        } else {
+          let at = result[0].eatingAt;
+          if (at == null || at === "undefined") {
+            at = "";
           }
-        });
+          if (at === req.query.location) {
+            at = "";
+          } else {
+            at = req.query.location;
+          }
+          const updateDoc = {
+            $set: {
+              eatingAt: at,
+            },
+          };
+          ret = db
+            .collection("users")
+            .updateOne({ username: req.query.username }, updateDoc);
+          res.send("Eating at updated successfully.");
+        }
+      });
   });
 });
 
@@ -911,17 +918,17 @@ app.get("/Friends", (req, res) => {
     if (err) throw err;
     let db = dbt.db("boilerplate");
     db.collection("users")
-        .find({ username: req.query.username })
-        .toArray(async function (err, result) {
-          console.log(req.query.username)
-          if (err) throw err;
-          result = result.map((a) => [a.friends, a.friendRequests]); //filters only the names of foods
-          result = result.sort((a, b) => a.localeCompare(b)); //sorts names alphabetically
-          result[2] = await getEatings(db, result[0][0])
-          console.log(result);
-          res.send(result);
-          console.log("/Friends sent");
-        });
+      .find({ username: req.query.username })
+      .toArray(async function (err, result) {
+        console.log(req.query.username);
+        if (err) throw err;
+        result = result.map((a) => [a.friends, a.friendRequests]); //filters only the names of foods
+        result = result.sort((a, b) => a.localeCompare(b)); //sorts names alphabetically
+        result[2] = await getEatings(db, result[0][0]);
+        console.log(result);
+        res.send(result);
+        console.log("/Friends sent");
+      });
   });
 });
 
@@ -930,17 +937,17 @@ app.get("/Eating_At", (req, res) => {
     if (err) throw err;
     let db = dbt.db("boilerplate");
     db.collection("users")
-        .find({ username: req.query.username })
-        .toArray(async function (err, result) {
-          if (err) throw err;
-          if (result.length !== 0 ) {
-            result = result[0].eatingAt;
-            res.send(result);
-          } else {
-            res.send("")
-          }
-          console.log("/Eating_At sent");
-        });
+      .find({ username: req.query.username })
+      .toArray(async function (err, result) {
+        if (err) throw err;
+        if (result.length !== 0) {
+          result = result[0].eatingAt;
+          res.send(result);
+        } else {
+          res.send("");
+        }
+        console.log("/Eating_At sent");
+      });
   });
 });
 
@@ -970,33 +977,45 @@ app.get("/Profile_Info", (req, res) => {
           } else {
             res.send("")
           }
-          console.log("/Profile_Info sent");
-        });
+          result = [
+            result[0].eatingAt,
+            result[0].friends.length,
+            result[0].tried.length,
+          ];
+          for (let i = 0; i < result.length; i++) {
+            if (result[i] == null || result[i] === "undefined") {
+              result[i] = "";
+            }
+          }
+          res.send(result);
+        } else {
+          res.send("");
+        }
+        console.log("/Profile_Info sent");
+      });
   });
 });
 
 async function getEatings(db, users) {
-  result = []
+  result = [];
   for (let i = 0; i < users.length; i++) {
-    let b = await getEating(db, users[i])
-    result.push(b)
+    let b = await getEating(db, users[i]);
+    result.push(b);
   }
   return result;
 }
 
 async function getEating(db, user) {
-  console.log("geteating:" + user)
+  console.log("geteating:" + user);
   let ret = await getResults(db, user);
   ret = ret[0].eatingAt;
   if (ret == null || ret === "undefined") {
-    ret = ""
+    ret = "";
   }
-  return ret
+  return ret;
 }
 async function getResults(db, user) {
-  return db.collection("users")
-      .find({ username: user })
-      .toArray();
+  return db.collection("users").find({ username: user }).toArray();
 }
 
 app.post("/Add_Friend", (req, res) => {
@@ -1005,62 +1024,66 @@ app.post("/Add_Friend", (req, res) => {
     console.log(req.query);
     let db = dbt.db("boilerplate");
     if (req.query.username === req.query.friend) {
-      res.send("You cannot send a friend request to yourself.")
+      res.send("You cannot send a friend request to yourself.");
     } else {
       db.collection("users")
-          .find({username: req.query.username})
-          .toArray(function (err, result) {
-            if (err) throw err;
-            if (result.length === 0) {
-              res.send("User does not exist.");
-            } else {
-              db.collection("users")
-                  .find({username: req.query.friend})
-                  .toArray(function (err, result) {
-                    if (result.length === 0) {
-                      res.send("User " + req.query.friend + " does not exist.");
-                    } else {
-                      let friend = result[0].friends
-                      let request = result[0].friendRequests
-                      console.log(friend)
-                      console.log(request)
+        .find({ username: req.query.username })
+        .toArray(function (err, result) {
+          if (err) throw err;
+          if (result.length === 0) {
+            res.send("User does not exist.");
+          } else {
+            db.collection("users")
+              .find({ username: req.query.friend })
+              .toArray(function (err, result) {
+                if (result.length === 0) {
+                  res.send("User " + req.query.friend + " does not exist.");
+                } else {
+                  let friend = result[0].friends;
+                  let request = result[0].friendRequests;
+                  console.log(friend);
+                  console.log(request);
 
-                      if (
-                          friend == null ||
-                          friend === "undefined" ||
-                          friend === ""
-                      ) {
-                        friend = [];
-                      }
-                      if (
-                          request == null ||
-                          request === "undefined" ||
-                          request === ""
-                      ) {
-                        request = [];
-                      }
-                      if (request.includes(req.query.username)) {
-                        res.send("You have already sent a friend request to " + req.query.friend + ".");
-                      } else {
-                        if (friend.includes(req.query.username)) {
-                          res.send(req.query.friend + " is already your friend.")
-                        } else {
-                          request.push(req.query.username);
-                          const updateDoc = {
-                            $set: {
-                              friendRequests: request,
-                            },
-                          };
-                          ret = db
-                              .collection("users")
-                              .updateOne({username: req.query.friend}, updateDoc);
-                          res.send("Friend request was sent successfully.");
-                        }
-                      }
+                  if (
+                    friend == null ||
+                    friend === "undefined" ||
+                    friend === ""
+                  ) {
+                    friend = [];
+                  }
+                  if (
+                    request == null ||
+                    request === "undefined" ||
+                    request === ""
+                  ) {
+                    request = [];
+                  }
+                  if (request.includes(req.query.username)) {
+                    res.send(
+                      "You have already sent a friend request to " +
+                        req.query.friend +
+                        "."
+                    );
+                  } else {
+                    if (friend.includes(req.query.username)) {
+                      res.send(req.query.friend + " is already your friend.");
+                    } else {
+                      request.push(req.query.username);
+                      const updateDoc = {
+                        $set: {
+                          friendRequests: request,
+                        },
+                      };
+                      ret = db
+                        .collection("users")
+                        .updateOne({ username: req.query.friend }, updateDoc);
+                      res.send("Friend request was sent successfully.");
                     }
-                  });
-            }
-          });
+                  }
+                }
+              });
+          }
+        });
     }
   });
 });
@@ -1071,74 +1094,68 @@ app.post("/Accept_Friend", (req, res) => {
     console.log(req.query);
     let db = dbt.db("boilerplate");
     db.collection("users")
-        .find({username: req.query.username})
-        .toArray(function (err, result) {
-          if (err) throw err;
-          if (result.length === 0) {
-            res.send("User does not exist.");
+      .find({ username: req.query.username })
+      .toArray(function (err, result) {
+        if (err) throw err;
+        if (result.length === 0) {
+          res.send("User does not exist.");
+        } else {
+          let friend = result[0].friends;
+          let request = result[0].friendRequests;
+          if (friend == null || friend === "undefined" || friend === "") {
+            friend = [];
+          }
+          if (request == null || request === "undefined" || request === "") {
+            request = [];
+          }
+          if (!request.includes(req.query.friend)) {
+            res.send(
+              req.query.friend + " has not sent you any friend request."
+            );
           } else {
-            let friend = result[0].friends
-            let request = result[0].friendRequests
-            if (
-                friend == null ||
-                friend === "undefined" ||
-                friend === ""
-            ) {
-              friend = [];
-            }
-            if (
-                request == null ||
-                request === "undefined" ||
-                request === ""
-            ) {
-              request = [];
-            }
-            if (!request.includes(req.query.friend)) {
-              res.send(req.query.friend + " has not sent you any friend request.");
+            if (friend.includes(req.query.friend)) {
+              res.send(req.query.friend + " is already your friend.");
             } else {
-              if (friend.includes(req.query.friend)) {
-                res.send(req.query.friend + " is already your friend.");
-              } else {
-                friend.push(req.query.friend);
-                request = request.filter(e => e !== req.query.friend);
-                const updateDoc = {
-                  $set: {
-                    friendRequests: request,
-                    friends: friend,
-                  },
-                };
-                ret = db
+              friend.push(req.query.friend);
+              request = request.filter((e) => e !== req.query.friend);
+              const updateDoc = {
+                $set: {
+                  friendRequests: request,
+                  friends: friend,
+                },
+              };
+              ret = db
+                .collection("users")
+                .updateOne({ username: req.query.username }, updateDoc);
+              db.collection("users")
+                .find({ username: req.query.friend })
+                .toArray(function (err, result) {
+                  if (result.length === 0) {
+                    res.send("User " + req.query.friend + " does not exist.");
+                  }
+                  let friend = result[0].friends;
+                  if (
+                    friend == null ||
+                    friend === "undefined" ||
+                    friend === ""
+                  ) {
+                    friend = [];
+                  }
+                  friend.push(req.query.username);
+                  const updateDoc = {
+                    $set: {
+                      friends: friend,
+                    },
+                  };
+                  ret = db
                     .collection("users")
-                    .updateOne({username: req.query.username}, updateDoc);
-                db.collection("users")
-                    .find({username: req.query.friend})
-                    .toArray(function (err, result) {
-                      if (result.length === 0) {
-                        res.send("User " + req.query.friend + " does not exist.");
-                      }
-                      let friend = result[0].friends
-                      if (
-                          friend == null ||
-                          friend === "undefined" ||
-                          friend === ""
-                      ) {
-                        friend = [];
-                      }
-                      friend.push(req.query.username);
-                      const updateDoc = {
-                        $set: {
-                          friends: friend,
-                        },
-                      };
-                      ret = db
-                          .collection("users")
-                          .updateOne({username: req.query.friend}, updateDoc);
-                      res.send("Friend request was accepted successfully.");
-                    });
-              }
+                    .updateOne({ username: req.query.friend }, updateDoc);
+                  res.send("Friend request was accepted successfully.");
+                });
             }
           }
-        });
+        }
+      });
   });
 });
 
@@ -1148,60 +1165,52 @@ app.post("/Remove_Friend", (req, res) => {
     console.log(req.query);
     let db = dbt.db("boilerplate");
     db.collection("users")
-        .find({username: req.query.username})
-        .toArray(function (err, result) {
-          if (err) throw err;
-          if (result.length === 0) {
-            res.send("User does not exist.");
-          } else {
-            let friend = result[0].friends
-            if (
-                friend == null ||
-                friend === "undefined" ||
-                friend === ""
-            ) {
-              friend = [];
-            }
-            if (!friend.includes(req.query.friend)) {
-              res.send(req.query.friend + " is not your friend.");
-            } else {
-              friend = friend.filter(e => e !== req.query.friend);
-              const updateDoc = {
-                $set: {
-                  friends: friend,
-                },
-              };
-              ret = db
-                  .collection("users")
-                  .updateOne({username: req.query.username}, updateDoc);
-              db.collection("users")
-                  .find({username: req.query.friend})
-                  .toArray(function (err, result) {
-                    if (result.length === 0) {
-                      res.send("User " + req.query.friend + " does not exist.");
-                    }
-                    let friend = result[0].friends
-                    if (
-                        friend == null ||
-                        friend === "undefined" ||
-                        friend === ""
-                    ) {
-                      friend = [];
-                    }
-                    friend = friend.filter(e => e !== req.query.username);
-                    const updateDoc = {
-                      $set: {
-                        friends: friend,
-                      },
-                    };
-                    ret = db
-                        .collection("users")
-                        .updateOne({username: req.query.friend}, updateDoc);
-                    res.send("Friend was removed successfully.");
-                  });
-            }
+      .find({ username: req.query.username })
+      .toArray(function (err, result) {
+        if (err) throw err;
+        if (result.length === 0) {
+          res.send("User does not exist.");
+        } else {
+          let friend = result[0].friends;
+          if (friend == null || friend === "undefined" || friend === "") {
+            friend = [];
           }
-        });
+          if (!friend.includes(req.query.friend)) {
+            res.send(req.query.friend + " is not your friend.");
+          } else {
+            friend = friend.filter((e) => e !== req.query.friend);
+            const updateDoc = {
+              $set: {
+                friends: friend,
+              },
+            };
+            ret = db
+              .collection("users")
+              .updateOne({ username: req.query.username }, updateDoc);
+            db.collection("users")
+              .find({ username: req.query.friend })
+              .toArray(function (err, result) {
+                if (result.length === 0) {
+                  res.send("User " + req.query.friend + " does not exist.");
+                }
+                let friend = result[0].friends;
+                if (friend == null || friend === "undefined" || friend === "") {
+                  friend = [];
+                }
+                friend = friend.filter((e) => e !== req.query.username);
+                const updateDoc = {
+                  $set: {
+                    friends: friend,
+                  },
+                };
+                ret = db
+                  .collection("users")
+                  .updateOne({ username: req.query.friend }, updateDoc);
+                res.send("Friend was removed successfully.");
+              });
+          }
+        }
+      });
   });
 });
 

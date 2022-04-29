@@ -207,9 +207,6 @@ function App() {
                                 Schedule Meal Plans
                             </NavDropdown.Item>
                         </NavDropdown>
-                        <Nav.Link href='/map'>
-                            <i className='bi bi-geo-alt-fill'></i> Map
-                        </Nav.Link>
                         <Nav.Link href='/dining_courts'>
                             <i className='bi bi-building'></i> Dining Courts
                         </Nav.Link>
@@ -271,9 +268,6 @@ function App() {
                                     Schedule Meal Plans
                                 </NavDropdown.Item>
                             </NavDropdown>
-                            <Nav.Link href='/map'>
-                                <i className='bi bi-geo-alt-fill'></i> Map
-                            </Nav.Link>
                             <Nav.Link href='/dining_courts'>
                                 <i className='bi bi-building'></i> Dining Courts
                             </Nav.Link>
