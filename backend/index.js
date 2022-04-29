@@ -954,7 +954,13 @@ app.get("/Profile_Info", (req, res) => {
           console.log(req.query.username)
           if (err) throw err;
           if (result.length !== 0 ) {
-            result = [result[0].eatingAt, result[0].friends.length, result[0].tried.length];
+            if (result.tried) {
+              result = [result[0].eatingAt, result[0].friends.length, result[0].tried.length];
+            }
+            else {
+              result = [result[0].eatingAt, result[0].friends.length];
+            }
+            
             for (let i = 0; i < result.length; i++) {
               if (result[i] == null || result[i] === "undefined") {
                 result[i] = ""
