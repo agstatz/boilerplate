@@ -120,10 +120,6 @@ function Profile(props) {
     );
 
     useEffect(async () => {
-        const { data: response } = await axios.get(
-            'http://localhost:5000/recommendations/' + id + '/foods/'
-        );
-        setFoods(response);
         const { data: response3 } = await axios.get(
             'http://localhost:3001/Profile_Info?username=' + id
         );
@@ -138,12 +134,16 @@ function Profile(props) {
         } else {
             setFriendCount(response3[1]);
         }
-        if (response[2] === '') {
+        if (response3[2] === '') {
             setTriedCount(0);
         } else {
             setTriedCount(response3[2]);
         }
 
+        const { data: response } = await axios.get(
+            'http://localhost:5000/recommendations/' + id + '/foods/'
+        );
+        setFoods(response);
         const { data: response2 } = await axios.get(
             'http://localhost:3001/api/users/dietary/' + username
         );
@@ -163,11 +163,13 @@ function Profile(props) {
         return foods.map((food) => (
             <Container>
                 <Stack gap={2}>
-                    <RecommendedFood
-                        title={food.name}
-                        nutrition={food.nutrition}
-                    />
-                    {likeDislike()}
+                    <div className='bg-white p-2 border rounded'>
+                        <RecommendedFood
+                            title={food.name}
+                            nutrition={food.nutrition}
+                        />
+                        {likeDislike()}
+                    </div>
                 </Stack>
             </Container>
         ));
@@ -373,23 +375,6 @@ function Profile(props) {
                             ) : (
                                 <></>
                             )}
-                        </Card.Body>
-                    </Card>
-                </Col>
-                <Col sm={12}>
-                    <Card className='my-3' bg='light'>
-                        <Card.Header className='h5'>
-                            <strong>Favorites</strong>
-                        </Card.Header>
-                        <Card.Body>
-                            <Card.Text>
-                                Chicken Parmesan
-                                <br />
-                                Stir Fry
-                                <br />
-                                Waffle Fries
-                                <br />
-                            </Card.Text>
                         </Card.Body>
                     </Card>
                 </Col>

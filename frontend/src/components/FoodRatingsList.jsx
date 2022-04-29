@@ -24,7 +24,6 @@ function FoodRatingsList(props) {
                 .get(url + 'api/getFoodRating?user=' + props.urlUsername)
                 .then((res) => {
                     setFoods(res.data);
-                    console.log(res.data);
                 });
             setLoading(false);
         } catch (error) {
@@ -55,7 +54,7 @@ function FoodRatingsList(props) {
                             );
                         })
                     ) : (
-                        <>helloasdf</>
+                        <></>
                     )}
                 </Stack>
             </div>

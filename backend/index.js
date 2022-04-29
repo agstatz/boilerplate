@@ -593,12 +593,12 @@ app.get("/Dining_Courts", (req, res) => {
   MongoClient.connect(url, function (err, dbt) {
     if (err) throw err;
     let db = dbt.db("boilerplate");
-
-    db.collection("locations")
-      .find({})
+    db.collection("diningcourts")
+      .find()
       .toArray(function (err, result) {
         if (err) throw err;
-        console.log(result);
+        result = result.map((a) => a.name);
+        console.log(result)
         console.log("done");
         res.send(result);
       });

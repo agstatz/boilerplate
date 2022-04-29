@@ -125,13 +125,15 @@ export default class Dining_Court extends React.Component {
       if (this.state.error) {
         this.state.html.push(<h1>Error: Dining Court not found</h1>);
       } else {
+        console.log(response.data.timeServed)
         this.state.html.push(
           <h1 className={"text-center"}>
             {this.state.queries.name.split("_").join(" ")}
           </h1>
         );
         if (response.data.length !== 0) {
-          console.log(response.data);
+          this.state.html.push(<h4>{this.state.queries.date}</h4>)
+          this.state.html.push(<h4>{response.data.menuType} ({response.data.timeServed})</h4>)
           let list = response.data.stations;
           let k = 0;
           for (let i = 0; i < list.length; i++) {
