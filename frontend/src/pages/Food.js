@@ -692,7 +692,6 @@ export default class Food extends React.Component {
                   <>
                   
                   <div className="p-3 my-4 mx-4 bg-light border rounded">
-                  <UserTags />
                     <Button className="mx-auto btn btn-secondary" hidden={this.state.isNotGuest !== true} onClick={this.handleOpen}>Add food tag</Button>
                     {' '}
                     <Button onClick={(x) => {
