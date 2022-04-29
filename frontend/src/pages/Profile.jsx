@@ -164,12 +164,7 @@ function Profile(props) {
               <Stack gap={2}>
                   <RecommendedFood
                       title={food.name}
-                      nutrition= {`
-                          ${food.calories} calories\n
-                          ${food.totalFat} fat\n
-                          ${food.totalCarbohydrate} carbs\n
-                          ${food.protein} protein
-                        `}
+                      nutrition={food.nutrition}
                   />
                   {likeDislike()}
               </Stack>
@@ -403,7 +398,7 @@ function Profile(props) {
                         <Card.Body>
                             <Card.Text>
                                 Here are some recommendations based on your
-                                history and feedback:
+                                history, feedback and restrictions:
                             </Card.Text>
                             <Row>
                                 <Col>

@@ -74,16 +74,15 @@ def mealReq(username):
             restriction_tag_type = restriction['tagType']
 
             if (restriction_tag_type == allergen_tag and restriction_name not in food_dietary_tags) or (restriction_tag_type != allergen_tag and restriction_name in food_dietary_tags):
-                # food_data = {
-                #     "name": food['name'],
-                #     "nutrition": 
-                #         food.get('calories', 'undefined') + " calories,\n"
-                #         + food.get('totalFat', 'undefined') + " fat,\n"
-                #         + food.get('totalCarbohydrate', 'undefined') + " carbs,\n"
-                #         + food.get('protein', 'undefined') + " protein"
-                # }
-                # edible_foods.append(food_data)
-                edible_foods.append(food)
+                food_data = {
+                    "name": food['name'],
+                    "nutrition": 
+                        food.get('calories', 'undefined') + " calories,\n"
+                        + food.get('totalFat', 'undefined') + " fat,\n"
+                        + food.get('totalCarbohydrate', 'undefined') + " carbs,\n"
+                        + food.get('protein', 'undefined') + " protein"
+                }
+                edible_foods.append(food_data)
     
     if len(edible_foods) >= 5:
         num_foods = 5
