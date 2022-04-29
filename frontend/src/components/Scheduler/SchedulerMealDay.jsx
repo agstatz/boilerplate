@@ -6,11 +6,12 @@
  * @author Ashton Statz
  */
 
-import { Stack, Button, Accordion, Badge, Container, Col, Row } from 'react-bootstrap';
+import { Stack, Button, Accordion, Badge, Container, Col, Row, Modal, Form } from 'react-bootstrap';
 import { useState, useEffect, useReducer } from 'react';
 import { SchedulerMealIndividual } from '.';
 import axios from 'axios';
 import { store } from "../../store/store.js";
+import { breadcrumbsClasses } from '@mui/material';
 
 function SchedulerMealDay(props) {
     const [mealList, setMealList] = useState([]);
@@ -22,6 +23,9 @@ function SchedulerMealDay(props) {
     const [showdvmodal, setShowdvmodal] = useState(false);
     const [dvSums, setDvSums] = useState({ calories: "0", totalFat: "0", saturatedFat: "0", cholesterol: "0",sodium: "0", totalCarbohydrate: 0,
                                            addedSugar: "0", dietaryFiber: "0", protein: "0", calcium: "0", iron: "0"});
+    const [dvForm, setDvForm] = useState({ calories: "2000", totalFat: "78", saturatedFat: "20", cholesterol: "300",sodium: "2300", totalCarbohydrate: 275,
+                                           addedSugar: "50", dietaryFiber: "28", protein: "50", calcium: "1300", iron: "18"});
+    const [formMessage, setFormMessage] = useState("");
 
     useEffect(async () => {
         if (!props.editable) {
@@ -365,14 +369,228 @@ function SchedulerMealDay(props) {
     }
 
     function handleOpenDVModal() {
+        setFormMessage("");
         setShowdvmodal(true);
+    }
+    function handleCloseDVModal() {
+        setShowdvmodal(false);
+        setFormMessage("");
+    }
+
+    var handleChange = ((event) => {
+        event.preventDefault();
+        let target = event.target;
+        let value = target.type === "checkbox" ? target.checked : target.value;
+        let name = target.id;
+        setDvForm({...dvForm, [name]: value});
+    });
+
+    function changeDVs() {
+        
+        setFormMessage("");
+        if (!/^([0-9]{1,})$/.test(dvForm.calories)) {
+            setFormMessage("Calories field must be a number");
+        }
+        if (!/^([0-9]{1,})$/.test(dvForm.totalFat)) {
+            setFormMessage("Total fat field must be a number");
+        }
+        if (!/^([0-9]{1,})$/.test(dvForm.saturatedFat)) {
+            setFormMessage("Saturated fat field must be a number");
+        }
+        if (!/^([0-9]{1,})$/.test(dvForm.cholesterol)) {
+            setFormMessage("Cholesterol field must be a number");
+        }
+        if (!/^([0-9]{1,})$/.test(dvForm.sodium)) {
+            setFormMessage("Sodium field must be a number");
+        }
+        if (!/^([0-9]{1,})$/.test(dvForm.totalCarbohydrate)) {
+            setFormMessage("Total carbohydrates field must be a number");
+        }
+        if (!/^([0-9]{1,})$/.test(dvForm.addedSugar)) {
+            setFormMessage("Added sugar field must be a number");
+        }
+        if (!/^([0-9]{1,})$/.test(dvForm.dietaryFiber)) {
+            setFormMessage("Dietary fiber field must be a number");
+        }
+        if (!/^([0-9]{1,})$/.test(dvForm.protein)) {
+            setFormMessage("Protein field must be a number");
+        }
+        if (!/^([0-9]{1,})$/.test(dvForm.calcium)) {
+            setFormMessage("Calcium field must be a number");
+        }
+        if (!/^([0-9]{1,})$/.test(dvForm.iron)) {
+            setFormMessage("Iron field must be a number");
+        }
+        const dvData = {
+            username: store.getState().app.username,
+            isDefault: false,
+            calories: dvForm.calories,
+            totalFat: dvForm.totalFat,
+            saturatedFat: dvForm.saturatedFat,
+            cholesterol: dvForm.cholesterol,
+            sodium: dvForm.sodium,
+            totalCarbohydrate: dvForm.totalCarbohydrate,
+            addedSugar: dvForm.addedSugar,
+            dietaryFiber: dvForm.dietaryFiber,
+            protein: dvForm.protein,
+            calcium: dvForm.calcium,
+            iron: dvForm.iron,
+        }
+        axios.get("http://localhost:3001/api/food-logs/dailyvalues/exists/".concat(store.getState().app.username)).then((res0) => {
+            if (res0.data.message) {
+                axios.put("http://localhost:3001/api/food-logs/dailyvalue/", { data: dvData }).then((res) => {
+                    calculateDvs();
+                    setFormMessage("");
+                    setShowdvmodal(false);
+                    setDvForm({ calories: "2000", totalFat: "78", saturatedFat: "20", cholesterol: "300",sodium: "2300", totalCarbohydrate: 275,
+                                           addedSugar: "50", dietaryFiber: "28", protein: "50", calcium: "1300", iron: "18"})
+                    return;
+                }).catch((err) => {
+                    console.log(err.response.data.msg);
+                    setFormMessage(err.response.data.msg);
+                });
+            }
+            else {
+                axios.post("http://localhost:3001/api/food-logs/dailyvalue", { data: dvData }).then((res) => {  
+                    calculateDvs();
+                    setFormMessage("");
+                    setShowdvmodal(false);
+                    setDvForm({ calories: "2000", totalFat: "78", saturatedFat: "20", cholesterol: "300",sodium: "2300", totalCarbohydrate: 275,
+                                           addedSugar: "50", dietaryFiber: "28", protein: "50", calcium: "1300", iron: "18"})
+                    return;
+                }).catch((err) => {
+                    console.log(err.response.data.msg);
+                    setFormMessage(err.response.data.msg);
+                });
+            }
+        }).catch((err) => {
+            console.log(err.response.data.msg);
+            setFormMessage(err.response.data.msg);
+        });
+    }
+
+    function resetDVs() {
+        const dvData = {
+            username: store.getState().app.username,
+            isDefault: true,
+        }
+        axios.get("http://localhost:3001/api/food-logs/dailyvalues/exists/".concat(store.getState().app.username)).then((res0) => {
+            if (res0.data.message) {
+                axios.put("http://localhost:3001/api/food-logs/dailyvalue/", { data: dvData }).then((res) => {
+                    calculateDvs();
+                    setFormMessage("");
+                    setShowdvmodal(false);
+                    setDvForm({ calories: "2000", totalFat: "78", saturatedFat: "20", cholesterol: "300",sodium: "2300", totalCarbohydrate: 275,
+                                           addedSugar: "50", dietaryFiber: "28", protein: "50", calcium: "1300", iron: "18"})
+                    return;
+                }).catch((err) => {
+                    console.log(err.response.data.msg);
+                    setFormMessage(err.response.data.msg);
+                });
+            }
+            else {
+                axios.post("http://localhost:3001/api/food-logs/dailyvalue", { data: dvData }).then((res) => {  
+                    calculateDvs();
+                    setFormMessage("");
+                    setShowdvmodal(false);
+                    setDvForm({ calories: "2000", totalFat: "78", saturatedFat: "20", cholesterol: "300",sodium: "2300", totalCarbohydrate: 275,
+                                           addedSugar: "50", dietaryFiber: "28", protein: "50", calcium: "1300", iron: "18"})
+                    return;
+                }).catch((err) => {
+                    console.log(err.response.data.msg);
+                    setFormMessage(err.response.data.msg);
+                });
+            }
+        }).catch((err) => {
+            console.log(err.response.data.msg);
+            setFormMessage(err.response.data.msg);
+        });
     }
 
     function OpenDVModal() {
+        var space = " "
         return (
-            <Button variant="secondary" className="mb-2" onClick={handleOpenDVModal}>
-                Change Daily Values
-            </Button>
+            <div>
+                <Button variant="secondary" className="mb-2" onClick={handleOpenDVModal}>
+                    Change Daily Values
+                </Button>
+                <Modal show={showdvmodal} onHide={handleCloseDVModal} animation={false} >
+                    <Modal.Header closeButton>
+                        <Modal.Title>Change Daily Values</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>Daily Values (DVs) are the recommended daily intake for important nutrients by the FDA. 
+                        The DVs that the FDA suggests for the categories in this form are 2000 calories, 78g of total 
+                        fat, 20g of saturated fat, 300mg of cholesterol, 2300mg of sodium, 275g of carbohydrates, 50g 
+                        of added sugar, 28g of dietary fiber, 50g of protein, 1300mg of calcium, and 18mg of iron. These 
+                        suggestions are subject to change and can be referenced{space}
+                        <a href="https://www.fda.gov/food/new-nutrition-facts-label/daily-value-new-nutrition-and-supplement-facts-labels">
+                            here
+                        </a>
+                        {space}for futher reading.</p>
+                        <Form className="mx-1 justify-content-center" onSubmit={changeDVs} align="center" >
+                            <Container className=" mt-4 mb-4  justify-content-center">
+                                <Form.Group className="mb-3" style={{ width: "16.5em" }} controlId="calories" >
+                                    <Form.Label>Calories</Form.Label>
+                                    <Form.Control type="calories" value={dvForm.calories} onChange={handleChange} />
+                                </Form.Group>
+                                <Form.Group className="mb-3" style={{ width: "16.5em" }} controlId="totalFat" >
+                                    <Form.Label>Total Fat (g)</Form.Label>
+                                    <Form.Control type="totalFat" value={dvForm.totalFat} onChange={handleChange} />
+                                </Form.Group>
+                                <Form.Group className="mb-3" style={{ width: "16.5em" }} controlId="saturatedFat" >
+                                    <Form.Label>Saturated Fat (g)</Form.Label>
+                                    <Form.Control type="saturatedFat" value={dvForm.saturatedFat} onChange={handleChange} />
+                                </Form.Group>
+                                <Form.Group className="mb-3" style={{ width: "16.5em" }} controlId="cholesterol" >
+                                    <Form.Label>Cholesterol (mg)</Form.Label>
+                                    <Form.Control type="cholesterol" value={dvForm.cholesterol} onChange={handleChange} />
+                                </Form.Group>
+                                <Form.Group className="mb-3" style={{ width: "16.5em" }} controlId="sodium" >
+                                    <Form.Label>Sodium (mg)</Form.Label>
+                                    <Form.Control type="sodium" value={dvForm.sodium} onChange={handleChange} />
+                                </Form.Group>
+                                <Form.Group className="mb-3" style={{ width: "16.5em" }} controlId="totalCarbohydrate" >
+                                    <Form.Label>Total Carbohydrate (g)</Form.Label>
+                                    <Form.Control type="totalCarbohydrate" value={dvForm.totalCarbohydrate} onChange={handleChange} />
+                                </Form.Group>
+                                <Form.Group className="mb-3" style={{ width: "16.5em" }} controlId="addedSugar" >
+                                    <Form.Label>Added Sugar (g)</Form.Label>
+                                    <Form.Control type="addedSugar" value={dvForm.addedSugar} onChange={handleChange} />
+                                </Form.Group>
+                                <Form.Group className="mb-3" style={{ width: "16.5em" }} controlId="dietaryFiber" >
+                                    <Form.Label>Dietary Fiber (g)</Form.Label>
+                                    <Form.Control type="dietaryFiber" value={dvForm.dietaryFiber} onChange={handleChange} />
+                                </Form.Group>
+                                <Form.Group className="mb-3" style={{ width: "16.5em" }} controlId="protein" >
+                                    <Form.Label>Protein (g)</Form.Label>
+                                    <Form.Control type="protein" value={dvForm.protein} onChange={handleChange} />
+                                </Form.Group>
+                                <Form.Group className="mb-3" style={{ width: "16.5em" }} controlId="calcium" >
+                                    <Form.Label>Calcium (mg)</Form.Label>
+                                    <Form.Control type="calcium" value={dvForm.calcium} onChange={handleChange} />
+                                </Form.Group>
+                                <Form.Group className="mb-3" style={{ width: "16.5em" }} controlId="iron" >
+                                    <Form.Label>Iron (mg)</Form.Label>
+                                    <Form.Control type="iron" value={dvForm.iron} onChange={handleChange} />
+                                </Form.Group>
+                                <p>{formMessage}</p>
+                            </Container>
+                        </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="primary" onClick={changeDVs}>
+                            Submit Changes
+                        </Button>
+                        <Button variant="primary" onClick={resetDVs}>
+                            Reset to Default
+                        </Button>
+                        <Button variant="secondary" onClick={handleCloseDVModal}>
+                            Close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            </div>
         );
     }
 
