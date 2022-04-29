@@ -95,19 +95,29 @@ export default class Dining_Courts extends React.Component {
       let date = getToday();
       let meal = getMeal();
       for (let i = 0; i < response.data.length; i++) {
-        let name = response.data[i].name;
+        console.log(response.data[i])
+        let name = response.data[i];
         this.state.html.push(<ColoredLine id={"line" + i} color="grey" />);
-        this.state.html.push(
-          <NavLink
-            id={"pictureLink" + i}
-            to={
+        let to = ""
+        if (name.charAt(name.length - 1) === "!") {
+          to = "/Dining_Court?name=" +
+              name.split(" ").join("_") +
+              "&date=" +
+              date +
+              "&meal="
+        } else {
+          to =
               "/Dining_Court?name=" +
               name.split(" ").join("_") +
               "&date=" +
               date +
               "&meal=" +
               meal
-            }
+        }
+        this.state.html.push(
+          <NavLink
+            id={"pictureLink" + i}
+            to={to}
           >
             <img
               id={"picture" + i}
@@ -122,14 +132,7 @@ export default class Dining_Courts extends React.Component {
           <Link
             style={{ fontSize: "28px" }}
             id={"link" + i}
-            to={
-              "/Dining_Court?name=" +
-              name.split(" ").join("_") +
-              "&date=" +
-              date +
-              "&meal=" +
-              meal
-            }
+            to={to}
           >
             <br></br>
             {name}
