@@ -540,8 +540,6 @@ function SchedulerMealDay(props) {
         if (hideDVs) {
             return (<div></div>);
         }
-        console.log("asdf");
-            console.log();
         return (
             <div>
                 <Button variant="secondary" className="mb-2" onClick={handleOpenDVModal}>
