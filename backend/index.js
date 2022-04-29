@@ -49,6 +49,7 @@ app.use("/api/foods", require("./routes/foods"));
 app.use("/api/meal-plans", require("./routes/mealplans"));
 app.use("/api/meal-plan-like", require("./routes/mealplanlikes"));
 app.use("/api/dining-locations", require("./routes/diningLocations"));
+app.use("/api/food-logs", require("./routes/foodLogs"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/motd", require("./routes/motd"));
 
