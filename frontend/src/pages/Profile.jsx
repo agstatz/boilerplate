@@ -120,7 +120,7 @@ function Profile(props) {
 
   useEffect(async () => {
     const { data: response } = await axios.get(
-        'http://localhost:3001/api/foods/recommendations'
+        'http://localhost:5000/recommendations/' + id + '/foods/'
     );
     setFoods(response);
     const { data: response3 } = await axios.get(
@@ -164,7 +164,12 @@ function Profile(props) {
               <Stack gap={2}>
                   <RecommendedFood
                       title={food.name}
-                      nutrition={food.nutrition}
+                      nutrition= {`
+                          ${food.calories} calories\n
+                          ${food.totalFat} fat\n
+                          ${food.totalCarbohydrate} carbs\n
+                          ${food.protein} protein
+                        `}
                   />
                   {likeDislike()}
               </Stack>
