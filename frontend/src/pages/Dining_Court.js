@@ -4,6 +4,7 @@ import { Container, Button } from "react-bootstrap";
 
 // Import comments
 import Comments from "../components/Comments/Comments";
+import DiningCourtPopular from "../components/DiningCourtPopular";
 import { store } from "../store/store";
 
 const ColoredLine = ({ color }) => (
