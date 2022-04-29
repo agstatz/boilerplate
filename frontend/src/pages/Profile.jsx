@@ -22,6 +22,7 @@ import {
     DietaryInfo,
     BanUserButton,
     FavoriteFoodList,
+    FoodRatingsList,
 } from '../components';
 import { MealPlanList, MealPlanProfileView } from '../components/MealPlans/';
 import { PageNotFound } from '../pages/';
@@ -322,6 +323,12 @@ function Profile(props) {
                                         style={{ cursor: 'auto' }}
                                     >
                                         <FavoriteFoodList username={username} />
+                                    </Tab>
+                                    <Tab
+                                        label='Food Ratings'
+                                        style={{ cursor: 'auto' }}
+                                    >
+                                        <FoodRatingsList urlUsername={id} />
                                     </Tab>
                                 </Tabs>
                             ) : (
