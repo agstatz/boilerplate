@@ -40,6 +40,9 @@ function SchedulerMealDay(props) {
         if (props.hideDVs) {
             setHideDVs(true);
         }
+        if (!(window.location.pathname).includes("schedule")) {
+            setHideDVs(true);
+        }
     }, []);
 
     function handleUpdateMeal(key, meal_name, meal_location) {
