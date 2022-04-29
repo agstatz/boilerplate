@@ -254,6 +254,7 @@ function MealPlanIndividual() {
                                             submitDay={submitDay}
                                             editable={editable}
                                             mealList={mealPlan.meals[i]}
+                                            hideDVs={true}
                                         />
                                     );
                                 })
